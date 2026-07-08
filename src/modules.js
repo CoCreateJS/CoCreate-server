@@ -1,11 +1,8 @@
 const socketServer = require("@cocreate/socket-server")
 const crudServer = require('@cocreate/crud-server')
-const fileServer = require('@cocreate/file-server')
 const metrics = require('@cocreate/metrics')
 const usage = require('@cocreate/usage')
 const organizations = require('@cocreate/organizations');
-const serverSideRender = require('@cocreate/server-side-render');
-const sitemap = require('@cocreate/sitemap');
 const unique = require('@cocreate/unique');
 const users = require('@cocreate/users');
 const authenticate = require('@cocreate/authenticate')
@@ -52,7 +49,7 @@ module.exports.init = async function (cluster, server) {
             wsManager.authenticate = new authenticate(crud)
             wsManager.authorize = new authorize(crud)
 
-            new lazyLoader(server, crud, new fileServer(new serverSideRender(crud), new sitemap(crud)));
+            new lazyLoader(server, crud);
 
             new metrics(crud);
             new notification(crud);

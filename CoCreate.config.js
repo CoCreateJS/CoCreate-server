@@ -12,7 +12,7 @@ export default {
   storage: {
     primary: {
         provider: "mongodb",
-        url: "mongodb+srv://cocreate-app:ZquBBtZ3zelyaP8w@cocreatedatabase.ne3tel6.mongodb.net/?retryWrites=true&w=majority"
+        url: ""
     }
   },
   // Horizontal scaling configuration
@@ -92,7 +92,7 @@ export default {
         // --- Standard Client/Server Modules ---
         acme: {
             import: "@cocreate/acme",
-            path: "../CoCreate-modules/CoCreate-acme",
+            path: "../CoCreate-plugins/CoCreate-acme",
             repo: "github.com/CoCreate-app/CoCreate-acme.git"
         },
         actions: {

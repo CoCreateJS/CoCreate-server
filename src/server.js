@@ -1,51 +1,47 @@
-'use strict';
-const cluster = require('cluster');
-const os = require('os');
-const server = require("@cocreate/server")
-const config = require("@cocreate/config");
+/********************************************************************************
+ * Copyright (C) 2023 CoCreate and Contributors.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ ********************************************************************************/
 
-const modules = require("./modules");
+// Commercial Licensing Information:
+// For commercial use of this software without the copyleft provisions of the AGPLv3,
+// you must obtain a commercial license from CoCreate LLC.
+// For details, visit <https://cocreate.app/licenses/> or contact us at sales@cocreate.app.
 
-async function init() {
-    let workers = await config('workers')
-    workers = workers.workers
-    if (!workers || workers === 'false') {
-        workers = 1
-    } else
-        workers = workers = parseInt(workers) || os.cpus().length;
+import server from '@cocreate/server';
+import './modules.js'; // Self-registers and imports all background modules for side-effects
 
-    if (cluster.isMaster) {
-        console.log(`Master process is running with PID: ${process.pid}`);
-        console.log(`Forking ${workers} workers...`);
-
-        for (let i = 0; i < workers; i++) {
-            const worker = cluster.fork({ WORKER_ID: i + 1 });
-            console.log(`Worker ${worker.process.pid} will handle path /worker${i + 1}`);
-        }
-
-        cluster.on('exit', (worker, code, signal) => {
-            console.log(`Worker ${worker.process.pid} died with code: ${code}, and signal: ${signal}`);
-            console.log('Starting a new worker');
-            cluster.fork();
-        });
-    } else {
-        cluster.totalWorkers = workers
-
-        await modules.init(cluster, server);
-
-        // Each worker can use the WORKER_ID environment variable to determine its unique path
-        const workerId = process.env.WORKER_ID;
-
-        // Start HTTPS server on port 8443
-        server.https.listen(8443, () => {
-            console.log(`Worker ${process.pid} (ID: ${workerId}) HTTPS listening on PORT 8443`);
-        });
-
-        // Start HTTP server on port 8080
-        server.http.listen(8080, () => {
-            console.log(`Worker ${process.pid} (ID: ${workerId}) HTTP listening on PORT 8080`);
-        });
+/**
+ * Clean & Minimal Entry Point.
+ * * Since CoCreate Server (defined in the Canvas) now fully manages its own:
+ * - Vertical process cluster spawning (Primary/Master process splits)
+ * - Crash recovery & automatic worker process recycling
+ * - Secure TLS Cert Handshakes & dynamic Ingress setups
+ * - Socket connection pipelines & Database (CRUD) links
+ * - Static port bindings (8080 and 8443)
+ * * We no longer need any boilerplate cluster, fork, or manual socket listening code here!
+ */
+async function boot() {
+    try {
+        await server.init();
+        console.log('[@cocreate/entry] CoCreate Server successfully booted and listening for connections.');
+    } catch (error) {
+        console.error('[@cocreate/entry] Critical error during server bootstrap:', error);
+        process.exit(1);
     }
 }
 
-init()
+boot();

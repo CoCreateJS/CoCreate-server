@@ -1,12 +1,21 @@
-module.exports = {
+export default {
 	organization_id: "",
 	key: "",
 	host: "",
 	workers: 1, // Number of worker processes
-	databases: {
-		mongodb: require("@cocreate/mongodb")
-	},
-	// Horizontal scaling configuration
+  ingress: {
+      provider: "nginx" // Options: "nginx", "haproxy", "none"
+  },
+  certificate: {
+      provider: "acme" // Options: "acme", "self-signed", "none"
+  },
+  storage: {
+    primary: {
+        provider: "mongodb",
+        url: "mongodb+srv://cocreate-app:ZquBBtZ3zelyaP8w@cocreatedatabase.ne3tel6.mongodb.net/?retryWrites=true&w=majority"
+    }
+  },
+  // Horizontal scaling configuration
 	autoscaler: {
 		horizontal: {
 			enabled: true, // Enable or disable horizontal scaling

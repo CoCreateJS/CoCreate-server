@@ -10,7 +10,7 @@ export default {
       provider: "acme" // Options: "acme", "self-signed", "none"
   },
   storage: {
-    primary: {
+    mongodb: {
         provider: "mongodb",
         url: ""
     }

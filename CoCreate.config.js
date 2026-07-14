@@ -2,30 +2,34 @@ export default {
 	organization_id: "",
 	key: "",
 	host: "",
-	workers: 1, // Number of worker processes
-  ingress: {
-      provider: "nginx" // Options: "nginx", "haproxy", "none"
-  },
-  certificate: {
-      provider: "acme" // Options: "acme", "self-signed", "none"
-  },
-  storage: {
-    mongodb: {
-        provider: "mongodb",
-        url: ""
-    }
-  },
-  // Horizontal scaling configuration
+    workers: 1, // Number of worker processes
+    certificate: {
+        provider: "acme" // Options: "acme", "self-signed", "none"
+    },
+    ingress: {
+        provider: "nginx" // Options: "nginx", "haproxy", "none"
+    },
+    mesh: {
+      provider: "socket-mesh" // Options: "socket-mesh", "none"
+    },
+    storage: {
+        mongodb: {
+            provider: "mongodb",
+            url: ""
+        }
+    },
+
+    // Horizontal scaling configuration
 	autoscaler: {
 		horizontal: {
 			enabled: true, // Enable or disable horizontal scaling
 			memoryThreshold: "70%", // Memory usage threshold for scaling
 			cpuThreshold: "70%", // CPU usage threshold for scaling
-			serverType: "t2.medium", // Generic term for instance type
 			maxServers: 10 // Maximum number of servers to scale out to
 		},
 		vertical: false // Vertical scaling not enabled
 	},
+    
     /**
      * @namespace modules
      * @description Merged configuration containing both core components (modules/plugins) and external API libraries.
@@ -77,6 +81,11 @@ export default {
             import: "@cocreate/socket-server",
             path: "../CoCreate-modules/CoCreate-socket-server",
             repo: "github.com/CoCreate-app/CoCreate-socket-server.git"
+        },
+        "socket-mesh": {
+            import: "@cocreate/socket-mesh",
+            path: "../CoCreate-modules/CoCreate-socket-mesh",
+            repo: "github.com/CoCreate-app/CoCreate-socket-mesh.git"
         },
         "server-side-render": {
             import: "@cocreate/server-side-render",

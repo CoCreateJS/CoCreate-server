@@ -37,7 +37,6 @@ import './modules.js'; // Self-registers and imports all background modules for 
 async function boot() {
     try {
         await server.init();
-        console.log('[@cocreate/entry] CoCreate Server successfully booted and listening for connections.');
     } catch (error) {
         console.error('[@cocreate/entry] Critical error during server bootstrap:', error);
         process.exit(1);

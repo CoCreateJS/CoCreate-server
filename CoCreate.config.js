@@ -10,13 +10,20 @@ export default {
         provider: "nginx" // Options: "nginx", "haproxy", "none"
     },
     mesh: {
-      provider: "socket-mesh" // Options: "socket-mesh", "none"
+        provider: "socket-mesh" // Options: "socket-mesh", "none"
     },
     storage: {
         mongodb: {
             provider: "mongodb",
             url: ""
         }
+    },
+    metrics: {
+        enabled: true,
+        collectionInterval: 1000,
+        writeInterval: 240000,
+        retentionDays: 30,
+        broadcast: false
     },
 
     // Horizontal scaling configuration

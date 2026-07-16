@@ -2,7 +2,7 @@ export default {
 	organization_id: "",
 	key: "",
 	host: "",
-    workers: 1, // Number of worker processes
+    workers: 2, // Number of worker processes
     certificate: {
         provider: "acme" // Options: "acme", "self-signed", "none"
     },

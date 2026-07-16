@@ -2,7 +2,7 @@ export default {
 	organization_id: "",
 	key: "",
 	host: "",
-    workers: 2, // Number of worker processes
+    workers: true, // Number of worker processes
     certificate: {
         provider: "acme" // Options: "acme", "self-signed", "none"
     },
@@ -10,7 +10,7 @@ export default {
         provider: "nginx" // Options: "nginx", "haproxy", "none"
     },
     mesh: {
-        provider: "socket-mesh" // Options: "socket-mesh", "none"
+        provider: "server-mesh" // Options: "server-mesh", "none"
     },
     storage: {
         mongodb: {
@@ -54,10 +54,10 @@ export default {
             path: "../CoCreate-plugins/CoCreate-nginx",
             repo: "github.com/CoCreate-app/CoCreate-nginx.git"
         },
-        "node-autoscaler": {
-            import: "@cocreate/node-autoscaler",
-            path: "../CoCreate-modules/CoCreate-node-autoscaler",
-            repo: "github.com/CoCreate-app/CoCreate-node-autoscaler.git"
+        "server-autoscaler": {
+            import: "@cocreate/server-autoscaler",
+            path: "../CoCreate-modules/CoCreate-server-autoscaler",
+            repo: "github.com/CoCreate-app/CoCreate-server-autoscaler.git"
         },
         "cron-jobs": {
             import: "@cocreate/cron-jobs",
@@ -89,10 +89,10 @@ export default {
             path: "../CoCreate-modules/CoCreate-socket-server",
             repo: "github.com/CoCreate-app/CoCreate-socket-server.git"
         },
-        "socket-mesh": {
-            import: "@cocreate/socket-mesh",
-            path: "../CoCreate-modules/CoCreate-socket-mesh",
-            repo: "github.com/CoCreate-app/CoCreate-socket-mesh.git"
+        "server-mesh": {
+            import: "@cocreate/server-mesh",
+            path: "../CoCreate-modules/CoCreate-server-mesh",
+            repo: "github.com/CoCreate-app/CoCreate-server-mesh.git"
         },
         "server-side-render": {
             import: "@cocreate/server-side-render",

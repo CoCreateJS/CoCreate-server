@@ -1,0 +1,33 @@
+{
+  "tasks": {
+    "start": "deno run -A src/server.js"
+  },
+  "links": [
+    "../CoCreate-modules/CoCreate-server",
+    "../CoCreate-modules/CoCreate-config",
+    "../CoCreate-plugins/CoCreate-acme",
+    "../CoCreate-plugins/CoCreate-nginx",
+    "../CoCreate-modules/CoCreate-authenticate",
+    "../CoCreate-modules/CoCreate-authorize",
+    "../CoCreate-modules/CoCreate-socket-server",
+    "../CoCreate-modules/CoCreate-socket-mesh",
+    "../CoCreate-modules/CoCreate-crud-server",
+    "../CoCreate-plugins/CoCreate-mongodb",
+    "../CoCreate-modules/CoCreate-file-server",
+    "../CoCreate-modules/CoCreate-server-side-render",
+    "../CoCreate-modules/CoCreate-cron-jobs",
+    "../CoCreate-modules/CoCreate-lazy-loader",
+    "../CoCreate-modules/CoCreate-loadtest",
+    "../CoCreate-modules/CoCreate-metrics",
+    "../CoCreate-modules/CoCreate-notification",
+    "../CoCreate-modules/CoCreate-organizations",
+    "../CoCreate-modules/CoCreate-render",
+    "../CoCreate-modules/CoCreate-sitemap",
+    "../CoCreate-modules/CoCreate-unique",
+    "../CoCreate-modules/CoCreate-url-uploader",
+    "../CoCreate-modules/CoCreate-users",
+    "../CoCreate-modules/CoCreate-utils",
+    "../CoCreate-modules/CoCreate-uuid",
+    "../CoCreate-modules/CoCreate-usage"
+  ]
+}

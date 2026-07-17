@@ -18,12 +18,17 @@ export default {
             url: ""
         }
     },
-    telemtry: {
-        enabled: true,
-        collectionInterval: 1000,
-        writeInterval: 240000,
-        retentionDays: 30,
-        broadcast: false
+    telemetry: {
+        "enabled": true,
+        "collectionInterval": 1000,
+        "writeInterval": 240000,
+        "retentionDays": 30,
+        "broadcast": false,
+        "scaleUpMemoryThreshold": 85,
+        "safetyLimits": {
+            "cordonMemoryThreshold": 90,
+            "cordonCpuThreshold": 90
+        }
     },
 
     // Horizontal scaling configuration

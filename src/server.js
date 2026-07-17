@@ -22,7 +22,14 @@
 // For details, visit <https://cocreate.app/licenses/> or contact us at sales@cocreate.app.
 
 import server from '@cocreate/server';
-import './modules.js'; // Self-registers and imports all background modules for side-effects
+
+import usage from '@cocreate/usage';
+import organizations from '@cocreate/organizations';
+import unique from '@cocreate/unique';
+import users from '@cocreate/users';
+import notification from '@cocreate/notification';
+import cronJobs from '@cocreate/cron-jobs';
+import urlUploader from '@cocreate/url-uploader';
 
 /**
  * Clean & Minimal Entry Point.
@@ -37,6 +44,7 @@ import './modules.js'; // Self-registers and imports all background modules for 
 async function boot() {
     try {
         await server.init();
+        new usage(server.organization_id)
     } catch (error) {
         console.error('[@cocreate/entry] Critical error during server bootstrap:', error);
         process.exit(1);

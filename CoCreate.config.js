@@ -49,16 +49,47 @@ export default {
             repo: "github.com/CoCreate-app/CoCreateWS.git",
             exclude: ["git"]
         },
-        nginx: {
-            import: "@cocreate/nginx",
-            path: "../CoCreate-plugins/CoCreate-nginx",
-            repo: "github.com/CoCreate-app/CoCreate-nginx.git"
+        server: {
+            import: "@cocreate/server",
+            path: "../CoCreate-modules/CoCreate-server",
+            repo: "github.com/CoCreate-app/CoCreate-server.git"
+        },
+        "server-mesh": {
+            import: "@cocreate/server-mesh",
+            path: "../CoCreate-modules/CoCreate-server-mesh",
+            repo: "github.com/CoCreate-app/CoCreate-server-mesh.git"
         },
         "server-autoscaler": {
             import: "@cocreate/server-autoscaler",
             path: "../CoCreate-modules/CoCreate-server-autoscaler",
             repo: "github.com/CoCreate-app/CoCreate-server-autoscaler.git"
         },
+        "crud-server": {
+            import: "@cocreate/crud-server",
+            path: "../CoCreate-modules/CoCreate-crud-server",
+            repo: "github.com/CoCreate-app/CoCreate-crud-server.git"
+        },
+        acme: {
+            import: "@cocreate/acme",
+            path: "../CoCreate-plugins/CoCreate-acme",
+            repo: "github.com/CoCreate-app/CoCreate-acme.git"
+        },
+        metrics: {
+            import: "@cocreate/metrics",
+            path: "../CoCreate-modules/CoCreate-metrics",
+            repo: "github.com/CoCreate-app/CoCreate-metrics.git"
+        },
+        authenticate: {
+            import: "@cocreate/authenticate",
+            path: "../CoCreate-modules/CoCreate-authenticate",
+            repo: "github.com/CoCreate-app/CoCreate-authenticate.git"
+        },
+        authorize: {
+            import: "@cocreate/authorize",
+            path: "../CoCreate-modules/CoCreate-authorize",
+            repo: "github.com/CoCreate-app/CoCreate-authorize.git"
+        },
+
         "cron-jobs": {
             import: "@cocreate/cron-jobs",
             path: "../CoCreate-modules/CoCreate-cron-jobs",
@@ -79,53 +110,13 @@ export default {
         },
 
         // --- Server-Side Engines & APIs ---
-        "crud-server": {
-            import: "@cocreate/crud-server",
-            path: "../CoCreate-modules/CoCreate-crud-server",
-            repo: "github.com/CoCreate-app/CoCreate-crud-server.git"
-        },
-        "socket-server": {
-            import: "@cocreate/socket-server",
-            path: "../CoCreate-modules/CoCreate-socket-server",
-            repo: "github.com/CoCreate-app/CoCreate-socket-server.git"
-        },
-        "server-mesh": {
-            import: "@cocreate/server-mesh",
-            path: "../CoCreate-modules/CoCreate-server-mesh",
-            repo: "github.com/CoCreate-app/CoCreate-server-mesh.git"
-        },
         "server-side-render": {
             import: "@cocreate/server-side-render",
             path: "../CoCreate-modules/CoCreate-server-side-render",
             repo: "github.com/CoCreate-app/CoCreate-server-side-render.git"
         },
-        server: {
-            import: "@cocreate/server",
-            path: "../CoCreate-modules/CoCreate-server",
-            repo: "github.com/CoCreate-app/CoCreate-server.git"
-        },
 
         // --- Standard Client/Server Modules ---
-        acme: {
-            import: "@cocreate/acme",
-            path: "../CoCreate-plugins/CoCreate-acme",
-            repo: "github.com/CoCreate-app/CoCreate-acme.git"
-        },
-        actions: {
-            import: "@cocreate/actions",
-            path: "../CoCreate-modules/CoCreate-actions",
-            repo: "github.com/CoCreate-app/CoCreate-actions.git"
-        },
-        authenticate: {
-            import: "@cocreate/authenticate",
-            path: "../CoCreate-modules/CoCreate-authenticate",
-            repo: "github.com/CoCreate-app/CoCreate-authenticate.git"
-        },
-        authorize: {
-            import: "@cocreate/authorize",
-            path: "../CoCreate-modules/CoCreate-authorize",
-            repo: "github.com/CoCreate-app/CoCreate-authorize.git"
-        },
         cli: {
             import: "@cocreate/cli",
             path: "../CoCreate-modules/CoCreate-cli",
@@ -135,21 +126,6 @@ export default {
             import: "@cocreate/config",
             path: "../CoCreate-modules/CoCreate-config",
             repo: "github.com/CoCreate-app/CoCreate-config.git"
-        },
-        "crud-client": {
-            import: "@cocreate/crud-client",
-            path: "../CoCreate-modules/CoCreate-crud-client",
-            repo: "github.com/CoCreate-app/CoCreate-crud-client.git"
-        },
-        docs: {
-            import: "@cocreate/docs",
-            path: "../CoCreate-modules/CoCreate-docs",
-            repo: "github.com/CoCreate-app/CoCreate-docs.git"
-        },
-        elements: {
-            import: "@cocreate/elements",
-            path: "../CoCreate-modules/CoCreate-elements",
-            repo: "github.com/CoCreate-app/CoCreate-elements.git"
         },
         "lazy-loader": {
             import: "@cocreate/lazy-loader",
@@ -161,40 +137,20 @@ export default {
             path: "../CoCreate-modules/CoCreate-loadtest",
             repo: "github.com/CoCreate-app/CoCreate-loadtest.git"
         },
-        metrics: {
-            import: "@cocreate/metrics",
-            path: "../CoCreate-modules/CoCreate-metrics",
-            repo: "github.com/CoCreate-app/CoCreate-metrics.git"
-        },
         notification: {
             import: "@cocreate/notification",
             path: "../CoCreate-modules/CoCreate-notification",
             repo: "github.com/CoCreate-app/CoCreate-notification.git"
-        },
-        observer: {
-            import: "@cocreate/observer",
-            path: "../CoCreate-modules/CoCreate-observer",
-            repo: "github.com/CoCreate-app/CoCreate-observer.git"
         },
         organizations: {
             import: "@cocreate/organizations",
             path: "../CoCreate-modules/CoCreate-organizations",
             repo: "github.com/CoCreate-app/CoCreate-organizations.git"
         },
-        render: {
-            import: "@cocreate/render",
-            path: "../CoCreate-modules/CoCreate-render",
-            repo: "github.com/CoCreate-app/CoCreate-render.git"
-        },
         sitemap: {
             import: "@cocreate/sitemap",
             path: "../CoCreate-modules/CoCreate-sitemap",
             repo: "github.com/CoCreate-app/CoCreate-sitemap.git"
-        },
-        "socket-client": {
-            import: "@cocreate/socket-client",
-            path: "../CoCreate-modules/CoCreate-socket-client",
-            repo: "github.com/CoCreate-app/CoCreate-socket-client.git"
         },
         unique: {
             import: "@cocreate/unique",
@@ -225,48 +181,5 @@ export default {
             import: "@cocreate/usage",
             path: "../CoCreate-modules/CoCreate-usage",
             repo: "github.com/CoCreate-app/CoCreate-usage.git"
-        },
-
-        // --- Custom Business Logic & Third-Party Integrations ---
-        industry: {
-            import: "@cocreate/industry",
-            event: "industry",
-            array: "files",
-            object: {
-                pathname: "/dist/industry-chunk.js"
-            },
-            unload: "10000",
-            path: "../CoCreate-modules/CoCreate-industry",
-            repo: "github.com/CoCreate-app/CoCreate-industry.git"
-        },
-        openai: {
-            import: "openai",
-            event: "openai",
-            initialize: "OpenAI",
-            unload: "10000",
-            path: "../CoCreate-plugins/CoCreate-openai",
-            repo: "github.com/CoCreate-app/CoCreate-openai.git"
-        },
-        stripe: {
-            import: "stripe",
-            event: "stripe",
-            initialize: "",
-            unload: "10000",
-            path: "../CoCreate-plugins/CoCreate-stripe",
-            repo: "github.com/CoCreate-app/CoCreate-stripe.git"
-        },
-        postmark: {
-            import: "postmark",
-            event: "postmark",
-            initialize: "ServerClient",
-            unload: "10000"
-            // No repository listed in original config; keeping custom third-party behavior
         }
-
-        // googleapis: {
-        //     import: "googleapis",
-        //     event: "googleapis",
-        //     initialize: "auth.OAuth2",
-        //     unload: "10000"
-        // }
     }};

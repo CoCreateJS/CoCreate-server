@@ -1,3 +1,31 @@
+# [1.1.0](https://github.com/CoCreate-app/CoCreateWS/compare/v1.0.5...v1.1.0) (2026-07-17)
+
+
+### Bug Fixes
+
+* add .yarnrc.yml configuration for Yarn package management ([2f3a7bc](https://github.com/CoCreate-app/CoCreateWS/commit/2f3a7bc6f55cb6b06785acbd12f137cf2bd9e728))
+* add packages to approved list ([8338dda](https://github.com/CoCreate-app/CoCreateWS/commit/8338dda27c1040af4eaa629a09baeec22e2a0a91))
+* correct formatting of robots meta tag in index.html ([76f91c2](https://github.com/CoCreate-app/CoCreateWS/commit/76f91c2643f1353f43e08532cc568a93b3ee1951))
+* remove unnecessary console logs in init function for cleaner output ([aa89644](https://github.com/CoCreate-app/CoCreateWS/commit/aa89644b3a4ce2c2ac71c7e28bb837d4557d6de7))
+* rename primary storage to mongodb in configuration ([42362d9](https://github.com/CoCreate-app/CoCreateWS/commit/42362d92fbd6f701c4b22e6e3a12bf3cdb54aeb0))
+* semantic version handling ([53b3acb](https://github.com/CoCreate-app/CoCreateWS/commit/53b3acbae9961d1415c917910a76fbe02ea41bd0))
+* streamline module imports and initialization in modules.js ([1d4897a](https://github.com/CoCreate-app/CoCreateWS/commit/1d4897a3f599a2c65abc064c50385706064510f8))
+* update module export to ES6 syntax in release.config.js ([bebe1b1](https://github.com/CoCreate-app/CoCreateWS/commit/bebe1b16355b46443e7524cca05182a0b2c4daab))
+* update MongoDB connection URL and correct module path for acme plugin ([23b1657](https://github.com/CoCreate-app/CoCreateWS/commit/23b16578a1693744e31419993e3ceafd73947c3f))
+
+
+### Features
+
+* add deno.json configuration for task management and module linking ([83d407a](https://github.com/CoCreate-app/CoCreateWS/commit/83d407a7da5856c2ff3ef4de5d9e3a8a8508b6a5))
+* add metrics configuration to CoCreate.config.js ([3f77af0](https://github.com/CoCreate-app/CoCreateWS/commit/3f77af0204f783d620c76d6f12a1b5cc45531ce3))
+* add socket-mesh provider configuration and update dependencies ([a8d7048](https://github.com/CoCreate-app/CoCreateWS/commit/a8d7048499bec42f9bd668dbde924ea4f7405938))
+* update automated workflow and release configuration for improved semantic release handling ([62c7d2c](https://github.com/CoCreate-app/CoCreateWS/commit/62c7d2c1753ade20bbdbbab85ec51b27b3d58881))
+* update CoCreate.config.js and package.json to add server-telemetry module and remove metrics ([a133696](https://github.com/CoCreate-app/CoCreateWS/commit/a1336960908308bc59e999a2f4f6a3b085c21484))
+* update CoCreate.config.js to add new server modules and remove deprecated configurations ([5728f2d](https://github.com/CoCreate-app/CoCreateWS/commit/5728f2d056f3b636340226001714ee6632e5a392))
+* update CoCreate.config.js to enhance worker and mesh provider configurations ([c770ce4](https://github.com/CoCreate-app/CoCreateWS/commit/c770ce410f593241136a6b14ff318990184f84fb))
+* update deno.json links to include new server modules and remove nginx ([318c4b7](https://github.com/CoCreate-app/CoCreateWS/commit/318c4b73606d2e0fec17d5ea1d6aa2de39b52b9d))
+* update package.json to add server-autoscaler and server-mesh dependencies ([d72d923](https://github.com/CoCreate-app/CoCreateWS/commit/d72d923655fea83798a9102a011b90e87de6657b))
+
 ## [1.0.5](https://github.com/CoCreate-app/CoCreateWS/compare/v1.0.4...v1.0.5) (2025-05-01)
 
 

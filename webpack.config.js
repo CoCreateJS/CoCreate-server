@@ -26,7 +26,7 @@ module.exports = {
     //         "@cocreate/crud-server",
     //         "@cocreate/file-server",
     //         "@cocreate/industry",
-    //         "@cocreate/metrics",
+    //         "@cocreate/server-telemetry",
     //         "@cocreate/mongodb",
     //         // "@cocreate/notification",
     //         // "@cocreate/organizations",

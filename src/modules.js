@@ -21,7 +21,6 @@
 // you must obtain a commercial license from CoCreate LLC.
 // For details, visit <https://cocreate.app/licenses/> or contact us at sales@cocreate.app.
 
-import metrics from '@cocreate/metrics';
 import usage from '@cocreate/usage';
 import organizations from '@cocreate/organizations';
 import unique from '@cocreate/unique';

@@ -18,7 +18,7 @@ export default {
             url: ""
         }
     },
-    metrics: {
+    telemtry: {
         enabled: true,
         collectionInterval: 1000,
         writeInterval: 240000,
@@ -59,6 +59,11 @@ export default {
             path: "../CoCreate-modules/CoCreate-server-mesh",
             repo: "github.com/CoCreate-app/CoCreate-server-mesh.git"
         },
+        "server-telemetry": {
+            import: "@cocreate/server-telemetry",
+            path: "../CoCreate-modules/CoCreate-server-telemetry",
+            repo: "github.com/CoCreate-app/CoCreate-server-telemetry.git"
+        },
         "server-autoscaler": {
             import: "@cocreate/server-autoscaler",
             path: "../CoCreate-modules/CoCreate-server-autoscaler",
@@ -73,11 +78,6 @@ export default {
             import: "@cocreate/acme",
             path: "../CoCreate-plugins/CoCreate-acme",
             repo: "github.com/CoCreate-app/CoCreate-acme.git"
-        },
-        metrics: {
-            import: "@cocreate/metrics",
-            path: "../CoCreate-modules/CoCreate-metrics",
-            repo: "github.com/CoCreate-app/CoCreate-metrics.git"
         },
         authenticate: {
             import: "@cocreate/authenticate",

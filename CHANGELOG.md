@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/CoCreate-app/CoCreateWS/compare/v1.1.0...v1.2.0) (2026-07-17)
+
+
+### Features
+
+* update package.json dependencies and remove webpack.config.js ([02df03a](https://github.com/CoCreate-app/CoCreateWS/commit/02df03a9d4d30da20df74ad5690eab2013bdf428))
+
 # [1.1.0](https://github.com/CoCreate-app/CoCreateWS/compare/v1.0.5...v1.1.0) (2026-07-17)
 
 

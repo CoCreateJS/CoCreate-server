@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/CoCreate-app/CoCreateWS/compare/v1.2.0...v1.3.0) (2026-07-18)
+
+
+### Features
+
+* enhance telemetry configuration and remove unused modules.js file ([4693056](https://github.com/CoCreate-app/CoCreateWS/commit/46930566e8113557fce02a0c43dc3b8e6d158b09))
+* update CoCreate.config.js to enhance module descriptions and reorganize database modules ([69b1a28](https://github.com/CoCreate-app/CoCreateWS/commit/69b1a28803769a6f5232364fa562382069cd0562))
+
 # [1.2.0](https://github.com/CoCreate-app/CoCreateWS/compare/v1.1.0...v1.2.0) (2026-07-17)
 
 

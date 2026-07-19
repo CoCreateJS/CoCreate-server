@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/CoCreate-app/CoCreateWS/compare/v1.4.0...v1.5.0) (2026-07-19)
+
+
+### Features
+
+* add socket-server configuration to CoCreate.config.js ([5c39ac0](https://github.com/CoCreate-app/CoCreateWS/commit/5c39ac0f329a9d1626ae6647c1ab8f81bf655f39))
+
 # [1.4.0](https://github.com/CoCreate-app/CoCreateWS/compare/v1.3.0...v1.4.0) (2026-07-19)
 
 

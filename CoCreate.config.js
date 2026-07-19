@@ -202,6 +202,11 @@ export default {
             path: "../CoCreate-databases/CoCreate-rqlite",
             repo: "github.com/CoCreate-app/CoCreate-rqlite.git"
         },
+        qdrant: {
+            import: "@cocreate/qdrant",
+            path: "../CoCreate-databases/CoCreate-qdrant",
+            repo: "github.com/CoCreate-app/CoCreate-qdrant.git"
+        },
         sqlite: {
             import: "@cocreate/sqlite",
             path: "../CoCreate-databases/CoCreate-sqlite",

@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/CoCreate-app/CoCreateWS/compare/v1.3.0...v1.4.0) (2026-07-19)
+
+
+### Bug Fixes
+
+* update workflow and configuration to use 'main' branch instead of 'master' ([ef9ab5a](https://github.com/CoCreate-app/CoCreateWS/commit/ef9ab5aeaff8d9f97a4f2f2bb75d57b70db377c1))
+
+
+### Features
+
+* add Qdrant configuration to CoCreate.config.js ([9ffeb03](https://github.com/CoCreate-app/CoCreateWS/commit/9ffeb0317fda9e5fa6a026b2756edae9fe30d11c))
+
 # [1.3.0](https://github.com/CoCreate-app/CoCreateWS/compare/v1.2.0...v1.3.0) (2026-07-18)
 
 

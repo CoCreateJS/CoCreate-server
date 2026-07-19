@@ -94,11 +94,15 @@ export default {
             path: "../CoCreate-modules/CoCreate-authorize",
             repo: "github.com/CoCreate-app/CoCreate-authorize.git"
         },
+        "socket-server": {
+            import: "@cocreate/socket-server",
+            path: "../CoCreate-modules/CoCreate-socket-server",
+            repo: "github.com/CoCreate-app/CoCreate-socket-server.git",
+        },
         "file-server": {
             import: "@cocreate/file-server",
             path: "../CoCreate-modules/CoCreate-file-server",
             repo: "github.com/CoCreate-app/CoCreate-file-server.git",
-            unload: false // true, false, number in milliseconds to wait before unloading
         },
         "server-side-render": {
             import: "@cocreate/server-side-render",

@@ -1,16 +1,23 @@
 {
   "name": "@cocreate/cocreatews",
-  "version": "1.5.0",
-  "description": "Server Side for CoCreateJS. Containing websocket, crud, auth, server side rendering, and permission components.",
+  "version": "1.4.0",
+  "description": "The master entry point wrapper for the CoCreate ecosystem. Orchestrates a highly scalable, multi-tenant server infrastructure architecture with dynamic process auto-scaling, federated cross-database routing, and real-time distributed network state synchronization.",
   "keywords": [
-    "cocreatews",
-    "low-code",
-    "realtime",
-    "realtime-framework",
-    "collaboration",
-    "shared-editing",
-    "html5-framework",
-    "javascript-framework"
+    "server",
+    "websocket",
+    "cluster",
+    "control-plane",
+    "auto-scaling",
+    "distributed-systems",
+    "multi-tenant",
+    "load-balancing",
+    "database-federation",
+    "state-synchronization",
+    "pubsub",
+    "microservices",
+    "infrastructure",
+    "mesh-network",
+    "realtime"
   ],
   "publishConfig": {
     "access": "public"

@@ -28,7 +28,6 @@
     "../CoCreate-modules/CoCreate-url-uploader",
     "../CoCreate-modules/CoCreate-users",
     "../CoCreate-modules/CoCreate-utils",
-    "../CoCreate-modules/CoCreate-uuid",
     "../CoCreate-modules/CoCreate-usage"
   ]
 }

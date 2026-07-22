@@ -283,12 +283,7 @@ export default {
             path: "../CoCreate-modules/CoCreate-utils",
             repo: "github.com/CoCreate-app/CoCreate-utils.git"
         },
-        uuid: {
-            import: "@cocreate/uuid",
-            path: "../CoCreate-modules/CoCreate-uuid",
-            repo: "github.com/CoCreate-app/CoCreate-uuid.git"
-        },
-
+        
         // --- Dev Modules ---
         cli: {
             import: "@cocreate/cli",

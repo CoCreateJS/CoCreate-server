@@ -1,5 +1,5 @@
 const Config = require('@cocreate/config')
-const uuid = require('@cocreate/uuid');
+const { uuid } = require('@cocreate/utils');
 const crudServer = require('@cocreate/crud-server')
 
 const fs = require('fs');
@@ -32,7 +32,7 @@ module.exports = async function () {
 
     async function update() {
         const organization_id = config.organization_id || `${crudServer.ObjectId().toString()}`
-        const key = config.key || uuid.generate(32);
+        const key = config.key ||  uuid(32);
         const user_id = config.user_id || `${crudServer.ObjectId().toString()}`;
 
         console.log(organization_id, key, user_id)

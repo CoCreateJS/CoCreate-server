@@ -7,11 +7,11 @@
   ],
   "tasks": {
     "start": "deno run -A src/index.js",
-    "compile:linux-x86": "deno compile --bundle --minify --allow-net --allow-read --allow-write --allow-env --allow-sys --no-check --unstable-node-globals --target x86_64-unknown-linux-gnu --output dist/cocreatews-linux-x86 src/index.js",
-    "compile:linux-arm": "deno compile --bundle --minify --allow-net --allow-read --allow-write --allow-env --allow-sys --no-check --unstable-node-globals --target aarch64-unknown-linux-gnu --output dist/cocreatews-linux-arm64 src/index.js",
-    "compile:win-x86": "deno compile --bundle --minify --allow-net --allow-read --allow-write --allow-env --allow-sys --no-check --unstable-node-globals --target x86_64-pc-windows-msvc --output dist/cocreatews-win-x86.exe src/index.js",
-    "compile:mac-arm": "deno compile --allow-net --allow-read --allow-write --allow-env --allow-sys --no-check --unstable-node-globals --target aarch64-apple-darwin --output dist/cocreatews-mac-arm64 src/index.js",
-    "compile:mac-x86": "deno compile --allow-net --allow-read --allow-write --allow-env --allow-sys --no-check --unstable-node-globals --target x86_64-apple-darwin --output dist/cocreatews-mac-x86 src/index.js",
+    "compile:linux-x86": "deno compile --bundle --minify -A --no-check --unstable-node-globals --target x86_64-unknown-linux-gnu --output dist/cocreatews-linux-x86 src/index.js",
+    "compile:linux-arm": "deno compile --bundle --minify -A --no-check --unstable-node-globals --target aarch64-unknown-linux-gnu --output dist/cocreatews-linux-arm64 src/index.js",
+    "compile:win-x86": "deno compile --bundle --minify -A --no-check --unstable-node-globals --target x86_64-pc-windows-msvc --output dist/cocreatews-win-x86.exe src/index.js",
+    "compile:mac-arm": "deno compile --bundle --minify -A --no-check --unstable-node-globals --target aarch64-apple-darwin --output dist/cocreatews-mac-arm64 src/index.js",
+    "compile:mac-x86": "deno compile --bundle --minify -A --no-check --unstable-node-globals --target x86_64-apple-darwin --output dist/cocreatews-mac-x86 src/index.js",
     "compile:all": "deno task compile:linux-x86 && deno task compile:linux-arm && deno task compile:win-x86 && deno task compile:mac-arm && deno task compile:mac-x86"
   },
   "allowScripts": {

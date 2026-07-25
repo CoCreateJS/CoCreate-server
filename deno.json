@@ -1,31 +1,21 @@
 {
   "nodeModulesDir": "auto",
+  "workspace": [
+    "../CoCreate-modules/*",
+    "../CoCreate-plugins/*",
+    "../CoCreate-databases/*"
+  ],
   "tasks": {
-    "start": "deno run -A src/server.js"
+    "start": "deno run -A src/server.js",
+    "compile:linux-x86": "deno compile --bundle --minify --allow-net --allow-read --allow-write --allow-env --allow-sys --no-check --unstable-node-globals --target x86_64-unknown-linux-gnu --output dist/cocreatews-linux-x86 src/index.js",
+    "compile:linux-arm": "deno compile --bundle --minify --allow-net --allow-read --allow-write --allow-env --allow-sys --no-check --unstable-node-globals --target aarch64-unknown-linux-gnu --output dist/cocreatews-linux-arm64 src/index.js",
+    "compile:win-x86": "deno compile --bundle --minify --allow-net --allow-read --allow-write --allow-env --allow-sys --no-check --unstable-node-globals --target x86_64-pc-windows-msvc --output dist/cocreatews-win-x86.exe src/index.js",
+    "compile:mac-arm": "deno compile --allow-net --allow-read --allow-write --allow-env --allow-sys --no-check --unstable-node-globals --target aarch64-apple-darwin --output dist/cocreatews-mac-arm64 src/index.js",
+    "compile:mac-x86": "deno compile --allow-net --allow-read --allow-write --allow-env --allow-sys --no-check --unstable-node-globals --target x86_64-apple-darwin --output dist/cocreatews-mac-x86 src/index.js",
+    "compile:all": "deno task compile:linux-x86 && deno task compile:linux-arm && deno task compile:win-x86 && deno task compile:mac-arm && deno task compile:mac-x86"
   },
-  "imports": {
-    "CoCreate-server": "../CoCreate-modules/CoCreate-server/src/server.js",
-    "CoCreate-server-mesh": "../CoCreate-modules/CoCreate-server-mesh/src/index.js",
-    "CoCreate-server-autoscaler": "../CoCreate-modules/CoCreate-server-autoscaler/src/index.js",
-    "CoCreate-server-telemetry": "../CoCreate-modules/CoCreate-server-telemetry/src/index.js",
-    "CoCreate-config": "../CoCreate-modules/CoCreate-config/src/index.js",
-    "CoCreate-acme": "../CoCreate-plugins/CoCreate-acme/src/index.js",
-    "CoCreate-authenticate": "../CoCreate-modules/CoCreate-authenticate/src/index.js",
-    "CoCreate-authorize": "../CoCreate-modules/CoCreate-authorize/src/index.js",
-    "CoCreate-socket-server": "../CoCreate-modules/CoCreate-socket-server/src/index.js",
-    "CoCreate-crud-server": "../CoCreate-modules/CoCreate-crud-server/src/index.js",
-    "CoCreate-mongodb": "../CoCreate-databases/CoCreate-mongodb/src/index.js",
-    "CoCreate-file-server": "../CoCreate-modules/CoCreate-file-server/src/index.js",
-    "CoCreate-server-side-render": "../CoCreate-modules/CoCreate-server-side-render/src/index.js",
-    "CoCreate-cron-jobs": "../CoCreate-modules/CoCreate-cron-jobs/src/index.js",
-    "CoCreate-lazy-loader": "../CoCreate-modules/CoCreate-lazy-loader/src/index.js",
-    "CoCreate-notification": "../CoCreate-modules/CoCreate-notification/src/index.js",
-    "CoCreate-organizations": "../CoCreate-modules/CoCreate-organizations/src/index.js",
-    "CoCreate-sitemap": "../CoCreate-modules/CoCreate-sitemap/src/index.js",
-    "CoCreate-unique": "../CoCreate-modules/CoCreate-unique/src/index.js",
-    "CoCreate-url-uploader": "../CoCreate-modules/CoCreate-url-uploader/src/index.js",
-    "CoCreate-users": "../CoCreate-modules/CoCreate-users/src/index.js",
-    "CoCreate-utils": "../CoCreate-modules/CoCreate-utils/src/index.js",
-    "CoCreate-usage": "../CoCreate-modules/CoCreate-usage/src/index.js"
+  "allowScripts": {
+    "allow": [],
+    "deny": ["npm:@cocreate/cli@1.56.4"]
   }
 }

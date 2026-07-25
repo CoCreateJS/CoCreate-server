@@ -3,15 +3,6 @@ export default {
 	key: "",
 	host: "",
     workers: true, // Number of worker processes
-    certificate: {
-        provider: "acme" // Options: "acme", "self-signed", "none"
-    },
-    ingress: {
-        provider: "nginx" // Options: "nginx", "haproxy", "none"
-    },
-    mesh: {
-        provider: "server-mesh" // Options: "server-mesh", "none"
-    },
     storage: {
         mongodb: {
             provider: "mongodb",

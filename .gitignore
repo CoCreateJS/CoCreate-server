@@ -2,6 +2,7 @@
 # 1. Core Dependency Folders
 # ==============================================================================
 certificates/
+scripts/
 node_modules/
 jspm_packages/
 .pnp/
@@ -10,6 +11,11 @@ jspm_packages/
 # ==============================================================================
 # 2. Package Manager Specifics (Lock Files & Overrides Ignored)
 # ==============================================================================
+
+# Deno
+.deno/
+deno.lock
+vendor/
 
 # npm
 .npm/

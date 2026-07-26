@@ -3,6 +3,7 @@
 # ==============================================================================
 certificates/
 scripts/
+.storage-cache/
 node_modules/
 jspm_packages/
 .pnp/

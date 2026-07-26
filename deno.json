@@ -1,9 +1,14 @@
 {
-  "nodeModulesDir": "none",
+  "nodeModulesDir": "auto",
   "workspace": [
     "../CoCreate-modules/*",
     "../CoCreate-plugins/*",
     "../CoCreate-databases/*"
+  ],
+  "links": [
+    "../CoCreate-modules/*",
+    "../CoCreate-plugins/*",
+    "../CoCreate-databases/*"  
   ],
   "tasks": {
     "start": "deno run -A src/index.js",

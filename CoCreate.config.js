@@ -287,4 +287,5 @@ export default {
             repo: "github.com/CoCreate-app/CoCreate-loadtest.git"
         }
 
-    }};
+    }
+};

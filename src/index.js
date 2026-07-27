@@ -21,6 +21,7 @@
 // you must obtain a commercial license from CoCreate LLC.
 // For details, visit <https://cocreate.app/licenses/> or contact us at sales@cocreate.app.
 
+import "./mongodb.bundle.js"
 import server from '@cocreate/server';
 
 import usage from '@cocreate/usage';

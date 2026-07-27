@@ -1,9 +1,9 @@
 # ==============================================================================
 # 1. Core Dependency Folders
 # ==============================================================================
-certificates/
+.certificates/
 scripts/
-.storage/
+.storages/
 node_modules/
 jspm_packages/
 .pnp/

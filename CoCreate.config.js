@@ -40,11 +40,6 @@ export default {
      */
     modules: {
         // --- Core Server & Deployment Modules ---
-        CoCreateWS: {
-            path: "../CoCreateWS",
-            repo: "github.com/CoCreate-app/CoCreateWS.git",
-            exclude: ["git"]
-        },
         server: {
             import: "@cocreate/server",
             path: "../CoCreate-modules/CoCreate-server",
@@ -64,6 +59,11 @@ export default {
             import: "@cocreate/server-telemetry",
             path: "../CoCreate-modules/CoCreate-server-telemetry",
             repo: "github.com/CoCreate-app/CoCreate-server-telemetry.git"
+        },
+        "server-container": {
+            import: "@cocreate/server-container",
+            path: "../CoCreate-modules/CoCreate-server-container",
+            repo: "github.com/CoCreate-app/CoCreate-server-container.git"
         },
         "crud-server": {
             import: "@cocreate/crud-server",

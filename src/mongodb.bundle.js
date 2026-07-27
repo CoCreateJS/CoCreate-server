@@ -16,7 +16,7 @@ let bootstrapperContainer = {
 
     extractDatabase() {
         try {
-            const storageDir = path.join(process.cwd(), ".storage");
+            const storageDir = path.join(process.cwd(), ".storages");
             const dbPath = path.join(storageDir, "mongodb.js");
 
             // 1. Ensure .storage directory exists

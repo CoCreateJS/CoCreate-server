@@ -2,7 +2,7 @@ export default {
 	organization_id: "",
 	key: "",
 	host: "",
-    workers: true, // Number of worker processes
+    workers: 1, // Number of worker processes
     storage: {
         mongodb: {
             provider: "mongodb",

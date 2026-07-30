@@ -42,10 +42,9 @@
     "createdb": "node ./installation/createDB.js"
   },
   "dependencies": {
-    "@cocreate/acme": "^1.5.2",
+    "@cocreate/acme": "^1.6.0",
     "@cocreate/cron-jobs": "^1.4.4",
     "@cocreate/industry": "^1.23.2",
-    "@cocreate/mongodb": "^1.26.0",
     "@cocreate/notification": "^1.8.3",
     "@cocreate/organizations": "^1.31.3",
     "@cocreate/server": "^1.6.2",

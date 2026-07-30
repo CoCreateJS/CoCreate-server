@@ -21,7 +21,14 @@
 // you must obtain a commercial license from CoCreate LLC.
 // For details, visit <https://cocreate.app/licenses/> or contact us at sales@cocreate.app.
 
-import "@cocreate/mongodb/installer"
+import "./installers/dynamo.installer.js"
+import "./installers/firestore.installer.js"
+import "./installers/mongodb.installer.js"
+import "./installers/mysql.installer.js"
+import "./installers/postresql.installer.js"
+import "./installers/qdrant.installer.js"
+import "./installers/sqlite.installer.js"
+
 import server from '@cocreate/server';
 
 import usage from '@cocreate/usage';

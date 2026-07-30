@@ -194,7 +194,7 @@ The modular architecture of CoCreate isolates critical system concerns into dist
 * **[@cocreate/server](https://github.com/CoCreate-app/CoCreate-server):** The core server framework that manages raw HTTP/HTTPS routing pipelines, socket upgrades, lifecycle events, and basic message loops.
 * **[@cocreate/authorization](https://github.com/CoCreate-app/CoCreate-authorization):** A data sanitization firewall and hierarchical permission evaluation engine that handles role inheritance, dot-notation action checks, and dynamic query filtering.
 * **[@cocreate/authentication](https://github.com/CoCreate-app/CoCreate-authentication):** A secure RS256 JWT session management layer that utilizes native crypto keypair generation and rotation to validate user credentials without extra dependencies.
-* **[@cocreate/acme](https://github.com/CoCreate-app/CoCreate-acme):** An automated Let's Encrypt certificate client that stores validation challenge tokens in the cluster-wide database, enabling any node to satisfy domain challenges on the fly.
+* **[@cocreate/certificates](https://github.com/CoCreate-app/CoCreate-certificates):** An automated Let's Encrypt certificate client that stores validation challenge tokens in the cluster-wide database, enabling any node to satisfy domain challenges on the fly.
 
 ---
 

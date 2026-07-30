@@ -70,10 +70,10 @@ export default {
             path: "../CoCreate-modules/CoCreate-crud-server",
             repo: "github.com/CoCreate-app/CoCreate-crud-server.git"
         },
-        acme: {
+        certificates: {
             import: "@cocreate/acme",
-            path: "../CoCreate-plugins/CoCreate-acme",
-            repo: "github.com/CoCreate-app/CoCreate-acme.git"
+            path: "../CoCreate-modules/CoCreate-certificates",
+            repo: "github.com/CoCreate-app/CoCreate-certificates.git"
         },
         authenticate: {
             import: "@cocreate/authenticate",

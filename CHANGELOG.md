@@ -238,7 +238,7 @@
 
 ### Features
 
-* Added '[@cocreate-acme](https://github.com/cocreate-acme)' ([a6ad133](https://github.com/CoCreate-app/CoCreateWS/commit/a6ad133a7629be95a0feb3be87b5e13268d9ea86))
+* Added '[@cocreate-certificates](https://github.com/cocreate-certificates)' ([a6ad133](https://github.com/CoCreate-app/CoCreateWS/commit/a6ad133a7629be95a0feb3be87b5e13268d9ea86))
 * added '[@cocreate-nginx](https://github.com/cocreate-nginx)' ([3f91b80](https://github.com/CoCreate-app/CoCreateWS/commit/3f91b80553d300ecf2feaa9df835f190d4524c64))
 
 # [0.45.0](https://github.com/CoCreate-app/CoCreateWS/compare/v0.44.1...v0.45.0) (2023-12-09)

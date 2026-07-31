@@ -3,12 +3,12 @@
   "workspace": [
     "../CoCreate-modules/*",
     "../CoCreate-plugins/*",
-    "../CoCreate-databases/*"
+    "../CoCreate-storages/*"
   ],
   "links": [
     "../CoCreate-modules/*",
     "../CoCreate-plugins/*",
-    "../CoCreate-databases/*"  
+    "../CoCreate-storages/*"  
   ],
   "tasks": {
     "start": "deno run -A src/index.js",

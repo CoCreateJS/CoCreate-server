@@ -126,112 +126,112 @@ export default {
         // --- Database & Storage Modules ---
         "amazon-redshift": {
             import: "@cocreate/amazon-redshift",
-            path: "../CoCreate-databases/CoCreate-amazon-redshift",
+            path: "../CoCreate-storages/CoCreate-amazon-redshift",
             repo: "github.com/CoCreate-app/CoCreate-amazon-redshift.git"
         },
         auroradb: {
             import: "@cocreate/auroradb",
-            path: "../CoCreate-databases/CoCreate-auroradb",
+            path: "../CoCreate-storages/CoCreate-auroradb",
             repo: "github.com/CoCreate-app/CoCreate-auroradb.git"
         },
         cockroachdb: {
             import: "@cocreate/cockroachdb",
-            path: "../CoCreate-databases/CoCreate-cockroachdb",
+            path: "../CoCreate-storages/CoCreate-cockroachdb",
             repo: "github.com/CoCreate-app/CoCreate-cockroachdb.git"
         },
         cosmosdb: {
             import: "@cocreate/cosmosdb",
-            path: "../CoCreate-databases/CoCreate-cosmosdb",
+            path: "../CoCreate-storages/CoCreate-cosmosdb",
             repo: "github.com/CoCreate-app/CoCreate-cosmosdb.git"
         },
         documentdb: {
             import: "@cocreate/documentdb",
-            path: "../CoCreate-databases/CoCreate-documentdb",
+            path: "../CoCreate-storages/CoCreate-documentdb",
             repo: "github.com/CoCreate-app/CoCreate-documentdb.git"
         },
         dqlite: {
             import: "@cocreate/dqlite",
-            path: "../CoCreate-databases/CoCreate-dqlite",
+            path: "../CoCreate-storages/CoCreate-dqlite",
             repo: "github.com/CoCreate-app/CoCreate-dqlite.git"
         },
         dynamodb: {
             import: "@cocreate/dynamodb",
-            path: "../CoCreate-databases/CoCreate-dynamodb",
+            path: "../CoCreate-storages/CoCreate-dynamodb",
             repo: "github.com/CoCreate-app/CoCreate-dynamodb.git"
         },
         ferretdb: {
             import: "@cocreate/ferretdb",
-            path: "../CoCreate-databases/CoCreate-ferretdb",
+            path: "../CoCreate-storages/CoCreate-ferretdb",
             repo: "github.com/CoCreate-app/CoCreate-ferretdb.git"
         },
         firestore: {
             import: "@cocreate/firestore",
-            path: "../CoCreate-databases/CoCreate-firestore",
+            path: "../CoCreate-storages/CoCreate-firestore",
             repo: "github.com/CoCreate-app/CoCreate-firestore.git"
         },
         mariadb: {
             import: "@cocreate/mariadb",
-            path: "../CoCreate-databases/CoCreate-mariadb",
+            path: "../CoCreate-storages/CoCreate-mariadb",
             repo: "github.com/CoCreate-app/CoCreate-mariadb.git"
         },
         mongodb: {
             import: "@cocreate/mongodb",
-            path: "../CoCreate-databases/CoCreate-mongodb",
+            path: "../CoCreate-storages/CoCreate-mongodb",
             repo: "github.com/CoCreate-app/CoCreate-mongodb.git"
         },
         mysql: {
             import: "@cocreate/mysql",
-            path: "../CoCreate-databases/CoCreate-mysql",
+            path: "../CoCreate-storages/CoCreate-mysql",
             repo: "github.com/CoCreate-app/CoCreate-mysql.git"
         },
         oracledb: {
             import: "@cocreate/oracledb",
-            path: "../CoCreate-databases/CoCreate-oracledb",
+            path: "../CoCreate-storages/CoCreate-oracledb",
             repo: "github.com/CoCreate-app/CoCreate-oracledb.git"
         },
         planetscale: {
             import: "@cocreate/planetscale",
-            path: "../CoCreate-databases/CoCreate-planetscale",
+            path: "../CoCreate-storages/CoCreate-planetscale",
             repo: "github.com/CoCreate-app/CoCreate-planetscale.git"
         },
         postgresql: {
             import: "@cocreate/postgresql",
-            path: "../CoCreate-databases/CoCreate-postgresql",
+            path: "../CoCreate-storages/CoCreate-postgresql",
             repo: "github.com/CoCreate-app/CoCreate-postgresql.git"
         },
         rqlite: {
             import: "@cocreate/rqlite",
-            path: "../CoCreate-databases/CoCreate-rqlite",
+            path: "../CoCreate-storages/CoCreate-rqlite",
             repo: "github.com/CoCreate-app/CoCreate-rqlite.git"
         },
         qdrant: {
             import: "@cocreate/qdrant",
-            path: "../CoCreate-databases/CoCreate-qdrant",
+            path: "../CoCreate-storages/CoCreate-qdrant",
             repo: "github.com/CoCreate-app/CoCreate-qdrant.git"
         },
         sqlite: {
             import: "@cocreate/sqlite",
-            path: "../CoCreate-databases/CoCreate-sqlite",
+            path: "../CoCreate-storages/CoCreate-sqlite",
             repo: "github.com/CoCreate-app/CoCreate-sqlite.git"
         },
         tidb: {
             import: "@cocreate/tidb",
-            path: "../CoCreate-databases/CoCreate-tidb",
+            path: "../CoCreate-storages/CoCreate-tidb",
             repo: "github.com/CoCreate-app/CoCreate-tidb.git"
         },
         timescaledb: {
             import: "@cocreate/timescaledb",
-            path: "../CoCreate-databases/CoCreate-timescaledb",
+            path: "../CoCreate-storages/CoCreate-timescaledb",
             repo: "github.com/CoCreate-app/CoCreate-timescaledb.git"
         },
         turso: {
             import: "@cocreate/turso",
-            path: "../CoCreate-databases/CoCreate-turso",
+            path: "../CoCreate-storages/CoCreate-turso",
             repo: "github.com/CoCreate-app/CoCreate-turso.git"
         },
         yugabytedb: {
             import: "@cocreate/yugabytedb",
-            path: "../CoCreate-databases/CoCreate-yugabytedb",
+            path: "../CoCreate-storages/CoCreate-yugabytedb",
             repo: "github.com/CoCreate-app/CoCreate-yugabytedb.git"
         },
 

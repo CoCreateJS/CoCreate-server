@@ -71,7 +71,7 @@ export default {
             repo: "github.com/CoCreate-app/CoCreate-crud-server.git"
         },
         certificates: {
-            import: "@cocreate/acme",
+            import: "@cocreate/certificates",
             path: "../CoCreate-modules/CoCreate-certificates",
             repo: "github.com/CoCreate-app/CoCreate-certificates.git"
         },

@@ -91,7 +91,7 @@ Instead of treating server logic, routing, data layers, and certificate tracking
          ┌────────────────────────────┼────────────────────────────┐
          ▼                            ▼                            ▼
 ┌──────────────────┐        ┌──────────────────┐        ┌──────────────────┐
-│  @cocreate/acme  │        │ @cocreate/auth   │        │ @cocreate/author │
+│  @cocreate/certificates  │        │ @cocreate/auth   │        │ @cocreate/author │
 │ (SSL Provision)  │        │ (Session Engine) │        │ (Access Firewall)│
 └──────────────────┘        └──────────────────┘        └──────────────────┘
 

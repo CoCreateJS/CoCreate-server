@@ -300,6 +300,6 @@ export default {
             path: "../CoCreateWS",
             repo: "github.com/CoCreate-app/CoCreateWS.git",
             exclude: ["git"]
-        },
+        }
     }
 };

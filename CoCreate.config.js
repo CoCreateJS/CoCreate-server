@@ -287,13 +287,7 @@ export default {
             import: "@cocreate/cli",
             path: "../CoCreate-modules/CoCreate-cli",
             repo: "github.com/CoCreate-app/CoCreate-cli.git"
-        },
-        loadtest: {
-            import: "@cocreate/loadtest",
-            path: "../CoCreate-modules/CoCreate-loadtest",
-            repo: "github.com/CoCreate-app/CoCreate-loadtest.git"
         }
-
     },
     projects: {
         CoCreateWS: {

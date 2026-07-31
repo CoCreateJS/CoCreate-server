@@ -33,6 +33,13 @@ export default {
 		vertical: false // Vertical scaling not enabled
 	},
     
+        /**
+     * @property {string} moduleOutputPath
+     * @description Defines the destination file path where the build system (e.g., ModuleGenerator Webpack plugin) 
+     * will save the dynamically generated module entry file. This file contains the automated import and lazy-loading logic.
+     */
+    moduleOutputPath: "./CoCreate.index.js",
+
     /**
      * @namespace modules
      * @description Merged configuration containing both core components (modules/plugins/databases) and external API libraries.
@@ -287,5 +294,12 @@ export default {
             repo: "github.com/CoCreate-app/CoCreate-loadtest.git"
         }
 
+    },
+    projects: {
+        CoCreateWS: {
+            path: "../CoCreateWS",
+            repo: "github.com/CoCreate-app/CoCreateWS.git",
+            exclude: ["git"]
+        },
     }
 };

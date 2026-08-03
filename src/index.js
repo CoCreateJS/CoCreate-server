@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2023 CoCreate and Contributors.
+ * Copyright (C) 2026 CoCreate and Contributors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -16,43 +16,52 @@
  *
  ********************************************************************************/
 
-// Commercial Licensing Information:
-// For commercial use of this software without the copyleft provisions of the AGPLv3,
-// you must obtain a commercial license from CoCreate LLC.
-// For details, visit <https://cocreate.app/licenses/> or contact us at sales@cocreate.app.
-
-import "../installers/dynamodb.installer.js"
-import "../installers/firestore.installer.js"
-import "../installers/mongodb.installer.js"
-import "../installers/mysql.installer.js"
-import "../installers/postgresql.installer.js"
-import "../installers/qdrant.installer.js"
-import "../installers/sqlite.installer.js"
-
 import server from '@cocreate/server';
 
-import usage from '@cocreate/usage';
-import organizations from '@cocreate/organizations';
-import unique from '@cocreate/unique';
-import users from '@cocreate/users';
-import notification from '@cocreate/notification';
-import cronJobs from '@cocreate/cron-jobs';
-import urlUploader from '@cocreate/url-uploader';
-
-/**
- * Clean & Minimal Entry Point.
- * * Since CoCreate Server (defined in the Canvas) now fully manages its own:
- * - Vertical process cluster spawning (Primary/Master process splits)
- * - Crash recovery & automatic worker process recycling
- * - Secure TLS Cert Handshakes & dynamic Ingress setups
- * - Socket connection pipelines & Database (CRUD) links
- * - Static port bindings (8080 and 8443)
- * * We no longer need any boilerplate cluster, fork, or manual socket listening code here!
- */
 async function boot() {
     try {
+        // Initialize core server capabilities (database, IPC, sockets, TLS, state)
         await server.init();
-        new usage(server.organization_id)
+
+        // 1. Master Role Execution (Only loads Master modules and installers into Master memory)
+        if (server.isMaster) {
+            await import('@cocreate/cron-jobs');
+            await import('../installers/dynamodb.installer.js');
+            await import('../installers/firestore.installer.js');
+            await import('../installers/mongodb.installer.js');
+            await import('../installers/mysql.installer.js');
+            await import('../installers/postgresql.installer.js');
+            await import('../installers/qdrant.installer.js');
+            await import('../installers/sqlite.installer.js');
+        }
+
+        // 2. Worker Role Execution (Only loads Worker modules into Worker memory)
+        if (server.isWorker) {
+            // Worker 1 specific dynamic import
+            if (server.workerId === 1) {
+                await import('@cocreate/notification');
+            }
+
+            // Dynamic imports for all worker processes
+            const { default: Usage } = await import('@cocreate/usage');
+            await import('@cocreate/organizations');
+            await import('@cocreate/unique');
+            await import('@cocreate/users');
+            await import('@cocreate/url-uploader');
+
+            // Instantiating Usage constructor with server organization ID
+            new Usage(server.organization_id || server.organizationID);
+
+            // Custom edge HTTP route registered in Map (path -> handler)
+            server.routes.set('/api/v1/health', async (req, res) => {
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({
+                    status: 'healthy',
+                    workerId: server.workerId,
+                    pid: process.pid
+                }));
+            });
+        }
     } catch (error) {
         console.error('[@cocreate/entry] Critical error during server bootstrap:', error);
         process.exit(1);

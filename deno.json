@@ -2,13 +2,11 @@
   "nodeModulesDir": "auto",
   "workspace": [
     "../CoCreate-modules/*",
-    "../CoCreate-plugins/*",
-    "../CoCreate-storages/*"
+    "../CoCreate-plugins/*"
   ],
   "links": [
     "../CoCreate-modules/*",
-    "../CoCreate-plugins/*",
-    "../CoCreate-storages/*"  
+    "../CoCreate-plugins/*"
   ],
   "tasks": {
     "start": "deno run -A src/index.js",

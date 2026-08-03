@@ -26,13 +26,13 @@ async function boot() {
         // 1. Master Role Execution (Only loads Master modules and installers into Master memory)
         if (server.isMaster) {
             await import('@cocreate/cron-jobs');
-            await import('@cocreate/crud-server/storage/dynamodb');
-            await import('@cocreate/crud-server/storage/firestore');
-            await import('@cocreate/crud-server/storage/mongodb');
-            await import('@cocreate/crud-server/storage/mysql');
-            await import('@cocreate/crud-server/storage/postgresql');
-            await import('@cocreate/crud-server/storage/qdrant');
-            await import('@cocreate/crud-server/storage/sqlite');
+            // await import('@cocreate/server/storage/dynamodb');
+            await import('@cocreate/server/storage/firestore');
+            await import('@cocreate/server/storage/mongodb');
+            await import('@cocreate/server/storage/mysql');
+            await import('@cocreate/server/storage/postgresql');
+            await import('@cocreate/server/storage/qdrant');
+            await import('@cocreate/server/storage/sqlite');
         }
 
         // 2. Worker Role Execution (Only loads Worker modules into Worker memory)

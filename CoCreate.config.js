@@ -2,7 +2,7 @@ export default {
 	organization_id: "",
 	key: "",
 	host: "",
-    workers: 1, // Number of worker processes
+    workers: true, // Number of worker processes
     storage: {
         mongodb: {
             provider: "mongodb",
@@ -77,10 +77,10 @@ export default {
             path: "../CoCreate-modules/CoCreate-crud-server",
             repo: "github.com/CoCreate-app/CoCreate-crud-server.git"
         },
-        certificates: {
-            import: "@cocreate/certificates",
-            path: "../CoCreate-modules/CoCreate-certificates",
-            repo: "github.com/CoCreate-app/CoCreate-certificates.git"
+        "server-tls": {
+            import: "@cocreate/server-tls",
+            path: "../CoCreate-modules/CoCreate-server-tls",
+            repo: "github.com/CoCreate-app/CoCreate-server-tls.git"
         },
         authenticate: {
             import: "@cocreate/authenticate",

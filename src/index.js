@@ -26,13 +26,13 @@ async function boot() {
         // 1. Master Role Execution (Only loads Master modules and installers into Master memory)
         if (server.isMaster) {
             await import('@cocreate/cron-jobs');
-            await import('../installers/dynamodb.installer.js');
-            await import('../installers/firestore.installer.js');
-            await import('../installers/mongodb.installer.js');
-            await import('../installers/mysql.installer.js');
-            await import('../installers/postgresql.installer.js');
-            await import('../installers/qdrant.installer.js');
-            await import('../installers/sqlite.installer.js');
+            await import('@cocreate/crud-server/storage/dynamodb');
+            await import('@cocreate/crud-server/storage/firestore');
+            await import('@cocreate/crud-server/storage/mongodb');
+            await import('@cocreate/crud-server/storage/mysql');
+            await import('@cocreate/crud-server/storage/postgresql');
+            await import('@cocreate/crud-server/storage/qdrant');
+            await import('@cocreate/crud-server/storage/sqlite');
         }
 
         // 2. Worker Role Execution (Only loads Worker modules into Worker memory)
@@ -62,6 +62,7 @@ async function boot() {
                 }));
             });
         }
+
     } catch (error) {
         console.error('[@cocreate/entry] Critical error during server bootstrap:', error);
         process.exit(1);

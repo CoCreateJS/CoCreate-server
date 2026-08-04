@@ -38,29 +38,26 @@ async function boot() {
         // 2. Worker Role Execution (Only loads Worker modules into Worker memory)
         if (server.isWorker) {
             // Worker 1 specific dynamic import
-            if (server.workerId === 1) {
-                await import('@cocreate/notification');
-            }
+            // if (server.workerId === 1) {
+            //
+            // }
 
             // Dynamic imports for all worker processes
-            const { default: Usage } = await import('@cocreate/usage');
             await import('@cocreate/organizations');
+            await import('@cocreate/notification');
             await import('@cocreate/unique');
             await import('@cocreate/users');
             await import('@cocreate/url-uploader');
 
-            // Instantiating Usage constructor with server organization ID
-            new Usage(server.organization_id || server.organizationID);
-
             // Custom edge HTTP route registered in Map (path -> handler)
-            server.routes.set('/api/v1/health', async (req, res) => {
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({
-                    status: 'healthy',
-                    workerId: server.workerId,
-                    pid: process.pid
-                }));
-            });
+            // server.routes.set('/api/v1/health', async (req, res) => {
+            //     res.writeHead(200, { 'Content-Type': 'application/json' });
+            //     res.end(JSON.stringify({
+            //         status: 'healthy',
+            //         workerId: server.workerId,
+            //         pid: process.pid
+            //     }));
+            // });
         }
 
     } catch (error) {

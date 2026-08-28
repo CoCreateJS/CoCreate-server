@@ -52,254 +52,254 @@ export default {
         server: {
             import: "@cocreate/server",
             path: "../CoCreate-modules/CoCreate-server",
-            repo: "github.com/CoCreate-app/CoCreate-server.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-server.git"
         },
         "server-mesh": {
             import: "@cocreate/server-mesh",
             path: "../CoCreate-modules/CoCreate-server-mesh",
-            repo: "github.com/CoCreate-app/CoCreate-server-mesh.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-server-mesh.git"
         },
         "server-autoscaler": {
             import: "@cocreate/server-autoscaler",
             path: "../CoCreate-modules/CoCreate-server-autoscaler",
-            repo: "github.com/CoCreate-app/CoCreate-server-autoscaler.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-server-autoscaler.git"
         },
         "server-telemetry": {
             import: "@cocreate/server-telemetry",
             path: "../CoCreate-modules/CoCreate-server-telemetry",
-            repo: "github.com/CoCreate-app/CoCreate-server-telemetry.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-server-telemetry.git"
         },
         "server-ai": {
             import: "@cocreate/ai",
             path: "../CoCreate-plugins/CoCreate-server-ai",
-            repo: "github.com/CoCreate-app/CoCreate-AI.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-AI.git"
         },
         "server-container": {
             import: "@cocreate/server-container",
             path: "../CoCreate-modules/CoCreate-server-container",
-            repo: "github.com/CoCreate-app/CoCreate-server-container.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-server-container.git"
         },
         "crud-server": {
             import: "@cocreate/crud-server",
             path: "../CoCreate-modules/CoCreate-crud-server",
-            repo: "github.com/CoCreate-app/CoCreate-crud-server.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-crud-server.git"
         },
         "server-tls": {
             import: "@cocreate/server-tls",
             path: "../CoCreate-modules/CoCreate-server-tls",
-            repo: "github.com/CoCreate-app/CoCreate-server-tls.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-server-tls.git"
         },
         authenticate: {
             import: "@cocreate/authenticate",
             path: "../CoCreate-modules/CoCreate-authenticate",
-            repo: "github.com/CoCreate-app/CoCreate-authenticate.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-authenticate.git"
         },
         authorize: {
             import: "@cocreate/authorize",
             path: "../CoCreate-modules/CoCreate-authorize",
-            repo: "github.com/CoCreate-app/CoCreate-authorize.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-authorize.git"
         },
         "socket-server": {
             import: "@cocreate/socket-server",
             path: "../CoCreate-modules/CoCreate-socket-server",
-            repo: "github.com/CoCreate-app/CoCreate-socket-server.git",
+            repo: "gitlab.com/cocreatejs/CoCreate-socket-server.git",
         },
         "file-server": {
             import: "@cocreate/file-server",
             path: "../CoCreate-modules/CoCreate-file-server",
-            repo: "github.com/CoCreate-app/CoCreate-file-server.git",
+            repo: "gitlab.com/cocreatejs/CoCreate-file-server.git",
         },
         "server-side-render": {
             import: "@cocreate/server-side-render",
             path: "../CoCreate-modules/CoCreate-server-side-render",
-            repo: "github.com/CoCreate-app/CoCreate-server-side-render.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-server-side-render.git"
         },
         sitemap: {
             import: "@cocreate/sitemap",
             path: "../CoCreate-modules/CoCreate-sitemap",
-            repo: "github.com/CoCreate-app/CoCreate-sitemap.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-sitemap.git"
         },
         "cron-jobs": {
             import: "@cocreate/cron-jobs",
             path: "../CoCreate-modules/CoCreate-cron-jobs",
-            repo: "github.com/CoCreate-app/CoCreate-cron-jobs.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-cron-jobs.git"
         },
         usage: {
             import: "@cocreate/usage",
             path: "../CoCreate-modules/CoCreate-usage",
-            repo: "github.com/CoCreate-app/CoCreate-usage.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-usage.git"
         },
 
         // --- Database & Storage Modules ---
         "amazon-redshift": {
             import: "@cocreate/amazon-redshift",
             path: "../CoCreate-storages/CoCreate-amazon-redshift",
-            repo: "github.com/CoCreate-app/CoCreate-amazon-redshift.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-amazon-redshift.git"
         },
         auroradb: {
             import: "@cocreate/auroradb",
             path: "../CoCreate-storages/CoCreate-auroradb",
-            repo: "github.com/CoCreate-app/CoCreate-auroradb.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-auroradb.git"
         },
         cockroachdb: {
             import: "@cocreate/cockroachdb",
             path: "../CoCreate-storages/CoCreate-cockroachdb",
-            repo: "github.com/CoCreate-app/CoCreate-cockroachdb.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-cockroachdb.git"
         },
         cosmosdb: {
             import: "@cocreate/cosmosdb",
             path: "../CoCreate-storages/CoCreate-cosmosdb",
-            repo: "github.com/CoCreate-app/CoCreate-cosmosdb.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-cosmosdb.git"
         },
         documentdb: {
             import: "@cocreate/documentdb",
             path: "../CoCreate-storages/CoCreate-documentdb",
-            repo: "github.com/CoCreate-app/CoCreate-documentdb.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-documentdb.git"
         },
         dqlite: {
             import: "@cocreate/dqlite",
             path: "../CoCreate-storages/CoCreate-dqlite",
-            repo: "github.com/CoCreate-app/CoCreate-dqlite.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-dqlite.git"
         },
         dynamodb: {
             import: "@cocreate/dynamodb",
             path: "../CoCreate-storages/CoCreate-dynamodb",
-            repo: "github.com/CoCreate-app/CoCreate-dynamodb.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-dynamodb.git"
         },
         ferretdb: {
             import: "@cocreate/ferretdb",
             path: "../CoCreate-storages/CoCreate-ferretdb",
-            repo: "github.com/CoCreate-app/CoCreate-ferretdb.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-ferretdb.git"
         },
         firestore: {
             import: "@cocreate/firestore",
             path: "../CoCreate-storages/CoCreate-firestore",
-            repo: "github.com/CoCreate-app/CoCreate-firestore.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-firestore.git"
         },
         mariadb: {
             import: "@cocreate/mariadb",
             path: "../CoCreate-storages/CoCreate-mariadb",
-            repo: "github.com/CoCreate-app/CoCreate-mariadb.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-mariadb.git"
         },
         mongodb: {
             import: "@cocreate/mongodb",
             path: "../CoCreate-storages/CoCreate-mongodb",
-            repo: "github.com/CoCreate-app/CoCreate-mongodb.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-mongodb.git"
         },
         mysql: {
             import: "@cocreate/mysql",
             path: "../CoCreate-storages/CoCreate-mysql",
-            repo: "github.com/CoCreate-app/CoCreate-mysql.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-mysql.git"
         },
         oracledb: {
             import: "@cocreate/oracledb",
             path: "../CoCreate-storages/CoCreate-oracledb",
-            repo: "github.com/CoCreate-app/CoCreate-oracledb.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-oracledb.git"
         },
         planetscale: {
             import: "@cocreate/planetscale",
             path: "../CoCreate-storages/CoCreate-planetscale",
-            repo: "github.com/CoCreate-app/CoCreate-planetscale.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-planetscale.git"
         },
         postgresql: {
             import: "@cocreate/postgresql",
             path: "../CoCreate-storages/CoCreate-postgresql",
-            repo: "github.com/CoCreate-app/CoCreate-postgresql.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-postgresql.git"
         },
         rqlite: {
             import: "@cocreate/rqlite",
             path: "../CoCreate-storages/CoCreate-rqlite",
-            repo: "github.com/CoCreate-app/CoCreate-rqlite.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-rqlite.git"
         },
         qdrant: {
             import: "@cocreate/qdrant",
             path: "../CoCreate-storages/CoCreate-qdrant",
-            repo: "github.com/CoCreate-app/CoCreate-qdrant.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-qdrant.git"
         },
         sqlite: {
             import: "@cocreate/sqlite",
             path: "../CoCreate-storages/CoCreate-sqlite",
-            repo: "github.com/CoCreate-app/CoCreate-sqlite.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-sqlite.git"
         },
         tidb: {
             import: "@cocreate/tidb",
             path: "../CoCreate-storages/CoCreate-tidb",
-            repo: "github.com/CoCreate-app/CoCreate-tidb.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-tidb.git"
         },
         timescaledb: {
             import: "@cocreate/timescaledb",
             path: "../CoCreate-storages/CoCreate-timescaledb",
-            repo: "github.com/CoCreate-app/CoCreate-timescaledb.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-timescaledb.git"
         },
         turso: {
             import: "@cocreate/turso",
             path: "../CoCreate-storages/CoCreate-turso",
-            repo: "github.com/CoCreate-app/CoCreate-turso.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-turso.git"
         },
         yugabytedb: {
             import: "@cocreate/yugabytedb",
             path: "../CoCreate-storages/CoCreate-yugabytedb",
-            repo: "github.com/CoCreate-app/CoCreate-yugabytedb.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-yugabytedb.git"
         },
 
         // --- Standard Client/Server Modules ---
         config: {
             import: "@cocreate/config",
             path: "../CoCreate-modules/CoCreate-config",
-            repo: "github.com/CoCreate-app/CoCreate-config.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-config.git"
         },
         api: {
             import: "@cocreate/api",
             path: "../CoCreate-modules/CoCreate-api",
-            repo: "github.com/CoCreate-app/CoCreate-api.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-api.git"
         },
         "lazy-loader": {
             import: "@cocreate/lazy-loader",
             path: "../CoCreate-modules/CoCreate-lazy-loader",
-            repo: "github.com/CoCreate-app/CoCreate-lazy-loader.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-lazy-loader.git"
         },
         notification: {
             import: "@cocreate/notification",
             path: "../CoCreate-modules/CoCreate-notification",
-            repo: "github.com/CoCreate-app/CoCreate-notification.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-notification.git"
         },
         organizations: {
             import: "@cocreate/organizations",
             path: "../CoCreate-modules/CoCreate-organizations",
-            repo: "github.com/CoCreate-app/CoCreate-organizations.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-organizations.git"
         },
         users: {
             import: "@cocreate/users",
             path: "../CoCreate-modules/CoCreate-users",
-            repo: "github.com/CoCreate-app/CoCreate-users.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-users.git"
         },
         unique: {
             import: "@cocreate/unique",
             path: "../CoCreate-modules/CoCreate-unique",
-            repo: "github.com/CoCreate-app/CoCreate-unique.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-unique.git"
         },
         "url-uploader": {
             import: "@cocreate/url-uploader",
             path: "../CoCreate-modules/CoCreate-url-uploader",
-            repo: "github.com/CoCreate-app/CoCreate-url-uploader.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-url-uploader.git"
         },
         utils: {
             import: "@cocreate/utils",
             path: "../CoCreate-modules/CoCreate-utils",
-            repo: "github.com/CoCreate-app/CoCreate-utils.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-utils.git"
         },
 
         // --- Dev Modules ---
         cli: {
             import: "@cocreate/cli",
             path: "../CoCreate-modules/CoCreate-cli",
-            repo: "github.com/CoCreate-app/CoCreate-cli.git"
+            repo: "gitlab.com/cocreatejs/CoCreate-cli.git"
         }
     },
     projects: {
         CoCreateWS: {
             path: "../CoCreateWS",
-            repo: "github.com/CoCreate-app/CoCreateWS.git",
+            repo: "gitlab.com/cocreatejs/CoCreateWS.git",
             exclude: ["git"]
         }
     }

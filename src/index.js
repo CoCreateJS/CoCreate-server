@@ -36,7 +36,7 @@ async function boot() {
         }
 
         // 2. Worker Role Execution (Only loads Worker modules into Worker memory)
-        if (server.isWorker) {
+        if (server.isWorker || server.totalWorkers <= 1) {
             // Worker 1 specific dynamic import
             // if (server.workerId === 1) {
             //
@@ -44,8 +44,8 @@ async function boot() {
 
             // Dynamic imports for all worker processes
             await import('@cocreate/organizations');
-            await import('@cocreate/notification');
-            await import('@cocreate/unique');
+            // await import('@cocreate/notification');
+            // await import('@cocreate/unique');
             await import('@cocreate/users');
             await import('@cocreate/url-uploader');
 

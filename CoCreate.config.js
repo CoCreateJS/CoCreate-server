@@ -1,8 +1,7 @@
 export default {
-	organization_id: "",
-	key: "",
-	host: "",
-    workers: true, // Number of worker processes
+    organization_id: "",
+    key: "",
+    workers: 1, // Number of worker processes
     storage: {
         mongodb: {
             provider: "mongodb",
@@ -23,21 +22,24 @@ export default {
     },
 
     // Horizontal scaling configuration
-	autoscaler: {
-		horizontal: {
-			enabled: true, // Enable or disable horizontal scaling
-			memoryThreshold: "70%", // Memory usage threshold for scaling
-			cpuThreshold: "70%", // CPU usage threshold for scaling
-			maxServers: 10 // Maximum number of servers to scale out to
-		},
-		vertical: false // Vertical scaling not enabled
-	},
-    
-        /**
-     * @property {string} moduleOutputPath
-     * @description Defines the destination file path where the build system (e.g., ModuleGenerator Webpack plugin) 
-     * will save the dynamically generated module entry file. This file contains the automated import and lazy-loading logic.
-     */
+    autoscaler: {
+        horizontal: {
+            enabled: true, // Enable or disable horizontal scaling
+            memoryThreshold: "70%", // Memory usage threshold for scaling
+            cpuThreshold: "70%", // CPU usage threshold for scaling
+            maxServers: 10 // Maximum number of servers to scale out to
+        },
+        vertical: false // Vertical scaling not enabled
+    },
+    ai: {
+
+    },
+
+    /**
+ * @property {string} moduleOutputPath
+ * @description Defines the destination file path where the build system (e.g., ModuleGenerator Webpack plugin) 
+ * will save the dynamically generated module entry file. This file contains the automated import and lazy-loading logic.
+ */
     moduleOutputPath: "./CoCreate.index.js",
 
     /**
@@ -286,7 +288,7 @@ export default {
             path: "../CoCreate-modules/CoCreate-utils",
             repo: "github.com/CoCreate-app/CoCreate-utils.git"
         },
-        
+
         // --- Dev Modules ---
         cli: {
             import: "@cocreate/cli",

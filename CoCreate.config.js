@@ -67,6 +67,11 @@ export default {
             path: "../CoCreate-modules/CoCreate-server-telemetry",
             repo: "github.com/CoCreate-app/CoCreate-server-telemetry.git"
         },
+        "server-ai": {
+            import: "@cocreate/ai",
+            path: "../CoCreate-plugins/CoCreate-server-ai",
+            repo: "github.com/CoCreate-app/CoCreate-AI.git"
+        },
         "server-container": {
             import: "@cocreate/server-container",
             path: "../CoCreate-modules/CoCreate-server-container",

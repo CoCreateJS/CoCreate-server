@@ -23,8 +23,8 @@ async function boot() {
         // Initialize core server capabilities (database, IPC, sockets, TLS, state)
         await server.init();
 
-        // 1. Master Role Execution (Only loads Master modules and installers into Master memory)
-        if (server.isMaster) {
+        // 1. Primary Role Execution (Only loads primary modules and installers into primary memory)
+        if (server.isPrimary) {
             await import('@cocreate/cron-jobs');
             // await import('@cocreate/server/storage/dynamodb');
             await import('@cocreate/server/storage/firestore');
@@ -48,6 +48,9 @@ async function boot() {
             await import('@cocreate/unique');
             await import('@cocreate/users');
             await import('@cocreate/url-uploader');
+
+            const { default: AI } = await import('@cocreate/ai');
+            server.ai = await AI.init(server);
 
             // Custom edge HTTP route registered in Map (path -> handler)
             // server.routes.set('/api/v1/health', async (req, res) => {

@@ -42,6 +42,7 @@
     "createdb": "node ./installation/createDB.js"
   },
   "dependencies": {
+    "@cocreate/ai": "^1.0.0",
     "@cocreate/certificates": "^1.11.0",
     "@cocreate/cron-jobs": "^1.9.0",
     "@cocreate/notification": "^1.17.0",

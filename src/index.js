@@ -17,22 +17,16 @@
  ********************************************************************************/
 
 import server from '@cocreate/server';
+import AI from '@cocreate/ai';
 
 async function boot() {
     try {
         // Initialize core server capabilities (database, IPC, sockets, TLS, state)
         await server.init();
 
-        // 1. Primary Role Execution (Only loads primary modules and installers into primary memory)
+        // 1. Primary Role Execution
         if (server.isPrimary) {
             await import('@cocreate/cron-jobs');
-            // await import('@cocreate/server/storage/dynamodb');
-            await import('@cocreate/server/storage/firestore');
-            await import('@cocreate/server/storage/mongodb');
-            await import('@cocreate/server/storage/mysql');
-            await import('@cocreate/server/storage/postgresql');
-            await import('@cocreate/server/storage/qdrant');
-            await import('@cocreate/server/storage/sqlite');
         }
 
         // 2. Worker Role Execution (Only loads Worker modules into Worker memory)
@@ -49,7 +43,6 @@ async function boot() {
             await import('@cocreate/users');
             await import('@cocreate/url-uploader');
 
-            const { default: AI } = await import('@cocreate/ai');
             server.ai = await AI.init(server);
 
             // Custom edge HTTP route registered in Map (path -> handler)

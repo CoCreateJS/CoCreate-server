@@ -3,11 +3,14 @@
 # ==============================================================================
 .certificates/
 scripts/
-.storages/
+storages/
+.plugins/
 node_modules/
 jspm_packages/
 .pnp/
 .pnp.*
+public/
+websites/
 
 # ==============================================================================
 # 2. Package Manager Specifics (Lock Files & Overrides Ignored)

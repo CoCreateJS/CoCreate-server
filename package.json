@@ -35,7 +35,9 @@
   "type": "module",
   "main": "./src/index.js",
   "scripts": {
+    "build:ai": "yarn --cwd ../CoCreate-plugins/CoCreate-server-ai build",
     "build": "webpack --config webpack.config.js",
+    "package:node": "yarn build:ai && yarn build && tar -czf dist/cocreatews-node-linux-x64.tar.gz -C dist/node .",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -54,6 +56,8 @@
     "@cocreate/users": "^1.47.0"
   },
   "devDependencies": {
-    "@cocreate/cli": "^1.64.0"
+    "@cocreate/cli": "^1.64.0",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1"
   }
 }

@@ -37,10 +37,13 @@ async function boot() {
             // }
 
             // Dynamic imports for all worker processes
-            await import('@cocreate/organizations');
+            const Organizations = await import('@cocreate/organizations');
+            await Organizations.init(server);
             // await import('@cocreate/notification');
-            // await import('@cocreate/unique');
-            await import('@cocreate/users');
+            const Unique = await import('@cocreate/unique');
+            Unique.default(server);
+            const Users = await import('@cocreate/users');
+            Users.default(server);
             await import('@cocreate/url-uploader');
 
             server.ai = await AI.init(server);

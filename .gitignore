@@ -11,6 +11,7 @@ jspm_packages/
 .pnp.*
 public/
 websites/
+organizations/
 
 # ==============================================================================
 # 2. Package Manager Specifics (Lock Files & Overrides Ignored)

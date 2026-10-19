@@ -2,7 +2,9 @@
 # 1. Core Dependency Folders
 # ==============================================================================
 .certificates/
-scripts/
+/scripts/*
+!/scripts/build-storages.js
+!/scripts/verify-node.js
 storages/
 .plugins/
 node_modules/

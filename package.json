@@ -36,8 +36,10 @@
   "main": "./src/index.js",
   "scripts": {
     "build:ai": "yarn --cwd ../CoCreate-plugins/CoCreate-server-ai build",
+    "build:storages": "node scripts/build-storages.js",
     "build": "webpack --config webpack.config.js",
-    "package:node": "yarn build:ai && yarn build && tar -czf dist/cocreatews-node-linux-x64.tar.gz -C dist/node .",
+    "verify:node": "node scripts/verify-node.js",
+    "package:node": "yarn build:storages && yarn build:ai && yarn build && yarn verify:node && tar -czf dist/cocreatews-node-linux-x64.tar.gz -C dist/node .",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",

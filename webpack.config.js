@@ -45,21 +45,14 @@ function workspaceAliases() {
 class RuntimeAssetsPlugin {
     apply(compiler) {
         compiler.hooks.afterEmit.tap("RuntimeAssetsPlugin", () => {
-            const aiSource = path.join(
-                workspaceRoot,
-                "CoCreate-plugins/CoCreate-server-ai/dist"
-            );
-            const aiOutput = path.join(
-                compiler.options.output.path,
-                "plugins",
-                "ai"
-            );
+            const pluginSource = path.join(__dirname, "plugins");
+            const pluginOutput = path.join(compiler.options.output.path, "plugins");
 
-            if (!fs.existsSync(path.join(aiSource, "index.js")) ||
-                !fs.existsSync(path.join(aiSource, "runtime.js"))) {
-                throw new Error(`Missing AI plugin distribution: ${aiSource}`);
+            if (!fs.existsSync(path.join(pluginSource, "ai", "index.js")) ||
+                !fs.existsSync(path.join(pluginSource, "ai", "runtime.js"))) {
+                throw new Error(`Missing plugin distributions: ${pluginSource}`);
             }
-            fs.cpSync(aiSource, aiOutput, { recursive: true });
+            fs.cpSync(pluginSource, pluginOutput, { recursive: true });
 
             fs.writeFileSync(
                 path.join(compiler.options.output.path, "package.json"),

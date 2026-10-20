@@ -40,7 +40,7 @@ export default {
 
     /**
      * @namespace modules
-     * @description Merged configuration containing both core components (modules/plugins/databases) and external API libraries.
+     * @description Configures core modules, storage adapters, and external API libraries.
      * For development environments, the Poly Repo CLI reads the 'path' and 'repo' keys from these objects.
      */
     modules: {
@@ -64,11 +64,6 @@ export default {
             import: "@cocreate/server-telemetry",
             path: "../CoCreate-modules/CoCreate-server-telemetry",
             repo: "gitlab.com/cocreatejs/CoCreate-server-telemetry.git"
-        },
-        "server-ai": {
-            import: "@cocreate/ai",
-            path: "../CoCreate-plugins/CoCreate-server-ai",
-            repo: "gitlab.com/cocreatejs/CoCreate-AI.git"
         },
         "server-container": {
             import: "@cocreate/server-container",
@@ -290,6 +285,13 @@ export default {
             import: "@cocreate/cli",
             path: "../CoCreate-modules/CoCreate-cli",
             repo: "gitlab.com/cocreatejs/CoCreate-cli.git"
+        }
+    },
+    plugins: {
+        ai: {
+            import: "@cocreate/ai",
+            path: "../CoCreate-plugins/CoCreate-server-ai",
+            repo: "gitlab.com/cocreatejs/CoCreate-AI.git"
         }
     },
     projects: {

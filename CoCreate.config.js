@@ -2,7 +2,7 @@ export default {
     organization_id: "",
     key: "",
     host: "",
-    workers: 4, // Number of worker processes
+    workers: 2, // Number of worker processes
 
     telemetry: {
         "enabled": true,

@@ -40,6 +40,8 @@
     "build": "webpack --config webpack.config.js",
     "verify:node": "node scripts/verify-node.js",
     "package:node": "yarn build:storages && yarn build:ai && yarn build && yarn verify:node && tar -czf dist/cocreatews-node-linux-x64.tar.gz -C dist/node .",
+    "build:dev": "bash scripts/build-node-dev.sh",
+    "release:dev": "bash scripts/release-node-dev.sh",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",

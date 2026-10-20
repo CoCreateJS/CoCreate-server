@@ -2,13 +2,8 @@ export default {
     organization_id: "",
     key: "",
     host: "",
-    workers: 1, // Number of worker processes
-    storage: {
-        mongodb: {
-            provider: "mongodb",
-            url: ""
-        }
-    },
+    workers: 4, // Number of worker processes
+
     telemetry: {
         "enabled": true,
         "collectionInterval": 1000,
@@ -38,7 +33,7 @@ export default {
 
     /**
  * @property {string} moduleOutputPath
- * @description Defines the destination file path where the build system (e.g., ModuleGenerator Webpack plugin) 
+ * @description Defines the destination file path where the build system (e.g., ModuleGenerator Webpack plugin)
  * will save the dynamically generated module entry file. This file contains the automated import and lazy-loading logic.
  */
     moduleOutputPath: "./CoCreate.index.js",

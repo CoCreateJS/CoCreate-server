@@ -4,14 +4,11 @@ module.exports = {
     "password": "<password to use for loggin>",
     "organization_id": "<CoCreate Organization ID>",
     "key": "<CoCreate API Key>",
-    "host": "<CoCreate subdomain or custom domain pointing to CoCreateWS server>"
+    "host": "<CoCreate subdomain or custom domain pointing to CoCreateWS server>",
     "storage": {
-        "mongodb": {
-            "provider": "mongodb",
-            "url": [
-                "<dbUrl>"
-            ]
-        }
+        "name": "mongodb",
+        "provider": "mongodb",
+        "connectionString": "<MongoDB connection string>"
     },
     "jwttoken": {
         "options": {

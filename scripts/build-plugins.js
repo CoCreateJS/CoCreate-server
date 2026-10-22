@@ -7,12 +7,19 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const configUrl = pathToFileURL(path.join(root, "CoCreate.config.js"));
 const { default: config } = await import(configUrl);
 const pluginRoot = path.resolve(root, "../CoCreate-plugins");
-const plugins = Object.entries(config.plugins || {}).filter(([, plugin]) =>
+const requestedPlugins = new Set(process.argv.slice(2));
+const plugins = Object.entries(config.plugins || {}).filter(([key, plugin]) =>
+    (!requestedPlugins.size || requestedPlugins.has(key)) &&
     typeof plugin?.path === "string" &&
     path.resolve(root, plugin.path).startsWith(`${pluginRoot}${path.sep}`)
 );
 
-if (!plugins.length) throw new Error("No configured CoCreate plugins were found.");
+if (!plugins.length) {
+    const requested = requestedPlugins.size
+        ? ` matching ${[...requestedPlugins].join(", ")}`
+        : "";
+    throw new Error(`No configured CoCreate plugins were found${requested}.`);
+}
 
 for (const [key, plugin] of plugins) {
     const packageDirectory = path.resolve(root, plugin.path);

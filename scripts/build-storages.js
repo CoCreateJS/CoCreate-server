@@ -3,7 +3,10 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import webpack from "webpack";
 
+const workspaceRoot = fileURLToPath(new URL("../", import.meta.url));
 const storageRoot = fileURLToPath(new URL("../../CoCreate-storages/", import.meta.url));
+const runtimeStorageRoot = path.join(workspaceRoot, "storages");
+fs.mkdirSync(runtimeStorageRoot, { recursive: true });
 
 for (const directory of fs.readdirSync(storageRoot).sort()) {
     if (!directory.startsWith("CoCreate-") ||
@@ -37,7 +40,9 @@ for (const directory of fs.readdirSync(storageRoot).sort()) {
                 return reject(new Error(stats.toString({ all: false, errors: true })));
             }
             if (stats.hasWarnings()) console.warn(stats.toString({ all: false, warnings: true }));
-            console.log(`Built ${directory}: ${filename}`);
+            const distributionFile = path.join(context, "dist", filename);
+            fs.copyFileSync(distributionFile, path.join(runtimeStorageRoot, filename));
+            console.log(`Built ${directory} and refreshed runtime driver: storages/${filename}`);
             resolve();
         }));
     } finally {

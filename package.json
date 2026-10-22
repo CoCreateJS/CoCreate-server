@@ -35,7 +35,7 @@
   "type": "module",
   "main": "./src/index.js",
   "scripts": {
-    "build:ai": "yarn --cwd ../CoCreate-plugins/CoCreate-server-ai build",
+    "build:ai": "node scripts/build-plugins.js ai",
     "build:plugins": "node scripts/build-plugins.js",
     "build:storages": "node scripts/build-storages.js",
     "build": "webpack --config webpack.config.js",

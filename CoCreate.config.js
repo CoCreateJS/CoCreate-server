@@ -269,6 +269,11 @@ export default {
             path: "../CoCreate-modules/CoCreate-unique",
             repo: "gitlab.com/cocreatejs/CoCreate-unique.git"
         },
+        workflows: {
+            import: "@cocreate/workflows",
+            path: "../CoCreate-modules/CoCreate-workflows",
+            repo: "github.com/CoCreateJS/CoCreate-workflows.git"
+        },
         "url-uploader": {
             import: "@cocreate/url-uploader",
             path: "../CoCreate-modules/CoCreate-url-uploader",

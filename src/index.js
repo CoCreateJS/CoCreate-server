@@ -42,6 +42,8 @@ async function boot() {
             // await import('@cocreate/notification');
             const Unique = await import('@cocreate/unique');
             Unique.default(server);
+            const Workflows = await import('@cocreate/workflows');
+            await Workflows.default.init(server);
             const Users = await import('@cocreate/users');
             Users.default(server);
             await import('@cocreate/url-uploader');

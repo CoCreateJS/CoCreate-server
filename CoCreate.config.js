@@ -105,10 +105,10 @@ export default {
             path: "../CoCreate-modules/CoCreate-server-side-render",
             repo: "github.com/cocreatejs/CoCreate-server-side-render.git"
         },
-        sitemap: {
-            import: "@cocreate/sitemap",
-            path: "../CoCreate-modules/CoCreate-sitemap",
-            repo: "github.com/cocreatejs/CoCreate-sitemap.git"
+        "server-sitemap": {
+            import: "@cocreate/server-sitemap",
+            path: "../CoCreate-modules/CoCreate-server-sitemap",
+            repo: "github.com/CoCreateJS/CoCreate-server-sitemap.git"
         },
         "cron-jobs": {
             import: "@cocreate/cron-jobs",

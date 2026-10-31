@@ -50,15 +50,12 @@
   },
   "dependencies": {
     "@cocreate/ai": "^1.0.0",
-    "@cocreate/certificates": "^1.11.0",
-    "@cocreate/cron-jobs": "^1.9.0",
+    "@cocreate/server-cron": "^1.9.0",
     "@cocreate/notification": "^1.17.0",
     "@cocreate/organizations": "^1.38.0",
     "@cocreate/server": "^1.11.0",
-    "@cocreate/unique": "^1.28.0",
     "@cocreate/workflows": "^1.0.0",
-    "@cocreate/url-uploader": "^1.6.0",
-    "@cocreate/usage": "^1.8.0",
+    "@cocreate/server-usage": "^1.8.0",
     "@cocreate/users": "^1.47.0"
   },
   "devDependencies": {

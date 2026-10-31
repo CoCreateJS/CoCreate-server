@@ -26,7 +26,7 @@ async function boot() {
 
         // 1. Primary Role Execution
         if (server.isPrimary) {
-            await import('@cocreate/cron-jobs');
+            await import('@cocreate/server-cron');
         }
 
         // 2. Worker Role Execution (Only loads Worker modules into Worker memory)

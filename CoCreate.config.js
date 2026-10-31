@@ -65,11 +65,6 @@ export default {
             path: "../CoCreate-modules/CoCreate-server-telemetry",
             repo: "github.com/cocreatejs/CoCreate-server-telemetry.git"
         },
-        "server-container": {
-            import: "@cocreate/server-container",
-            path: "../CoCreate-modules/CoCreate-server-container",
-            repo: "github.com/cocreatejs/CoCreate-server-container.git"
-        },
         "crud-server": {
             import: "@cocreate/crud-server",
             path: "../CoCreate-modules/CoCreate-crud-server",
@@ -110,15 +105,15 @@ export default {
             path: "../CoCreate-modules/CoCreate-server-sitemap",
             repo: "github.com/CoCreateJS/CoCreate-server-sitemap.git"
         },
-        "cron-jobs": {
-            import: "@cocreate/cron-jobs",
-            path: "../CoCreate-modules/CoCreate-cron-jobs",
-            repo: "github.com/cocreatejs/CoCreate-cron-jobs.git"
+        "server-cron": {
+            import: "@cocreate/server-cron",
+            path: "../CoCreate-modules/CoCreate-server-cron",
+            repo: "github.com/cocreatejs/CoCreate-server-cron.git"
         },
-        usage: {
-            import: "@cocreate/usage",
-            path: "../CoCreate-modules/CoCreate-usage",
-            repo: "github.com/cocreatejs/CoCreate-usage.git"
+        "server-usage": {
+            import: "@cocreate/server-usage",
+            path: "../CoCreate-modules/CoCreate-server-usage",
+            repo: "github.com/cocreatejs/CoCreate-server-usage.git"
         },
 
         // --- Database & Storage Modules ---

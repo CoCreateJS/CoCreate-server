@@ -37,7 +37,7 @@ fi
 # 3. Download the latest application binary from GitHub Releases
 # ------------------------------------------------------------------------------
 APP_BINARY=/usr/local/bin/cocreatews-linux-x86
-APP_DOWNLOAD_URL=https://github.com/CoCreate-app/CoCreateWS/releases/latest/download/cocreatews-linux-x86
+APP_DOWNLOAD_URL=https://github.com/CoCreateJS/CoCreateWS/releases/latest/download/cocreatews-linux-x86
 
 echo "[CoCreate] Downloading the latest application binary..."
 DOWNLOAD_FILE=$(mktemp /tmp/cocreatews-linux-x86.XXXXXX)

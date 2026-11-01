@@ -1,7 +1,7 @@
 {
   "nodeModulesDir": "auto",
   "imports": {
-    "@cocreate/ai": "../CoCreate-plugins/CoCreate-server-ai/dist/index.js"
+    "@cocreate/ai": "../CoCreate-plugins/server-ai/dist/index.js"
   },
   "workspace": [
     "../CoCreate-modules/*",
@@ -13,7 +13,7 @@
   ],
   "tasks": {
     "start": "deno run -A src/index.js",
-    "compile:linux-x86": "deno compile --bundle --minify --reload --no-remote -A --no-check --unstable-node-globals --exclude-unused-npm --include ../CoCreate-plugins/CoCreate-server-ai/dist/copilot-linux-x64 --target x86_64-unknown-linux-gnu --output dist/cocreatews-linux-x86 src/index.js",
+    "compile:linux-x86": "deno compile --bundle --minify --reload --no-remote -A --no-check --unstable-node-globals --exclude-unused-npm --include ../CoCreate-plugins/server-ai/dist/copilot-linux-x64 --target x86_64-unknown-linux-gnu --output dist/cocreatews-linux-x86 src/index.js",
     "compile:linux-arm": "deno compile --bundle --minify --reload --no-remote -A --no-check --unstable-node-globals --exclude-unused-npm --target aarch64-unknown-linux-gnu --output dist/cocreatews-linux-arm64 src/index.js",
     "compile:win-x86": "deno compile --bundle --minify --reload --no-remote -A --no-check --unstable-node-globals --exclude-unused-npm --target x86_64-pc-windows-msvc --output dist/cocreatews-win-x86.exe src/index.js",
     "compile:mac-arm": "deno compile --bundle --minify --reload --no-remote -A --no-check --unstable-node-globals --exclude-unused-npm --target aarch64-apple-darwin --output dist/cocreatews-mac-arm64 src/index.js",

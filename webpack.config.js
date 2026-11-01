@@ -37,7 +37,7 @@ function workspaceAliases() {
     // bundle. It resolves the disk-based runtime when AI is enabled.
     aliases["@cocreate/ai"] = path.join(
         workspaceRoot,
-        "CoCreate-plugins/CoCreate-server-ai/src/bootstrap.js"
+        "CoCreate-plugins/server-ai/src/bootstrap.js"
     );
     return aliases;
 }

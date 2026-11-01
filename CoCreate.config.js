@@ -45,10 +45,10 @@ export default {
      */
     modules: {
         // --- Core Server & Deployment Modules ---
-        server: {
-            import: "@cocreate/server",
-            path: "../CoCreate-modules/server",
-            repo: "github.com/cocreatejs/CoCreate-server.git"
+        cluster: {
+            import: "@cocreate/cluster",
+            path: "../CoCreate-modules/cluster",
+            repo: "github.com/CoCreateJS/cluster.git"
         },
         "server-mesh": {
             import: "@cocreate/server-mesh",
@@ -285,9 +285,9 @@ export default {
         }
     },
     projects: {
-        CoCreateWS: {
-            path: "../CoCreateWS",
-            repo: "github.com/cocreatejs/CoCreateWS.git",
+        server: {
+            path: "../CoCreate-server",
+            repo: "github.com/CoCreateJS/CoCreate-server.git",
             exclude: ["git"]
         }
     }

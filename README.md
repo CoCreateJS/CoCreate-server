@@ -1,6 +1,6 @@
-# @cocreate/cocreatews
+# @cocreate/server
 
-A highly scalable, multi-tenant server infrastructure architecture. As the master entry point wrapper for the CoCreate ecosystem, `@cocreate/cocreatews` orchestrates a modular cluster matrix capable of auto-scaling, reactive data synchronization, dynamic routing, and pluggable cross-database architectures.
+A highly scalable, multi-tenant server infrastructure architecture. As the master entry point wrapper for the CoCreate ecosystem, `@cocreate/server` orchestrates a modular cluster matrix capable of auto-scaling, reactive data synchronization, dynamic routing, and pluggable cross-database architectures.
 
 By binding isolated microservices together under a unified cluster mesh, this engine allows developers to build elastic, distributed applications that scale seamlessly from a single container up to enterprise-grade server infrastructure.
 
@@ -78,13 +78,13 @@ Instead of treating server logic, routing, data layers, and certificate tracking
 
 ```
   ┌────────────────────────────────────────────────────────────────────────┐
-  │                           @cocreate/cocreatews                         │
+  │                           @cocreate/server                         │
   │                     (Unified Global Entry Wrapper)                     │
   └───────────────────────────────────┬────────────────────────────────────┘
                                       │
                                       ▼
                     ┌───────────────────────────────────┐
-                    │          @cocreate/server         │
+                    │          @cocreate/cluster         │
                     │      (Master Execution Core)      │
                     └─────────────────┬─────────────────┘
                                       │
@@ -97,14 +97,14 @@ Instead of treating server logic, routing, data layers, and certificate tracking
 
 ```
 
-At its core, `@cocreate/cocreatews` loads `@cocreate/server`, bootstrapping the core networking loops. Every server node instance spins up as a lightweight runner. The true intelligence of the cluster lies within its pluggable state engines, allowing distributed worker threads to process calculations concurrently while remaining synchronized.
+At its core, `@cocreate/server` loads `@cocreate/cluster`, bootstrapping the core networking loops. Every server node instance spins up as a lightweight runner. The true intelligence of the cluster lies within its pluggable state engines, allowing distributed worker threads to process calculations concurrently while remaining synchronized.
 
 ---
 
 ## Installation
 
 ```bash
-npm install @cocreate/cocreatews
+npm install @cocreate/server
 
 ```
 
@@ -117,7 +117,7 @@ npm install @cocreate/cocreatews
 Bootstrapping the master workspace mesh is streamlined down to a single instantiation lifecycle. The wrapper takes care of configuring underlying environments, pulling server boundaries, and connecting ecosystem plugins under the hood:
 
 ```javascript
-const CoCreateWS = require('@cocreate/cocreatews');
+const CoCreateServer = require('@cocreate/server');
 
 /**
  * Configure global cluster attributes
@@ -140,7 +140,7 @@ const clusterConfig = {
 };
 
 // Initializes the entire CoCreate server-side topology
-const infrastructureMesh = new CoCreateWS(clusterConfig);
+const infrastructureMesh = new CoCreateServer(clusterConfig);
 
 infrastructureMesh.on('cluster.ready', ({ nodes, workers }) => {
   console.log(`CoCreate infrastructure cluster online. Managed workers: ${workers}`);
@@ -191,7 +191,7 @@ Rather than utilizing heavy external message brokers that introduce latency, the
 
 The modular architecture of CoCreate isolates critical system concerns into distinct, pluggable open-source components:
 
-* **[@cocreate/server](https://github.com/CoCreateJS/CoCreate-server):** The core server framework that manages raw HTTP/HTTPS routing pipelines, socket upgrades, lifecycle events, and basic message loops.
+* **[@cocreate/cluster](https://github.com/CoCreateJS/cluster):** The core server framework that manages raw HTTP/HTTPS routing pipelines, socket upgrades, lifecycle events, and basic message loops.
 * **[@cocreate/authorization](https://github.com/CoCreateJS/CoCreate-authorization):** A data sanitization firewall and hierarchical permission evaluation engine that handles role inheritance, dot-notation action checks, and dynamic query filtering.
 * **[@cocreate/authentication](https://github.com/CoCreateJS/CoCreate-authentication):** A secure RS256 JWT session management layer that utilizes native crypto keypair generation and rotation to validate user credentials without extra dependencies.
 * **[@cocreate/certificates](https://github.com/CoCreateJS/CoCreate-certificates):** An automated Let's Encrypt certificate client that stores validation challenge tokens in the cluster-wide database, enabling any node to satisfy domain challenges on the fly.
@@ -200,7 +200,7 @@ The modular architecture of CoCreate isolates critical system concerns into dist
 
 ## How to Contribute
 
-We encourage contribution to our libraries (you might even score some nifty swag), please see our [CONTRIBUTING.md](https://github.com/CoCreateJS/CoCreateWS/blob/master/CONTRIBUTING.md) guide for details. If you encounter any bugs or wish to make feature requests, please submit an issue on our [GitHub Issues](https://github.com/CoCreateJS/CoCreateWS/issues) tracker. We want this library to be community-driven, and CoCreate led. We need your help to realize this goal.
+We encourage contribution to our libraries (you might even score some nifty swag), please see our [CONTRIBUTING.md](https://github.com/CoCreateJS/CoCreate-server/blob/master/CONTRIBUTING.md) guide for details. If you encounter any bugs or wish to make feature requests, please submit an issue on our [GitHub Issues](https://github.com/CoCreateJS/CoCreate-server/issues) tracker. We want this library to be community-driven, and CoCreate led. We need your help to realize this goal.
 
 For broader system configurations and API guides, please visit our [CoCreate WS Infrastructure Documentation](https://cocreatejs.com/docs/).
 

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-REPOSITORY="cocreate-js/CoCreateWS"
+REPOSITORY="CoCreateJS/CoCreate-server"
 BRANCH="dev"
 ARCHIVE="cocreatews-node-linux-x64.tar.gz"
 RELEASES_DIR="${ROOT}/dist/releases"

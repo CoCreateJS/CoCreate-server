@@ -29,8 +29,8 @@ SOURCE_COMMIT="$(node --input-type=module -e 'import manifest from "./dist/node/
 cat > "${RELEASE_DIR}/RELEASE-NOTES.txt" <<EOF
 Linux x64 Node.js runtime bundle for development.
 
-Includes the packaged CoCreateWS server, storage providers, and AI runtime.
-Built locally from the linked development workspace (CoCreateWS base commit ${SOURCE_COMMIT}).
+Includes the packaged CoCreate Server, storage providers, and AI runtime.
+Built locally from the linked development workspace (CoCreate Server base commit ${SOURCE_COMMIT}).
 The bundle includes local working tree changes that may not be in that commit.
 The SHA-256 checksum is attached as ${ARCHIVE}.sha256.
 EOF

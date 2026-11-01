@@ -1,5 +1,5 @@
 {
-  "name": "@cocreate/cocreatews",
+  "name": "@cocreate/server",
   "version": "1.12.0",
   "description": "The master entry point wrapper for the CoCreate ecosystem. Orchestrates a highly scalable, multi-tenant server infrastructure architecture with dynamic process auto-scaling, federated cross-database routing, and real-time distributed network state synchronization.",
   "keywords": [
@@ -24,14 +24,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CoCreateJS/CoCreateWS.git"
+    "url": "git+https://github.com/CoCreateJS/CoCreate-server.git"
   },
   "author": "CoCreate LLC",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/CoCreateJS/CoCreateWS/issues"
+    "url": "https://github.com/CoCreateJS/CoCreate-server/issues"
   },
-  "homepage": "https://CoCreateJS.com/docs/CoCreateWS",
+  "homepage": "https://CoCreateJS.com/docs/server",
   "type": "module",
   "main": "./src/index.js",
   "scripts": {
@@ -53,7 +53,7 @@
     "@cocreate/server-cron": "^1.9.0",
     "@cocreate/notification": "^1.17.0",
     "@cocreate/organizations": "^1.38.0",
-    "@cocreate/server": "^1.11.0",
+    "@cocreate/cluster": "^1.12.0",
     "@cocreate/workflows": "^1.0.0",
     "@cocreate/server-usage": "^1.8.0",
     "@cocreate/users": "^1.47.0"

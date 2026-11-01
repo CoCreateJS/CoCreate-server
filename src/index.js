@@ -16,7 +16,7 @@
  *
  ********************************************************************************/
 
-import server from '@cocreate/server';
+import server from '@cocreate/cluster';
 import AI from '@cocreate/ai';
 
 async function boot() {

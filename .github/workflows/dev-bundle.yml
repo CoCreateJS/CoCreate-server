@@ -1,0 +1,53 @@
+name: Development Node Bundle
+
+on:
+  push:
+    branches: [dev]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: development-node-bundle
+  cancel-in-progress: true
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB }}
+    defaults:
+      run:
+        working-directory: CoCreate-server
+    steps:
+      - name: Checkout pushed dev commit and LFS assets
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          path: CoCreate-server
+          fetch-depth: 0
+          lfs: true
+          token: ${{ secrets.GITHUB }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Install Yarn
+        run: npm install --global yarn@1.22.22
+
+      - name: Install server build tools
+        run: yarn install --ignore-scripts --non-interactive
+
+      - name: Clone configured CoCreate repositories
+        run: yarn coc clone
+
+      - name: Install configured module dependencies
+        run: node scripts/install-node-workspace.js
+
+      - name: Build dated development bundle
+        run: bash scripts/build-node-dev.sh
+
+      - name: Publish dated and latest development releases
+        run: bash scripts/release-node-dev.sh

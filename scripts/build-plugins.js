@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -8,6 +9,7 @@ const configUrl = pathToFileURL(path.join(root, "CoCreate.config.js"));
 const { default: config } = await import(configUrl);
 const pluginRoot = path.resolve(root, "../CoCreate-plugins");
 const requestedPlugins = new Set(process.argv.slice(2));
+const builtPlugins = {};
 const plugins = Object.entries(config.plugins || {}).filter(([key, plugin]) =>
     (!requestedPlugins.size || requestedPlugins.has(key)) &&
     typeof plugin?.path === "string" &&
@@ -54,5 +56,53 @@ for (const [key, plugin] of plugins) {
     fs.rmSync(outputDirectory, { recursive: true, force: true });
     fs.mkdirSync(path.dirname(outputDirectory), { recursive: true });
     fs.cpSync(distribution, outputDirectory, { recursive: true });
+
+    // The server imports AI's bootstrap directly. Keep that entry and its
+    // local config beside the committed runtime distribution so packaging
+    // does not resolve them from a newer plugin checkout.
+    if (outputName === "ai") {
+        for (const file of ["bootstrap.js", "config.js"]) {
+            const source = path.join(packageDirectory, "src", file);
+            if (!fs.existsSync(source)) throw new Error(`Missing AI bootstrap source: ${source}`);
+            fs.copyFileSync(source, path.join(outputDirectory, file));
+        }
+    }
+
+    const files = {};
+    function fingerprint(folder) {
+        for (const entry of fs.readdirSync(folder, { withFileTypes: true })) {
+            const file = path.join(folder, entry.name);
+            if (entry.isDirectory()) fingerprint(file);
+            else {
+                const contents = fs.readFileSync(file);
+                files[path.relative(outputDirectory, file)] = {
+                    bytes: contents.length,
+                    sha256: createHash("sha256").update(contents).digest("hex")
+                };
+            }
+        }
+    }
+    fingerprint(outputDirectory);
+    builtPlugins[key] = {
+        package: manifest.name || null,
+        version: manifest.version || null,
+        commit: execFileSync("git", ["rev-parse", "HEAD"], {
+            cwd: packageDirectory,
+            encoding: "utf8"
+        }).trim(),
+        files
+    };
     console.log(`Built plugin ${key}: plugins/${outputName}`);
+}
+
+if (builtPlugins.ai) {
+    fs.writeFileSync(path.join(root, "plugins/build-manifest.json"), JSON.stringify({
+        schemaVersion: 1,
+        builtAt: new Date().toISOString(),
+        node: process.version,
+        platform: process.platform,
+        arch: process.arch,
+        plugins: builtPlugins
+    }, null, 2) + "\n");
+    console.log(`Wrote plugin build manifest for ${Object.keys(builtPlugins).length} plugins.`);
 }

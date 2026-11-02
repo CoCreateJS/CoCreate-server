@@ -32,10 +32,27 @@ export default {
     },
 
     /**
- * @property {string} moduleOutputPath
- * @description Defines the destination file path where the build system (e.g., ModuleGenerator Webpack plugin)
- * will save the dynamically generated module entry file. This file contains the automated import and lazy-loading logic.
- */
+     * @namespace projects
+     * @description Standalone apps, environments, or platforms integrated with the Poly Repo CLI.
+     * * The Poly Repo CLI (initiated via the 'coc' command) merges the repo details from 'projects' and 'modules' 
+     * (excluding 'plugins') to execute cross-repository actions seamlessly.
+     * * @property {string} path - Local relative workspace path. Defines the workspace tree structure, determining where the repository is cloned in a new environment so the CLI can locate it during operations.
+     * @property {string} repo - Git repository URL.
+     * @property {string[]} [exclude] - Array of strings used to exclude the project from specific CLI commands (e.g., ["git"] or ["fs/webpack"]).
+     */
+    projects: {
+        server: {
+            path: "../CoCreate-server",
+            repo: "github.com/CoCreateJS/CoCreate-server.git",
+            exclude: ["git"]
+        }
+    },
+
+    /**
+     * @property {string} moduleOutputPath
+     * @description Defines the destination file path where the build system (e.g., ModuleGenerator Webpack plugin)
+     * will save the dynamically generated module entry file. This file contains the automated import and lazy-loading logic.
+     */
     moduleOutputPath: "./CoCreate.index.js",
 
     /**
@@ -271,14 +288,7 @@ export default {
         ai: {
             import: "@cocreate/ai",
             path: "../CoCreate-plugins/server-ai",
-            repo: "github.com/cocreatejs/CoCreate-AI.git"
-        }
-    },
-    projects: {
-        server: {
-            path: "../CoCreate-server",
-            repo: "github.com/CoCreateJS/CoCreate-server.git",
-            exclude: ["git"]
+            repo: "github.com/frankpagan/CoCreate-server-ai.git"
         }
     }
 };

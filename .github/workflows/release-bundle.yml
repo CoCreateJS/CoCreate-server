@@ -1,0 +1,54 @@
+name: Release Node Bundle
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    if: startsWith(github.event.release.tag_name, 'v')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: CoCreate-server
+    steps:
+      - name: Checkout released server source
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          path: CoCreate-server
+          fetch-depth: 0
+          lfs: true
+          token: ${{ secrets.GITHUB }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Install Yarn
+        run: npm install --global yarn@1.22.22
+
+      - name: Install server build tools
+        run: yarn install --ignore-scripts --non-interactive
+
+      - name: Clone configured CoCreate repositories
+        run: yarn coc clone
+
+      - name: Install configured build dependencies
+        run: node scripts/install-node-workspace.js
+
+      - name: Build and package release
+        run: bash scripts/package-node-release.sh "${{ github.event.release.tag_name }}"
+
+      - name: Attach bundle and checksum to GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB }}
+        run: >-
+          gh release upload "${{ github.event.release.tag_name }}"
+          "dist/releases/cocreate-server-${GITHUB_REF_NAME#v}-node-linux-x64.tar.gz"
+          "dist/releases/cocreate-server-${GITHUB_REF_NAME#v}-node-linux-x64.tar.gz.sha256"
+          --repo "${GITHUB_REPOSITORY}" --clobber

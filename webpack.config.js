@@ -36,8 +36,8 @@ function workspaceAliases() {
     // Only the lightweight AI configuration shell belongs in the server
     // bundle. It resolves the disk-based runtime when AI is enabled.
     aliases["@cocreate/ai"] = path.join(
-        workspaceRoot,
-        "CoCreate-plugins/server-ai/src/bootstrap.js"
+        __dirname,
+        "plugins/ai/bootstrap.js"
     );
     return aliases;
 }
@@ -59,27 +59,13 @@ class RuntimeAssetsPlugin {
                 `${JSON.stringify({ private: true, type: "module" }, null, 2)}\n`
             );
 
-            const storagePackages = path.join(workspaceRoot, "CoCreate-storages");
+            const storagePackages = path.join(__dirname, "storages");
             const storageOutput = path.join(compiler.options.output.path, "storages");
             fs.mkdirSync(storageOutput, { recursive: true });
-
-            for (const packageDirectory of fs.readdirSync(storagePackages)) {
-                if (!packageDirectory.startsWith("CoCreate-")) continue;
-
-                const provider = packageDirectory.slice("CoCreate-".length);
-                const source = path.join(
-                    storagePackages,
-                    packageDirectory,
-                    "dist",
-                    `${provider}.js`
-                );
-                if (!fs.existsSync(source)) continue;
-
-                fs.copyFileSync(
-                    source,
-                    path.join(storageOutput, `${provider}.js`)
-                );
+            if (!fs.existsSync(storagePackages)) {
+                throw new Error(`Missing built storage distributions: ${storagePackages}`);
             }
+            fs.cpSync(storagePackages, storageOutput, { recursive: true });
         });
     }
 }

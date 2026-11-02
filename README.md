@@ -108,6 +108,10 @@ npm install @cocreate/server
 
 ```
 
+## Preparing the Node Runtime Bundle
+
+Storage and plugin distributions are generated and tested separately from the server bundle. When their sources or configured lists change, run `yarn build:storages` and `yarn build:plugins`, test the server with those outputs, and commit the generated `storages/` and `plugins/` files. `yarn package:node` verifies those committed artifacts and packages them without rebuilding them. Copilot executables are tracked with Git LFS.
+
 ---
 
 ## Usage
@@ -192,9 +196,9 @@ Rather than utilizing heavy external message brokers that introduce latency, the
 The modular architecture of CoCreate isolates critical system concerns into distinct, pluggable open-source components:
 
 * **[@cocreate/cluster](https://github.com/CoCreateJS/cluster):** The core server framework that manages raw HTTP/HTTPS routing pipelines, socket upgrades, lifecycle events, and basic message loops.
-* **[@cocreate/authorization](https://github.com/CoCreateJS/CoCreate-authorization):** A data sanitization firewall and hierarchical permission evaluation engine that handles role inheritance, dot-notation action checks, and dynamic query filtering.
-* **[@cocreate/authentication](https://github.com/CoCreateJS/CoCreate-authentication):** A secure RS256 JWT session management layer that utilizes native crypto keypair generation and rotation to validate user credentials without extra dependencies.
-* **[@cocreate/certificates](https://github.com/CoCreateJS/CoCreate-certificates):** An automated Let's Encrypt certificate client that stores validation challenge tokens in the cluster-wide database, enabling any node to satisfy domain challenges on the fly.
+* **[@cocreate/authorization](https://github.com/CoCreateJS/authorization):** A data sanitization firewall and hierarchical permission evaluation engine that handles role inheritance, dot-notation action checks, and dynamic query filtering.
+* **[@cocreate/authentication](https://github.com/CoCreateJS/authentication):** A secure RS256 JWT session management layer that utilizes native crypto keypair generation and rotation to validate user credentials without extra dependencies.
+* **[@cocreate/certificates](https://github.com/CoCreateJS/certificates):** An automated Let's Encrypt certificate client that stores validation challenge tokens in the cluster-wide database, enabling any node to satisfy domain challenges on the fly.
 
 ---
 

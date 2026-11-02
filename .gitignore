@@ -5,11 +5,13 @@
 /scripts/*
 !/scripts/build-storages.js
 !/scripts/build-plugins.js
+!/scripts/verify-plugins.js
+!/scripts/verify-storages.js
 !/scripts/verify-node.js
 !/scripts/build-node-dev.sh
 !/scripts/release-node-dev.sh
-storages/
-/plugins/
+!/scripts/install-node-workspace.js
+!/scripts/package-node-release.sh
 node_modules/
 jspm_packages/
 .pnp/

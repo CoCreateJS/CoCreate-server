@@ -50,30 +50,25 @@ export default {
             path: "../CoCreate-modules/cluster",
             repo: "github.com/CoCreateJS/cluster.git"
         },
-        "server-mesh": {
-            import: "@cocreate/server-mesh",
-            path: "../CoCreate-modules/server-mesh",
-            repo: "github.com/cocreatejs/CoCreate-server-mesh.git"
+        "autoscaler": {
+            import: "@cocreate/autoscaler",
+            path: "../CoCreate-modules/autoscaler",
+            repo: "github.com/CoCreateJS/autoscaler.git"
         },
-        "server-autoscaler": {
-            import: "@cocreate/server-autoscaler",
-            path: "../CoCreate-modules/server-autoscaler",
-            repo: "github.com/cocreatejs/CoCreate-server-autoscaler.git"
-        },
-        "server-telemetry": {
-            import: "@cocreate/server-telemetry",
-            path: "../CoCreate-modules/server-telemetry",
-            repo: "github.com/cocreatejs/CoCreate-server-telemetry.git"
+        "telemetry": {
+            import: "@cocreate/telemetry",
+            path: "../CoCreate-modules/telemetry",
+            repo: "github.com/CoCreateJS/telemetry.git"
         },
         "crud-server": {
             import: "@cocreate/crud-server",
             path: "../CoCreate-modules/crud-server",
             repo: "github.com/cocreatejs/CoCreate-crud-server.git"
         },
-        "server-tls": {
-            import: "@cocreate/server-tls",
-            path: "../CoCreate-modules/server-tls",
-            repo: "github.com/cocreatejs/CoCreate-server-tls.git"
+        "tls": {
+            import: "@cocreate/tls",
+            path: "../CoCreate-modules/tls",
+            repo: "github.com/CoCreateJS/tls.git"
         },
         authenticate: {
             import: "@cocreate/authenticate",
@@ -90,30 +85,25 @@ export default {
             path: "../CoCreate-modules/socket-server",
             repo: "github.com/cocreatejs/CoCreate-socket-server.git",
         },
-        "file-server": {
-            import: "@cocreate/file-server",
-            path: "../CoCreate-modules/file-server",
-            repo: "github.com/cocreatejs/CoCreate-file-server.git",
+        "file": {
+            import: "@cocreate/file",
+            path: "../CoCreate-modules/file",
+            repo: "github.com/CoCreateJS/file.git",
         },
-        "server-side-render": {
-            import: "@cocreate/server-side-render",
-            path: "../CoCreate-modules/server-side-render",
-            repo: "github.com/cocreatejs/CoCreate-server-side-render.git"
+        "sitemap": {
+            import: "@cocreate/sitemap",
+            path: "../CoCreate-modules/sitemap",
+            repo: "github.com/CoCreateJS/sitemap.git"
         },
-        "server-sitemap": {
-            import: "@cocreate/server-sitemap",
-            path: "../CoCreate-modules/server-sitemap",
-            repo: "github.com/CoCreateJS/CoCreate-server-sitemap.git"
+        "cron": {
+            import: "@cocreate/cron",
+            path: "../CoCreate-modules/cron",
+            repo: "github.com/CoCreateJS/cron.git"
         },
-        "server-cron": {
-            import: "@cocreate/server-cron",
-            path: "../CoCreate-modules/server-cron",
-            repo: "github.com/cocreatejs/CoCreate-server-cron.git"
-        },
-        "server-usage": {
-            import: "@cocreate/server-usage",
-            path: "../CoCreate-modules/server-usage",
-            repo: "github.com/cocreatejs/CoCreate-server-usage.git"
+        "usage": {
+            import: "@cocreate/usage",
+            path: "../CoCreate-modules/usage",
+            repo: "github.com/CoCreateJS/usage.git"
         },
 
         // --- Database & Storage Modules ---

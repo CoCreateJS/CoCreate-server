@@ -54,11 +54,11 @@
 * add metrics configuration to CoCreate.config.js ([3f77af0](https://github.com/CoCreateJS/CoCreateWS/commit/3f77af0204f783d620c76d6f12a1b5cc45531ce3))
 * add socket-mesh provider configuration and update dependencies ([a8d7048](https://github.com/CoCreateJS/CoCreateWS/commit/a8d7048499bec42f9bd668dbde924ea4f7405938))
 * update automated workflow and release configuration for improved semantic release handling ([62c7d2c](https://github.com/CoCreateJS/CoCreateWS/commit/62c7d2c1753ade20bbdbbab85ec51b27b3d58881))
-* update CoCreate.config.js and package.json to add server-telemetry module and remove metrics ([a133696](https://github.com/CoCreateJS/CoCreateWS/commit/a1336960908308bc59e999a2f4f6a3b085c21484))
+* update CoCreate.config.js and package.json to add telemetry module and remove metrics ([a133696](https://github.com/CoCreateJS/CoCreateWS/commit/a1336960908308bc59e999a2f4f6a3b085c21484))
 * update CoCreate.config.js to add new server modules and remove deprecated configurations ([5728f2d](https://github.com/CoCreateJS/CoCreateWS/commit/5728f2d056f3b636340226001714ee6632e5a392))
 * update CoCreate.config.js to enhance worker and mesh provider configurations ([c770ce4](https://github.com/CoCreateJS/CoCreateWS/commit/c770ce410f593241136a6b14ff318990184f84fb))
 * update deno.json links to include new server modules and remove nginx ([318c4b7](https://github.com/CoCreateJS/CoCreateWS/commit/318c4b73606d2e0fec17d5ea1d6aa2de39b52b9d))
-* update package.json to add server-autoscaler and server-mesh dependencies ([d72d923](https://github.com/CoCreateJS/CoCreateWS/commit/d72d923655fea83798a9102a011b90e87de6657b))
+* update package.json to add autoscaler and server-mesh dependencies ([d72d923](https://github.com/CoCreateJS/CoCreateWS/commit/d72d923655fea83798a9102a011b90e87de6657b))
 
 ## [1.0.5](https://github.com/CoCreateJS/CoCreateWS/compare/v1.0.4...v1.0.5) (2025-05-01)
 

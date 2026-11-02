@@ -16,23 +16,23 @@
  *
  ********************************************************************************/
 
-import server from '@cocreate/cluster';
-import AI from '@cocreate/ai';
+import cluster from '@cocreate/cluster';
+// import AI from '@cocreate/ai';
 
 async function boot() {
     try {
-        // Initialize core server capabilities (database, IPC, sockets, TLS, state)
-        await server.init();
+        // Apply core cluster capabilities (database, IPC, sockets, TLS, state)
+        await cluster.init();
 
         // 1. Primary Role Execution
-        if (server.isPrimary) {
-            await import('@cocreate/server-cron');
+        if (cluster.isPrimary) {
+            await import('@cocreate/cron');
         }
 
         // 2. Worker Role Execution (Only loads Worker modules into Worker memory)
-        if (server.isWorker || server.totalWorkers <= 1) {
+        if (cluster.isWorker || cluster.totalWorkers <= 1) {
             // Worker 1 specific dynamic import
-            // if (server.workerId === 1) {
+            // if (cluster.workerId === 1) {
             //
             // }
 
@@ -40,25 +40,27 @@ async function boot() {
             // await import('@cocreate/notification');
 
             const Organizations = await import('@cocreate/organizations');
-            await Organizations.init(server);
+            await Organizations.init(cluster);
             const Users = await import('@cocreate/users');
-            Users.default(server);
+            await Users.init(cluster);
 
-            server.ai = await AI.init(server);
+            // cluster.ai = await AI.init(cluster);
 
             // Custom edge HTTP route registered in Map (path -> handler)
-            // server.routes.set('/api/v1/health', async (req, res) => {
+            // cluster.routes.set('/api/v1/health', async (req, res) => {
             //     res.writeHead(200, { 'Content-Type': 'application/json' });
             //     res.end(JSON.stringify({
             //         status: 'healthy',
-            //         workerId: server.workerId,
+            //         workerId: cluster.workerId,
             //         pid: process.pid
             //     }));
             // });
         }
 
+        // Initialize core cluster capabilities (database, IPC, sockets, TLS, state)
+
     } catch (error) {
-        console.error('[@cocreate/entry] Critical error during server bootstrap:', error);
+        console.error('[@cocreate/server] Critical error during server bootstrap:', error);
         process.exit(1);
     }
 }

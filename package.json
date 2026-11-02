@@ -1,6 +1,6 @@
 {
   "name": "@cocreate/server",
-  "version": "1.12.0",
+  "version": "1.6.0",
   "description": "The master entry point wrapper for the CoCreate ecosystem. Orchestrates a highly scalable, multi-tenant server infrastructure architecture with dynamic process auto-scaling, federated cross-database routing, and real-time distributed network state synchronization.",
   "keywords": [
     "server",

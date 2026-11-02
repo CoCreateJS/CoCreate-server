@@ -1,3 +1,52 @@
+# [1.6.0](https://github.com/CoCreateJS/CoCreate-server/compare/v1.5.0...v1.6.0) (2026-11-02)
+
+
+### Bug Fixes
+
+* add --reload and --no-remote flags to compile tasks in deno.json ([d9e03b9](https://github.com/CoCreateJS/CoCreate-server/commit/d9e03b9a62aee3738260f775ead987d0e6dd407c))
+* add .storage-cache to .gitignore ([ff16a33](https://github.com/CoCreateJS/CoCreate-server/commit/ff16a33d1f35ad37496ea9a4c92479dddc902e20))
+* add certificates/ to .gitignore to prevent tracking of certificate files ([c39e487](https://github.com/CoCreateJS/CoCreate-server/commit/c39e4873578d9e7000f72491ff41d19a5b94d742))
+* add organizations directory to .gitignore ([77e047f](https://github.com/CoCreateJS/CoCreate-server/commit/77e047f62db096ec1ab5c9dedfeb45bbcd58acff))
+* added host to config ([a8d274e](https://github.com/CoCreateJS/CoCreate-server/commit/a8d274ebc4b5a428f1f60e5027503776e93fa422))
+* bump dependencie versions ([d8c2438](https://github.com/CoCreateJS/CoCreate-server/commit/d8c2438b137969bf59714a21d4e3d860dd6eadbe))
+* bump versions ([877f635](https://github.com/CoCreateJS/CoCreate-server/commit/877f63501f73f5a15480fc0ade968b5f5ad2685a))
+* correct syntax in CoCreate.config.js ([c7a2985](https://github.com/CoCreateJS/CoCreate-server/commit/c7a298561f0776a67afbd07ae89af3d7322910c8))
+* correct syntax in CoCreate.config.js by closing the export object properly ([49b087d](https://github.com/CoCreateJS/CoCreate-server/commit/49b087d2c140dddf5e2c8b5c52992c5d899b3a4c))
+* import mongodb.bundle.js in index.js ([dbb16eb](https://github.com/CoCreateJS/CoCreate-server/commit/dbb16ebea09b5110221802de4e59b5d172a25938))
+* initialize organization and user runtimes ([3b8b21f](https://github.com/CoCreateJS/CoCreate-server/commit/3b8b21f668933aca496786b92f02031abfc18732))
+* Refactor code structure for improved readability and maintainability ([5a3ae41](https://github.com/CoCreateJS/CoCreate-server/commit/5a3ae4133e03a7e94299a2d00cb522675cec838a))
+* remove CoCreateWS module and add server-container module in CoCreate.config.js ([6b2fc79](https://github.com/CoCreateJS/CoCreate-server/commit/6b2fc797e15246de3539427ab504afbfd5950382))
+* remove loadtest configuration from CoCreate.config.js ([409a2a1](https://github.com/CoCreateJS/CoCreate-server/commit/409a2a1837cc07c8c14d2e930f670802f57af13c))
+* remove unused dependency @cocreate/industry from package.json ([4b2255e](https://github.com/CoCreateJS/CoCreate-server/commit/4b2255e299df9c81b8119cc1d43ed8ab6fb66ce4))
+* replace links with imports in deno.json for module management ([f3f3a68](https://github.com/CoCreateJS/CoCreate-server/commit/f3f3a689bfc1599017422f4a5fd24d2512e88c99))
+* restructure project files and update configurations for improved organization ([03170b6](https://github.com/CoCreateJS/CoCreate-server/commit/03170b67ad84a23e800c13ff861510c7281f11e0))
+* update .gitignore to change directory name from .storage to .storages and correct certificates path ([cf8f81e](https://github.com/CoCreateJS/CoCreate-server/commit/cf8f81e0c5d59945ea1061d35ec96a641fa04c98))
+* update .gitignore to replace .storage-cache with .storage ([1044520](https://github.com/CoCreateJS/CoCreate-server/commit/10445208b193d89812fe0995e8e0c08b08c850a8))
+* update @cocreate/crud-server dependency version to 1.37.3 ([5c9ac33](https://github.com/CoCreateJS/CoCreate-server/commit/5c9ac33e4b0ba69d369ac9116721ba549285cb03))
+* update copyright year and refactor server boot process with dynamic imports for worker roles ([a0f2abb](https://github.com/CoCreateJS/CoCreate-server/commit/a0f2abb2a4c9089cebdb8be23d967af796972975))
+* update dependencies to latest versions in package.json ([7e8b760](https://github.com/CoCreateJS/CoCreate-server/commit/7e8b76083b256a11f3bd0781305e14fbe5834dc1))
+* update dependency from acme to certificates in package.json ([5661d90](https://github.com/CoCreateJS/CoCreate-server/commit/5661d902408d8991bebce2a5d122cd4e43e107ed))
+* update git urls ([88a3653](https://github.com/CoCreateJS/CoCreate-server/commit/88a3653d005c1becc6df2e610a26b9232acdb772))
+* update GitHub Actions workflow to use latest action versions and sync package.json description ([088db61](https://github.com/CoCreateJS/CoCreate-server/commit/088db61defa8f65a672df3afa4399f32ff4de834))
+* update import paths for database installers to use correct directory structure ([f1d2576](https://github.com/CoCreateJS/CoCreate-server/commit/f1d2576a80fd202d385b4f91565967907356bd58))
+* update nodeModulesDir to 'auto' and refine dependencies in package.json ([bb6db55](https://github.com/CoCreateJS/CoCreate-server/commit/bb6db556935025c34155ff13946085af01b777ab))
+* update nodeModulesDir to 'none' and change start task to use src/index.js ([a1bb470](https://github.com/CoCreateJS/CoCreate-server/commit/a1bb47090a41c24ef2396782671e7fe9cc4905ba))
+* update paths from CoCreate-databases to CoCreate-storages in configuration files ([f156b69](https://github.com/CoCreateJS/CoCreate-server/commit/f156b69b5bb62793f93627ef4c20b5957c9cbd46))
+* update storage directory name from .storage to .storages in mongodb.bundle.js ([dc64d5b](https://github.com/CoCreateJS/CoCreate-server/commit/dc64d5b27363d9be454e5051a56559d882db5871))
+* update worker configuration to use boolean value and replace certificates with server-tls module ([03d0f5e](https://github.com/CoCreateJS/CoCreate-server/commit/03d0f5e76c32487cf674f71ade83f4a0e9391aee))
+* updated config ([a4fd176](https://github.com/CoCreateJS/CoCreate-server/commit/a4fd176fcf108d2b549e61565f54d85d029ef2df))
+
+
+### Features
+
+* add startup script for CoCreate WebService installation and configuration ([b0539f3](https://github.com/CoCreateJS/CoCreate-server/commit/b0539f31b42684f17592525d7e234fedd0ac9e63))
+* added mongodb.bundle.js ([c91d0fd](https://github.com/CoCreateJS/CoCreate-server/commit/c91d0fde8421dd02c7f1e89f9b127d1b87e7b692))
+* integrate server AI runtime ([d8291aa](https://github.com/CoCreateJS/CoCreate-server/commit/d8291aa1514552beaaecdbff52ede9fb6444433b))
+* server runtime api implmentation ([91f3747](https://github.com/CoCreateJS/CoCreate-server/commit/91f37470a70bfa2960e1df41c4df6e54713e5435))
+* update package.json description and keywords for improved clarity and relevance ([723eea6](https://github.com/CoCreateJS/CoCreate-server/commit/723eea681bbfe79ef7f11d66246400ec6f02ca92))
+* update README.md for improved clarity and detail on system architecture and features ([3620941](https://github.com/CoCreateJS/CoCreate-server/commit/3620941c9281402cd5f05f3e2a363a69cd9a9a02))
+* update references from @cocreate/acme to @cocreate/certificates in config and README ([d132397](https://github.com/CoCreateJS/CoCreate-server/commit/d132397e83690e67a1f571d584c83e409fdca88f))
+
 # [1.5.0](https://github.com/CoCreateJS/CoCreateWS/compare/v1.4.0...v1.5.0) (2026-07-19)
 
 

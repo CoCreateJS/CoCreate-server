@@ -22,14 +22,12 @@ if (pluginEntries.length !== Object.keys(manifest.plugins).length) {
 }
 
 for (const [key, entry] of pluginEntries) {
-    const sourcePath = path.resolve(root, entry.path);
-    const packageManifest = JSON.parse(fs.readFileSync(path.join(sourcePath, "package.json"), "utf8"));
-    const outputName = packageManifest.name?.startsWith("@cocreate/")
-        ? packageManifest.name.slice("@cocreate/".length)
-        : key;
-    const pluginPath = path.join(outputRoot, outputName);
     const built = manifest.plugins[key];
     if (!built) throw new Error(`Missing plugin build manifest entry: ${key}`);
+    const outputName = built.package?.startsWith("@cocreate/")
+        ? built.package.slice("@cocreate/".length)
+        : key;
+    const pluginPath = path.join(outputRoot, outputName);
 
     const actualFiles = new Set();
     function verifyFolder(folder) {

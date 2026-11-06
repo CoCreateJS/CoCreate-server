@@ -10,36 +10,12 @@ import { fileURLToPath } from "node:url";
 import webpack from "webpack";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const workspaceRoot = path.resolve(__dirname, "..");
-
-function workspaceAliases() {
-    const aliases = {};
-    for (const directory of [
-        "CoCreate-modules",
-        "CoCreate-plugins"
-    ]) {
-        const packagesDirectory = path.join(workspaceRoot, directory);
-        if (!fs.existsSync(packagesDirectory)) continue;
-
-        for (const packageDirectory of fs.readdirSync(packagesDirectory)) {
-            const absoluteDirectory = path.join(packagesDirectory, packageDirectory);
-            const packagePath = path.join(absoluteDirectory, "package.json");
-            if (!fs.existsSync(packagePath)) continue;
-
-            const packageJson = JSON.parse(fs.readFileSync(packagePath, "utf8"));
-            if (packageJson.name?.startsWith("@cocreate/")) {
-                aliases[packageJson.name] = absoluteDirectory;
-            }
-        }
-    }
-
+function runtimeAliases() {
     // Only the lightweight AI configuration shell belongs in the server
     // bundle. It resolves the disk-based runtime when AI is enabled.
-    aliases["@cocreate/ai"] = path.join(
-        __dirname,
-        "plugins/ai/bootstrap.js"
-    );
-    return aliases;
+    return {
+        "@cocreate/ai$": path.join(__dirname, "plugins/ai/bootstrap.js")
+    };
 }
 
 class RuntimeAssetsPlugin {
@@ -78,7 +54,9 @@ export default {
         outputModule: true
     },
     resolve: {
-        alias: workspaceAliases(),
+        // Runtime packages resolve from node_modules using their published
+        // package exports. Only the committed AI bootstrap is bundled locally.
+        alias: runtimeAliases(),
         extensions: [".js", ".mjs", ".cjs", ".json"],
         fullySpecified: false
     },

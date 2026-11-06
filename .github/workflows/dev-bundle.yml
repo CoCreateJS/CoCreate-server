@@ -58,18 +58,6 @@ jobs:
       - name: Install server build tools
         run: yarn install --ignore-scripts --non-interactive
 
-      - name: Configure GitHub authentication for repository clones
-        run: gh auth setup-git
-
-      - name: Clone configured CoCreate repositories
-        run: yarn coc clone
-
-      - name: Match cloned directories to configured paths
-        run: node scripts/normalize-node-workspace-clones.js
-
-      - name: Install configured module dependencies
-        run: node scripts/install-node-workspace.js
-
       - name: Build dated development bundle
         env:
           DEV_RELEASE_DATE: ${{ needs.prepare.outputs.release_date }}

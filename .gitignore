@@ -10,10 +10,7 @@
 !/scripts/verify-node.js
 !/scripts/build-node-dev.sh
 !/scripts/release-node-dev.sh
-!/scripts/install-node-workspace.js
-!/scripts/package-node-release.sh
 !/scripts/package-node-archive.sh
-!/scripts/normalize-node-workspace-clones.js
 node_modules/
 jspm_packages/
 .pnp/

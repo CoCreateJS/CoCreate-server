@@ -113,3 +113,6 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Release builds install this exact dependency graph.
+!/yarn.lock

@@ -5,6 +5,14 @@ on:
     branches:
       - main
 
+concurrency:
+  group: server-main-release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   about:
     runs-on: ubuntu-latest
@@ -35,13 +43,23 @@ jobs:
             echo "No package keywords found; leaving GitHub topics unchanged."
           fi
 
+  verify-tested-runtime:
+    uses: ./.github/workflows/promote-bundle.yml
+    with:
+      stage: main
+      target_ref: ${{ github.sha }}
+      validate_only: true
+    secrets: inherit
+
   release:
+    needs: verify-tested-runtime
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          lfs: true
           token: ${{ secrets.GITHUB }} # Authenticates git CLI for tag/commit pushes
 
       - name: Setup Node.js
@@ -59,7 +77,22 @@ jobs:
 
       - name: Run Semantic Release
         id: semantic
-        run: npx semantic-release
+        run: |
+          export SEMANTIC_RELEASE_MODULE="$(npm root -g)/semantic-release/index.js"
+          node --input-type=module <<'NODE'
+          import { appendFileSync } from 'node:fs';
+          import { pathToFileURL } from 'node:url';
+          const { default: release } = await import(pathToFileURL(process.env.SEMANTIC_RELEASE_MODULE));
+          const result = await release();
+          appendFileSync(process.env.GITHUB_OUTPUT, `new_release_published=${Boolean(result)}\n`);
+          if (result) {
+            if (!result.releases.some(item => item.pluginName === '@semantic-release/npm')) {
+              throw new Error('Runtime promotion requires a successful npm publication');
+            }
+            appendFileSync(process.env.GITHUB_OUTPUT, `new_release_version=${result.nextRelease.version}\n`);
+            appendFileSync(process.env.GITHUB_OUTPUT, `new_release_tag=${result.nextRelease.gitTag}\n`);
+          }
+          NODE
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB }}"
           NPM_TOKEN: "${{ secrets.NPM_TOKEN }}"
@@ -67,3 +100,13 @@ jobs:
     outputs:
       new_release_published: "${{ steps.semantic.outputs.new_release_published }}"
       new_release_version: "${{ steps.semantic.outputs.new_release_version }}"
+      new_release_tag: "${{ steps.semantic.outputs.new_release_tag }}"
+
+  promote-runtime:
+    needs: [verify-tested-runtime, release]
+    if: needs.release.outputs.new_release_published == 'true'
+    uses: ./.github/workflows/release-bundle.yml
+    with:
+      tag: ${{ needs.release.outputs.new_release_tag }}
+      snapshot_artifact: ${{ needs.verify-tested-runtime.outputs.snapshot_artifact }}
+    secrets: inherit

@@ -112,6 +112,50 @@ npm install @cocreate/server
 
 Storage and plugin distributions are generated and tested separately from the server bundle. When their sources or configured lists change, run `yarn build:storages` and `yarn build:plugins`, test the server with those outputs, and commit the generated `storages/` and `plugins/` files. `yarn package:node` verifies those committed artifacts and packages them without rebuilding them. Copilot executables are tracked with Git LFS.
 
+### Dev, test, and production promotion
+
+All application changes happen on development branches. Update `dev` to build a
+runtime candidate, test it in the dev cluster, then merge the selected dev state
+into `test` and push. Test is a promotion stage; make fixes in dev and promote
+again. After testing the test cluster, merge `test` into `main` to release.
+
+- `dev-bundle.yml` installs the committed Yarn lockfile from the npm registry,
+  verifies the prepared storage/plugin distributions, builds Server for Linux
+  x86_64 and ARM64, and replaces only `dev-latest`. It never clones workspace
+  repositories or rebuilds storage/plugin JavaScript distributions.
+- `test-bundle.yml` copies `dev-latest` into the independent `test-latest` release.
+  The manifest, checksums, source ancestry, and source tree must match the pushed
+  test state. If the dev build is still running, wait for it and rerun the test
+  promotion. If dev-latest has already moved to different source, promote that
+  source after testing it or rebuild the intended dev commit first.
+- On `main`, `automated.yml` validates and saves the current test candidate before
+  running semantic-release. Only a successful npm publication calls
+  `release-bundle.yml` to attach those same runtime bytes to the new `v*` release
+  with versioned filenames. No new npm version means no production runtime
+  promotion. Version/changelog metadata may differ from the dev build; other
+  source or package-manifest changes are rejected.
+
+`runtime-manifest.json` records the originating dev commit/build, per-architecture
+SHA-256 checksums, and test promotion commit. Dev and test channel publishers use
+one shared lock to prevent a promotion from reading assets during replacement.
+Only `dev-latest` and `test-latest` move; versioned production releases are kept.
+Temporary Actions artifacts transfer files between jobs, expire after one day,
+and are deleted after successful dev publication. Existing dated dev releases
+are historical and are not deleted by these workflows.
+
+Storage distributions and AI JavaScript are built locally with the commands
+above and committed before a dev push. The x64 Copilot executable is committed
+through Git LFS. Until an ARM64 executable is also prepared and committed, dev CI
+assembles the pinned `@github/copilot-linux-arm64@1.0.105` npm executable into the
+ARM64 candidate. It is then tested in the dev/test clusters and copied unchanged
+to production with the rest of that candidate. This does not rebuild AI.
+
+These workflows publish runtime downloads; they do not provision or deploy the
+dev/test/live clusters. Use the selected channel's archive for cluster startup.
+Production is `main`, as configured by semantic-release; legacy `master` does
+not trigger this pipeline.
+
+
 ---
 
 ## Usage

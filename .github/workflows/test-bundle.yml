@@ -1,0 +1,18 @@
+name: Promote Node Bundle to Test
+
+on:
+  push:
+    branches: [test]
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  promote:
+    uses: ./.github/workflows/promote-bundle.yml
+    with:
+      stage: test
+      target_ref: ${{ github.sha }}
+      target_tag: test-latest
+    secrets: inherit

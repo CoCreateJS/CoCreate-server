@@ -7,22 +7,11 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: development-node-bundle
-  cancel-in-progress: true
-
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    outputs:
-      release_date: ${{ steps.release-date.outputs.date }}
-    steps:
-      - name: Set development release date
-        id: release-date
-        run: echo "date=$(TZ=America/Guatemala date +%F)" >> "$GITHUB_OUTPUT"
-
   build:
-    needs: prepare
+    concurrency:
+      group: dev-runtime-build-${{ matrix.aws_arch }}
+      cancel-in-progress: true
     strategy:
       fail-fast: false
       matrix:
@@ -32,20 +21,16 @@ jobs:
           - runner: ubuntu-24.04-arm
             aws_arch: arm64
     runs-on: ${{ matrix.runner }}
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB }}
     defaults:
       run:
         working-directory: CoCreate-server
     steps:
-      - name: Checkout pushed dev commit and LFS assets
+      - name: Checkout dev source and prepared distributions
         uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
           path: CoCreate-server
-          fetch-depth: 0
           lfs: true
-          token: ${{ secrets.GITHUB }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -55,61 +40,100 @@ jobs:
       - name: Install Yarn
         run: npm install --global yarn@1.22.22
 
-      - name: Install server build tools
-        run: yarn install --ignore-scripts --non-interactive
+      - name: Install published dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts --non-interactive
 
-      - name: Build dated development bundle
-        env:
-          DEV_RELEASE_DATE: ${{ needs.prepare.outputs.release_date }}
+      - name: Verify prepared distributions and build Server
         run: |
+          yarn verify:storages
+          yarn verify:plugins
           yarn build
-          if [[ "${{ matrix.aws_arch }}" == "arm64" ]]; then
-            npm pack @github/copilot-linux-arm64@1.0.105 --pack-destination "$RUNNER_TEMP"
-            mkdir -p "$RUNNER_TEMP/copilot-cli"
-            tar -xzf "$RUNNER_TEMP/github-copilot-linux-arm64-1.0.105.tgz" -C "$RUNNER_TEMP/copilot-cli" package/copilot
-            install -m 755 "$RUNNER_TEMP/copilot-cli/package/copilot" dist/node/plugins/ai/copilot-linux-arm64
-          fi
-          bash scripts/package-node-archive.sh
-          archive="cocreate-server-node-linux-${{ matrix.aws_arch }}.tar.gz"
-          release_dir="dist/releases/${DEV_RELEASE_DATE}"
-          mkdir -p "${release_dir}"
-          cp "dist/${archive}" "${release_dir}/${archive}"
-          (cd "${release_dir}" && sha256sum "${archive}" > "${archive}.sha256")
-          printf '%s\n' "${DEV_RELEASE_DATE}" > dist/releases/.dev-release-current
+          node --check dist/node/index.js
 
-      - name: Upload architecture bundle
+      # AI's JS distribution is committed. Its native CLI must match the runner.
+      # The x64 CLI is in LFS; the missing ARM64 CLI is a pinned npm artifact.
+      - name: Assemble ARM64 native AI dependency
+        if: matrix.aws_arch == 'arm64'
+        run: |
+          npm pack @github/copilot-linux-arm64@1.0.105 --pack-destination "$RUNNER_TEMP"
+          mkdir -p "$RUNNER_TEMP/copilot-cli"
+          tar -xzf "$RUNNER_TEMP/github-copilot-linux-arm64-1.0.105.tgz" -C "$RUNNER_TEMP/copilot-cli" package/copilot
+          install -m 755 "$RUNNER_TEMP/copilot-cli/package/copilot" dist/node/plugins/ai/copilot-linux-arm64
+
+      - name: Package architecture bundle
+        run: |
+          test -x "dist/node/plugins/ai/copilot-linux-$(node -p 'process.arch')"
+          bash scripts/package-node-archive.sh
+
+      - name: Transfer architecture bundle to publisher
         uses: actions/upload-artifact@v7
         with:
           name: dev-linux-${{ matrix.aws_arch }}
-          path: |
-            CoCreate-server/dist/releases/${{ needs.prepare.outputs.release_date }}/cocreate-server-node-linux-${{ matrix.aws_arch }}.tar.gz
-            CoCreate-server/dist/releases/${{ needs.prepare.outputs.release_date }}/cocreate-server-node-linux-${{ matrix.aws_arch }}.tar.gz.sha256
+          path: CoCreate-server/dist/cocreate-server-node-linux-${{ matrix.aws_arch }}.tar.gz
           if-no-files-found: error
+          retention-days: 1
 
   publish:
-    needs: [prepare, build]
+    needs: build
     runs-on: ubuntu-latest
+    # Readers and writers of moving channels share this lock across workflows.
+    concurrency:
+      group: runtime-release-assets
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      actions: write
     env:
-      GH_TOKEN: ${{ secrets.GITHUB }}
-    defaults:
-      run:
-        working-directory: CoCreate-server
+      GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Checkout pushed dev commit
-        uses: actions/checkout@v7
-        with:
-          ref: ${{ github.sha }}
-          path: CoCreate-server
-          token: ${{ secrets.GITHUB }}
-
       - name: Download both architecture bundles
         uses: actions/download-artifact@v7
         with:
-          path: CoCreate-server/dist/releases/${{ needs.prepare.outputs.release_date }}
+          path: bundle
           pattern: dev-linux-*
           merge-multiple: true
 
-      - name: Publish dated and latest development releases
-        env:
-          DEV_RELEASE_DATE: ${{ needs.prepare.outputs.release_date }}
-        run: bash scripts/release-node-dev.sh
+      - name: Publish the single development channel
+        working-directory: bundle
+        run: |
+          set -euo pipefail
+          current_dev=$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/dev" --jq '.object.sha')
+          if [[ "$current_dev" != "$GITHUB_SHA" ]]; then
+            echo "A newer dev push superseded this build; leaving dev-latest unchanged."
+            exit 0
+          fi
+          python3 - <<'PY'
+          import hashlib, json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          assets = {}
+          for arch in ('x86_64', 'arm64'):
+              file = Path(f'cocreate-server-node-linux-{arch}.tar.gz')
+              digest = hashlib.file_digest(file.open('rb'), 'sha256').hexdigest()
+              assets[file.name] = {'sha256': digest, 'bytes': file.stat().st_size}
+              Path(f'{file}.sha256').write_text(f'{digest}  {file.name}\n')
+          Path('runtime-manifest.json').write_text(json.dumps({
+              'schema_version': 1,
+              'build_id': f"{os.environ['GITHUB_RUN_ID']}-{os.environ['GITHUB_RUN_ATTEMPT']}",
+              'source_sha': os.environ['GITHUB_SHA'],
+              'source_run_id': os.environ['GITHUB_RUN_ID'],
+              'built_at': datetime.now(timezone.utc).isoformat(),
+              'native_ai': {'x86_64': 'committed Git LFS artifact', 'arm64': '@github/copilot-linux-arm64@1.0.105'},
+              'assets': assets,
+          }, indent=2) + '\n')
+          PY
+          if ! gh release view dev-latest --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create dev-latest --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title 'Latest Development Build' --notes 'Linux x86_64 and ARM64 Server runtimes. Replaced after each successful dev build.'
+          fi
+          gh release upload dev-latest ./*.tar.gz ./*.sha256 --repo "$GITHUB_REPOSITORY" --clobber
+          # Upload the manifest last; partial uploads cannot pass promotion checks.
+          gh release upload dev-latest runtime-manifest.json --repo "$GITHUB_REPOSITORY" --clobber
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/tags/dev-latest" -f sha="$GITHUB_SHA" -F force=true
+          gh release edit dev-latest --repo "$GITHUB_REPOSITORY" --prerelease --latest=false --title 'Latest Development Build' --notes "Build ${GITHUB_RUN_ID}, source ${GITHUB_SHA}. Test promotions copy these files and verify their checksums."
+
+      - name: Remove temporary transfer artifacts
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts" --paginate --jq '.artifacts[] | select(.name | startswith("dev-linux-")) | .id' |
+          while read -r artifact_id; do
+            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}"
+          done

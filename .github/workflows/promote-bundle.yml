@@ -1,0 +1,198 @@
+name: Promote Prepared Node Bundle
+
+on:
+  workflow_call:
+    inputs:
+      stage:
+        required: true
+        type: string
+      target_ref:
+        required: true
+        type: string
+      target_tag:
+        default: ''
+        type: string
+      validate_only:
+        default: false
+        type: boolean
+      snapshot_artifact:
+        default: ''
+        type: string
+    outputs:
+      snapshot_artifact:
+        value: ${{ jobs.promote.outputs.snapshot_artifact }}
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: runtime-release-assets
+      cancel-in-progress: false
+    outputs:
+      snapshot_artifact: ${{ steps.snapshot.outputs.name }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      STAGE: ${{ inputs.stage }}
+      TARGET_REF: ${{ inputs.target_ref }}
+      TARGET_TAG: ${{ inputs.target_tag }}
+      VALIDATE_ONLY: ${{ inputs.validate_only }}
+    steps:
+      - name: Checkout promotion source history
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.target_ref }}
+          fetch-depth: 0
+          # Promotion consumes release assets; it never needs LFS or npm installs.
+
+      - name: Download pinned production candidate
+        if: inputs.snapshot_artifact != ''
+        uses: actions/download-artifact@v7
+        with:
+          name: ${{ inputs.snapshot_artifact }}
+          path: candidate
+
+      - name: Capture the current source channel
+        if: inputs.snapshot_artifact == ''
+        run: |
+          set -euo pipefail
+          case "$STAGE" in
+            test) source_tag=dev-latest ;;
+            main) source_tag=test-latest ;;
+            *) echo "Unsupported promotion stage: $STAGE" >&2; exit 1 ;;
+          esac
+          mkdir candidate
+          gh release download "$source_tag" --repo "$GITHUB_REPOSITORY" --dir candidate --pattern 'runtime-manifest.json' --pattern '*.tar.gz' --pattern '*.sha256'
+
+      - name: Verify the captured build and merged source
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, re, subprocess
+          from pathlib import Path
+          stage = os.environ['STAGE']
+          if stage not in ('test', 'main'):
+              raise SystemExit('Unsupported promotion stage')
+          root = Path('candidate')
+          manifest = json.loads((root / 'runtime-manifest.json').read_text())
+          if manifest.get('schema_version') != 1:
+              raise SystemExit('Source channel needs a build with runtime-manifest.json schema 1')
+          source = manifest['source_sha']
+          if not re.fullmatch(r'[0-9a-f]{40}', source):
+              raise SystemExit('Invalid build source SHA')
+          target = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          subprocess.run(['git', 'merge-base', '--is-ancestor', source, target], check=True)
+          if stage == 'main':
+              test_sha = manifest.get('test_sha', '')
+              if not re.fullmatch(r'[0-9a-f]{40}', test_sha):
+                  raise SystemExit('Production requires a snapshot promoted through test')
+              subprocess.run(['git', 'merge-base', '--is-ancestor', test_sha, target], check=True)
+              # Semantic-release changes only version/changelog metadata.
+              subprocess.run(['git', 'diff', '--exit-code', source, target, '--', '.', ':!CHANGELOG.md', ':!package.json'], check=True)
+              def package_at(ref):
+                  value = json.loads(subprocess.check_output(['git', 'show', f'{ref}:package.json'], text=True))
+                  value.pop('version', None)
+                  return value
+              if package_at(source) != package_at(target):
+                  raise SystemExit('Package contents changed since the tested build')
+          else:
+              subprocess.run(['git', 'diff', '--exit-code', source, target, '--', '.'], check=True)
+          expected = {f'cocreate-server-node-linux-{arch}.tar.gz' for arch in ('x86_64', 'arm64')}
+          if set(manifest['assets']) != expected:
+              raise SystemExit('Expected both Linux architecture bundles')
+          for name, expected in manifest['assets'].items():
+              file = root / name
+              digest = hashlib.file_digest(file.open('rb'), 'sha256').hexdigest()
+              if file.stat().st_size != expected['bytes'] or digest != expected['sha256']:
+                  raise SystemExit(f'Build asset does not match its manifest: {name}')
+              sidecar = (root / f'{name}.sha256').read_text().split()
+              if sidecar != [digest, name]:
+                  raise SystemExit(f'Invalid checksum file: {name}')
+          if stage == 'test':
+              manifest['test_sha'] = target
+              manifest['test_run_id'] = os.environ['GITHUB_RUN_ID']
+              (root / 'runtime-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          print(f"Verified build {manifest['build_id']} from {source} for {stage} at {target}")
+          PY
+
+      # Pin the validated test bytes before semantic-release runs. A later test
+      # promotion cannot change the candidate selected for this main push.
+      - name: Name the pinned production candidate
+        if: inputs.validate_only
+        id: snapshot
+        run: echo "name=main-runtime-candidate-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
+
+      - name: Preserve the production candidate
+        if: inputs.validate_only
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.snapshot.outputs.name }}
+          path: candidate/*
+          retention-days: 1
+          if-no-files-found: error
+
+      - name: Publish the promoted copy
+        if: ${{ !inputs.validate_only }}
+        run: |
+          set -euo pipefail
+          mkdir promoted
+          python3 - <<'PY'
+          import json, os, re, shutil, subprocess
+          from datetime import datetime, timezone
+          from pathlib import Path
+          stage, tag = os.environ['STAGE'], os.environ['TARGET_TAG']
+          source, output = Path('candidate'), Path('promoted')
+          manifest = json.loads((source / 'runtime-manifest.json').read_text())
+          if stage == 'main':
+              if not re.fullmatch(r'v[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?', tag):
+                  raise SystemExit('Expected a semantic-release version tag')
+              package = json.loads(Path('package.json').read_text())
+              if tag != f"v{package['version']}":
+                  raise SystemExit('Production tag does not match the released npm version')
+              version = package['version']
+          else:
+              if tag != 'test-latest':
+                  raise SystemExit('Expected the test-latest channel')
+              version = None
+          assets = {}
+          for name, metadata in manifest['assets'].items():
+              target_name = name.replace('cocreate-server-node-', f'cocreate-server-{version}-node-', 1) if version else name
+              shutil.copyfile(source / name, output / target_name)
+              (output / f'{target_name}.sha256').write_text(f"{metadata['sha256']}  {target_name}\n")
+              assets[target_name] = {**metadata, 'original_name': name}
+          manifest.update(assets=assets, promoted_to=stage, promoted_at=datetime.now(timezone.utc).isoformat())
+          if version:
+              manifest['release_version'] = version
+          (output / 'runtime-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          PY
+          if [[ "$STAGE" == test ]]; then
+            current_test=$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/test" --jq '.object.sha')
+            if [[ "$current_test" != "$TARGET_REF" ]]; then
+              echo "A newer test push superseded this promotion."
+              exit 0
+            fi
+            if ! gh release view "$TARGET_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+              gh release create "$TARGET_TAG" --repo "$GITHUB_REPOSITORY" --target "$TARGET_REF" --prerelease --title 'Current Test Build' --notes 'Copy of the dev build selected by the test branch. Changes only on a test promotion.'
+            fi
+          else
+            # A production release must already have been created by a successful
+            # npm publication through semantic-release; never create one here.
+            gh release view "$TARGET_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease | jq -e '.isDraft == false and .isPrerelease == false'
+            if gh release download "$TARGET_TAG" --repo "$GITHUB_REPOSITORY" --pattern runtime-manifest.json --output existing-runtime-manifest.json 2>/dev/null; then
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          existing = json.loads(Path('existing-runtime-manifest.json').read_text())
+          promoted = json.loads(Path('promoted/runtime-manifest.json').read_text())
+          if existing['build_id'] != promoted['build_id'] or existing['assets'] != promoted['assets']:
+              raise SystemExit('Refusing to replace a production release with another build')
+          PY
+            fi
+          fi
+          gh release upload "$TARGET_TAG" promoted/*.tar.gz promoted/*.sha256 --repo "$GITHUB_REPOSITORY" --clobber
+          gh release upload "$TARGET_TAG" promoted/runtime-manifest.json --repo "$GITHUB_REPOSITORY" --clobber
+          if [[ "$STAGE" == test ]]; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/tags/test-latest" -f sha="$TARGET_REF" -F force=true
+          fi

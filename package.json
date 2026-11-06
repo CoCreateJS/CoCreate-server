@@ -47,8 +47,7 @@
     "release:dev": "bash scripts/release-node-dev.sh",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "createdb": "node ./installation/createDB.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@cocreate/ai": "^1.0.0",

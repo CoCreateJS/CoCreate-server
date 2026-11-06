@@ -46,7 +46,22 @@ jobs:
         run: yarn install --ignore-scripts --non-interactive
 
       - name: Build and package release
-        run: bash scripts/package-node-release.sh "${{ github.event.release.tag_name }}"
+        run: |
+          yarn build
+          if [[ "${{ matrix.aws_arch }}" == "arm64" ]]; then
+            npm pack @github/copilot-linux-arm64@1.0.105 --pack-destination "$RUNNER_TEMP"
+            mkdir -p "$RUNNER_TEMP/copilot-cli"
+            tar -xzf "$RUNNER_TEMP/github-copilot-linux-arm64-1.0.105.tgz" -C "$RUNNER_TEMP/copilot-cli" package/copilot
+            install -m 755 "$RUNNER_TEMP/copilot-cli/package/copilot" dist/node/plugins/ai/copilot-linux-arm64
+          fi
+          bash scripts/package-node-archive.sh
+          version="$(node -p 'require("./package.json").version')"
+          tag_version="${GITHUB_REF_NAME#v}"
+          test "${tag_version}" = "${version}"
+          archive="cocreate-server-${version}-node-linux-${{ matrix.aws_arch }}.tar.gz"
+          mkdir -p dist/releases
+          cp "dist/cocreate-server-node-linux-${{ matrix.aws_arch }}.tar.gz" "dist/releases/${archive}"
+          (cd dist/releases && sha256sum "${archive}" > "${archive}.sha256")
 
       - name: Attach bundle and checksum to GitHub release
         env:

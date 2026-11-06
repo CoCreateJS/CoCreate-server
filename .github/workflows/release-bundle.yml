@@ -19,6 +19,8 @@ jobs:
           - runner: ubuntu-24.04-arm
             aws_arch: arm64
     runs-on: ${{ matrix.runner }}
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB }}
     defaults:
       run:
         working-directory: CoCreate-server
@@ -43,8 +45,14 @@ jobs:
       - name: Install server build tools
         run: yarn install --ignore-scripts --non-interactive
 
+      - name: Configure GitHub authentication for repository clones
+        run: gh auth setup-git
+
       - name: Clone configured CoCreate repositories
         run: yarn coc clone
+
+      - name: Match cloned directories to configured paths
+        run: node scripts/normalize-node-workspace-clones.js
 
       - name: Install configured build dependencies
         run: node scripts/install-node-workspace.js

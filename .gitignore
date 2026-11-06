@@ -13,6 +13,7 @@
 !/scripts/install-node-workspace.js
 !/scripts/package-node-release.sh
 !/scripts/package-node-archive.sh
+!/scripts/normalize-node-workspace-clones.js
 node_modules/
 jspm_packages/
 .pnp/

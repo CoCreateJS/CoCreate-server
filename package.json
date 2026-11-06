@@ -57,7 +57,8 @@
     "@cocreate/cluster": "^2.0.0",
     "@cocreate/workflows": "^1.0.0",
     "@cocreate/usage": "^2.0.0",
-    "@cocreate/users": "^2.0.0"
+    "@cocreate/users": "^2.0.0",
+    "@cocreate/socket": "^2.0.1"
   },
   "devDependencies": {
     "@cocreate/cli": "^2.0.0",

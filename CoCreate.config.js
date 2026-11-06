@@ -97,10 +97,10 @@ export default {
             path: "../CoCreate-modules/authorize",
             repo: "github.com/cocreatejs/CoCreate-authorize.git"
         },
-        "socket-server": {
-            import: "@cocreate/socket-server",
-            path: "../CoCreate-modules/socket-server",
-            repo: "github.com/cocreatejs/CoCreate-socket-server.git",
+        "socket": {
+            import: "@cocreate/socket",
+            path: "../CoCreate-modules/socket",
+            repo: "github.com/CoCreateJS/socket.git",
         },
         "file": {
             import: "@cocreate/file",

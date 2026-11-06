@@ -17,12 +17,21 @@ if [[ "${TAG_VERSION}" != "${VERSION}" ]]; then
 fi
 
 cd "${ROOT}"
-echo "Building @cocreate/server@${VERSION} for Linux x64..."
+if [[ "$(node -p 'process.platform')" != "linux" ]]; then
+    echo "Release runtime archives must be built on Linux." >&2
+    exit 1
+fi
+case "$(node -p 'process.arch')" in
+    x64) AWS_ARCH="x86_64" ;;
+    arm64) AWS_ARCH="arm64" ;;
+    *) echo "Unsupported Linux architecture: $(node -p 'process.arch')" >&2; exit 1 ;;
+esac
+echo "Building @cocreate/server@${VERSION} for Linux ${AWS_ARCH}..."
 yarn package:node
 
-SOURCE="${ROOT}/dist/cocreatews-node-linux-x64.tar.gz"
+SOURCE="${ROOT}/dist/cocreate-server-node-linux-${AWS_ARCH}.tar.gz"
 RELEASE_DIR="${ROOT}/dist/releases"
-ARCHIVE="cocreate-server-${VERSION}-node-linux-x64.tar.gz"
+ARCHIVE="cocreate-server-${VERSION}-node-linux-${AWS_ARCH}.tar.gz"
 mkdir -p "${RELEASE_DIR}"
 cp "${SOURCE}" "${RELEASE_DIR}/${ARCHIVE}"
 (

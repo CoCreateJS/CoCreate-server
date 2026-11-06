@@ -12,6 +12,7 @@
 !/scripts/release-node-dev.sh
 !/scripts/install-node-workspace.js
 !/scripts/package-node-release.sh
+!/scripts/package-node-archive.sh
 node_modules/
 jspm_packages/
 .pnp/

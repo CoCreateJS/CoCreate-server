@@ -12,8 +12,26 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  bundle:
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      release_date: ${{ steps.release-date.outputs.date }}
+    steps:
+      - name: Set development release date
+        id: release-date
+        run: echo "date=$(TZ=America/Guatemala date +%F)" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            aws_arch: x86_64
+          - runner: ubuntu-24.04-arm
+            aws_arch: arm64
+    runs-on: ${{ matrix.runner }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB }}
     defaults:
@@ -47,7 +65,43 @@ jobs:
         run: node scripts/install-node-workspace.js
 
       - name: Build dated development bundle
+        env:
+          DEV_RELEASE_DATE: ${{ needs.prepare.outputs.release_date }}
         run: bash scripts/build-node-dev.sh
 
+      - name: Upload architecture bundle
+        uses: actions/upload-artifact@v7
+        with:
+          name: dev-linux-${{ matrix.aws_arch }}
+          path: |
+            CoCreate-server/dist/releases/${{ needs.prepare.outputs.release_date }}/cocreate-server-node-linux-${{ matrix.aws_arch }}.tar.gz
+            CoCreate-server/dist/releases/${{ needs.prepare.outputs.release_date }}/cocreate-server-node-linux-${{ matrix.aws_arch }}.tar.gz.sha256
+          if-no-files-found: error
+
+  publish:
+    needs: [prepare, build]
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB }}
+    defaults:
+      run:
+        working-directory: CoCreate-server
+    steps:
+      - name: Checkout pushed dev commit
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          path: CoCreate-server
+          token: ${{ secrets.GITHUB }}
+
+      - name: Download both architecture bundles
+        uses: actions/download-artifact@v7
+        with:
+          path: CoCreate-server/dist/releases/${{ needs.prepare.outputs.release_date }}
+          pattern: dev-linux-*
+          merge-multiple: true
+
       - name: Publish dated and latest development releases
+        env:
+          DEV_RELEASE_DATE: ${{ needs.prepare.outputs.release_date }}
         run: bash scripts/release-node-dev.sh

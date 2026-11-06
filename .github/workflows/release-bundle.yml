@@ -10,7 +10,15 @@ permissions:
 jobs:
   bundle:
     if: startsWith(github.event.release.tag_name, 'v')
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            aws_arch: x86_64
+          - runner: ubuntu-24.04-arm
+            aws_arch: arm64
+    runs-on: ${{ matrix.runner }}
     defaults:
       run:
         working-directory: CoCreate-server
@@ -49,6 +57,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB }}
         run: >-
           gh release upload "${{ github.event.release.tag_name }}"
-          "dist/releases/cocreate-server-${GITHUB_REF_NAME#v}-node-linux-x64.tar.gz"
-          "dist/releases/cocreate-server-${GITHUB_REF_NAME#v}-node-linux-x64.tar.gz.sha256"
+          "dist/releases/cocreate-server-${GITHUB_REF_NAME#v}-node-linux-${{ matrix.aws_arch }}.tar.gz"
+          "dist/releases/cocreate-server-${GITHUB_REF_NAME#v}-node-linux-${{ matrix.aws_arch }}.tar.gz.sha256"
           --repo "${GITHUB_REPOSITORY}" --clobber

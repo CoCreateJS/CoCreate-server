@@ -16,23 +16,23 @@
  *
  ********************************************************************************/
 
-import cluster from '@cocreate/cluster';
+import server from '@cocreate/cluster';
 // import AI from '@cocreate/ai';
 
 async function boot() {
     try {
         // Apply core cluster capabilities (database, IPC, sockets, TLS, state)
-        await cluster.init();
+        await server.init();
 
         // 1. Primary Role Execution
-        if (cluster.isPrimary) {
+        if (server.isPrimary) {
             await import('@cocreate/cron');
         }
 
         // 2. Worker Role Execution (Only loads Worker modules into Worker memory)
-        if (cluster.isWorker || cluster.totalWorkers <= 1) {
+        if (server.isWorker) {
             // Worker 1 specific dynamic import
-            // if (cluster.workerId === 1) {
+            // if (server.workerId === 1) {
             //
             // }
 
@@ -40,18 +40,18 @@ async function boot() {
             // await import('@cocreate/notification');
 
             const Organizations = await import('@cocreate/organizations');
-            await Organizations.init(cluster);
+            await Organizations.init(server);
             const Users = await import('@cocreate/users');
-            await Users.init(cluster);
+            await Users.init(server);
 
-            // cluster.ai = await AI.init(cluster);
+            // server.ai = await AI.init(server);
 
             // Custom edge HTTP route registered in Map (path -> handler)
-            // cluster.routes.set('/api/v1/health', async (req, res) => {
+            // server.routes.set('/api/v1/health', async (req, res) => {
             //     res.writeHead(200, { 'Content-Type': 'application/json' });
             //     res.end(JSON.stringify({
             //         status: 'healthy',
-            //         workerId: cluster.workerId,
+            //         workerId: server.workerId,
             //         pid: process.pid
             //     }));
             // });

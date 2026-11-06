@@ -80,7 +80,7 @@ export default {
         "crud-server": {
             import: "@cocreate/crud-server",
             path: "../CoCreate-modules/crud-server",
-            repo: "github.com/cocreatejs/CoCreate-crud-server.git"
+            repo: "github.com/CoCreateJS/crud-server.git"
         },
         "tls": {
             import: "@cocreate/tls",

@@ -8948,9 +8948,9 @@ function logAiLifecycle(event, data = {}, details = {}) {
   const ai = data.ai ?? {};
   console.info(`${aiLogPrefix} ${event}`, {
     organization_id: data.organization_id,
-    user_id: data.socket?.user_id ?? data.user_id,
+    user_id: data.user_id,
     client_id: data.clientId,
-    socket_id: data.socketId ?? data.socket?.id,
+    socket_id: data.socketId,
     conversation_id: details.conversation_id ?? ai.conversation_id,
     user_message_id: details.user_message_id ?? ai.user_message_id,
     request_id: data.uuid,
@@ -9175,7 +9175,7 @@ async function init(server, options = {}, resolvedConfig) {
   function getConversationQueue(data) {
     const conversation_id = data.ai?.conversation_id;
     if (!conversation_id) return null;
-    const user_id = data.socket?.user_id ?? data.user_id;
+    const user_id = data.user_id;
     const key = getQueueKey({ organization_id: data.organization_id, conversation_id });
     if (!conversationQueues.has(key)) {
       conversationQueues.set(key, {
@@ -9271,18 +9271,18 @@ async function init(server, options = {}, resolvedConfig) {
       }
     });
   }
-  const onOrganizationEvicted = (organization_id, event) => {
+  const onOrganizationDisconnected = (organization_id, event = {}) => {
     void cleanupOrganization(organization_id, event).catch((error) => {
       console.error(`${aiLogPrefix} Failed to clean up evicted organization ${organization_id}:`, error);
     });
   };
-  process.on("organization.evicted", onOrganizationEvicted);
+  process.on("orgDisconnected", onOrganizationDisconnected);
   const sendQueueStatus = (data, ai) => sendToClient({
     method: "ai.chat",
     organization_id: data.organization_id,
-    user_id: data.socket?.user_id ?? data.user_id,
+    user_id: data.user_id,
     clientId: data.clientId,
-    socketId: data.socketId ?? data.socket?.id,
+    socketId: data.socketId,
     uuid: data.uuid,
     ai: {
       conversation_id: data.ai?.conversation_id,
@@ -9302,9 +9302,8 @@ async function init(server, options = {}, resolvedConfig) {
             organization_id: item.data.organization_id,
             database: item.data.database,
             host: item.data.host,
-            user_id: item.data.socket?.user_id ?? item.data.user_id,
+            user_id: item.data.user_id,
             clientId: item.data.clientId,
-            socket: item.data.socket,
             object_id: item.message_id,
             status: "processing",
             sourceData: item.data
@@ -9353,9 +9352,8 @@ async function init(server, options = {}, resolvedConfig) {
             organization_id: item.data.organization_id,
             database: item.data.database,
             host: item.data.host,
-            user_id: item.data.socket?.user_id ?? item.data.user_id,
+            user_id: item.data.user_id,
             clientId: item.data.clientId,
-            socket: item.data.socket,
             object_id: item.message_id,
             status: "error",
             sourceData: item.data
@@ -9459,7 +9457,7 @@ async function init(server, options = {}, resolvedConfig) {
     });
   }
   const sendToClient = ({ organization_id, clientId, user_id, socketId, ...payload }) => {
-    return wsManager.send({
+    return server.send({
       ...payload,
       organization_id,
       clientId,
@@ -9521,7 +9519,6 @@ async function init(server, options = {}, resolvedConfig) {
     conversation_id,
     user_id,
     clientId,
-    socket,
     role,
     content,
     status,
@@ -9557,7 +9554,6 @@ async function init(server, options = {}, resolvedConfig) {
         host,
         user_id,
         clientId,
-        socket,
         ...upsert && {
           upsert: true
         },
@@ -9610,7 +9606,6 @@ async function init(server, options = {}, resolvedConfig) {
     host,
     user_id,
     clientId,
-    socket,
     object_id,
     status,
     steer,
@@ -9638,7 +9633,6 @@ async function init(server, options = {}, resolvedConfig) {
       host,
       user_id,
       clientId,
-      socket,
       upsert: true,
       object: message
     });
@@ -9746,7 +9740,7 @@ ${prompt}`;
       user_id: requestUserId,
       clientId
     } = data;
-    const user_id = data.socket?.user_id ?? requestUserId;
+    const user_id = requestUserId;
     const {
       prompt,
       signal,
@@ -9766,7 +9760,7 @@ ${prompt}`;
       prompt_length: typeof prompt === "string" ? prompt.length : 0,
       provider: provider ?? requestedModel?.split?.(":")?.[0],
       model: requestedModel,
-      has_socket_id: Boolean(data.socketId ?? data.socket?.id)
+      has_socket_id: Boolean(data.socketId)
     });
     const requestedModelValue = typeof requestedModel === "string" ? requestedModel : "";
     const modelSeparator = requestedModelValue.indexOf(":");
@@ -9783,7 +9777,7 @@ ${prompt}`;
           user_message_id: data.ai?.user_message_id,
           ...payload.ai
         },
-        socketId: data.socketId ?? data.socket?.id
+        socketId: data.socketId
       }));
       return responseQueue;
     };
@@ -9867,7 +9861,6 @@ ${prompt}`;
         host,
         user_id,
         clientId,
-        socket: data.socket,
         object: [{
           user_id,
           provider: selectedProviderId,
@@ -9885,7 +9878,6 @@ ${prompt}`;
         host,
         user_id,
         clientId,
-        socket: data.socket,
         object: {
           _id: activeConversationId,
           user_id,
@@ -9911,7 +9903,6 @@ ${prompt}`;
         host,
         user_id,
         clientId,
-        socket: data.socket,
         object_id: user_message_id,
         status: "needs_credentials",
         sourceData: data
@@ -9969,7 +9960,6 @@ ${historyPrompt}` : historyPrompt;
       conversation_id: activeConversationId,
       user_id,
       clientId,
-      socket: data.socket,
       role: "user",
       content: prompt,
       status: "processing",
@@ -10398,7 +10388,6 @@ ${systemMessage ?? ""}`.trim()
       host,
       user_id,
       clientId,
-      socket: data.socket,
       conversation_id: activeConversationId,
       user_message_id: activeUserMessageId
     });
@@ -10522,7 +10511,6 @@ ${systemMessage ?? ""}`.trim()
         conversation_id: activeConversationId,
         user_id,
         clientId,
-        socket: data.socket,
         role: "assistant",
         content: fullResponse,
         views,
@@ -10544,7 +10532,6 @@ ${systemMessage ?? ""}`.trim()
         host,
         user_id,
         clientId,
-        socket: data.socket,
         object_id: activeUserMessageId,
         status: "complete",
         sourceData: data
@@ -10584,11 +10571,13 @@ ${systemMessage ?? ""}`.trim()
     }
   }
   wsManager.on("ai", async (data = {}) => {
+    data = { ...data };
+    delete data.socket;
     if (lifecycle.stopping) return sendToClient({ ...data, success: false, error: "AI is shutting down; new requests are unavailable." });
     if (data.method === "ai.stop") {
       const organization_id = data.organization_id;
       const clientId = data.clientId;
-      const user_id = data.socket?.user_id ?? data.user_id;
+      const user_id = data.user_id;
       const message_id2 = data.ai?.user_message_id;
       const streamKey = getMessageKey({
         organization_id,
@@ -10614,7 +10603,6 @@ ${systemMessage ?? ""}`.trim()
         host: activeSession?.host ?? queuedActive?.active?.data?.host ?? data.host,
         user_id,
         clientId,
-        socket: data.socket,
         object_id: activeMessageId ?? message_id2,
         status: "stopped",
         sourceData: data
@@ -10627,7 +10615,7 @@ ${systemMessage ?? ""}`.trim()
         organization_id,
         user_id,
         clientId,
-        socketId: data.socketId ?? data.socket?.id,
+        socketId: data.socketId,
         uuid: data.uuid,
         ai: {
           status: "stopped",
@@ -10640,7 +10628,7 @@ ${systemMessage ?? ""}`.trim()
     if (data.method === "ai.credentials.complete") {
       const organization_id = data.organization_id;
       const clientId = data.clientId;
-      const user_id = data.socket?.user_id ?? data.user_id;
+      const user_id = data.user_id;
       const message_id2 = data.ai?.user_message_id;
       const messageKey = getMessageKey({
         organization_id,
@@ -10661,7 +10649,7 @@ ${systemMessage ?? ""}`.trim()
           return;
         }
       }
-      if (!pendingData || (pendingData.socket?.user_id ?? pendingData.user_id) !== user_id) {
+      if (!pendingData || pendingData.user_id !== user_id) {
         await sendQueueStatus(data, {
           status: "credential-resume-unavailable",
           user_message_id: message_id2,
@@ -10680,7 +10668,6 @@ ${systemMessage ?? ""}`.trim()
             host: pendingData.host,
             user_id,
             clientId,
-            socket: pendingData.socket,
             object_id: message_id2,
             status: "queued",
             sourceData: pendingData
@@ -10727,7 +10714,6 @@ ${systemMessage ?? ""}`.trim()
           host: pendingData.host,
           user_id,
           clientId,
-          socket: pendingData.socket,
           object_id: message_id2,
           status: "error",
           sourceData: pendingData
@@ -10746,7 +10732,7 @@ ${systemMessage ?? ""}`.trim()
     if (data.method === "ai.message.update") {
       const organization_id = data.organization_id;
       const clientId = data.clientId;
-      const user_id = data.socket?.user_id ?? data.user_id;
+      const user_id = data.user_id;
       const message_id2 = data.ai?.user_message_id;
       const queue2 = getConversationQueue(data);
       const item = queue2?.items.find((entry) => entry.message_id === message_id2);
@@ -10774,7 +10760,6 @@ ${systemMessage ?? ""}`.trim()
         host: item.data.host,
         user_id,
         clientId,
-        socket: data.socket ?? item.data.socket,
         object_id: message_id2,
         status: "queued",
         ...Object.hasOwn(patch, "steer") && { steer },
@@ -10793,7 +10778,7 @@ ${systemMessage ?? ""}`.trim()
     if (data.method === "ai.cancel") {
       const organization_id = data.organization_id;
       const clientId = data.clientId;
-      const user_id = data.socket?.user_id ?? data.user_id;
+      const user_id = data.user_id;
       const message_id2 = data.ai?.user_message_id;
       const queue2 = getConversationQueue(data);
       const messageKey = getMessageKey({
@@ -10810,7 +10795,6 @@ ${systemMessage ?? ""}`.trim()
           host: credentialRequest.host,
           user_id,
           clientId,
-          socket: data.socket,
           object_id: message_id2,
           status: "canceled",
           sourceData: credentialRequest
@@ -10833,7 +10817,6 @@ ${systemMessage ?? ""}`.trim()
           host: item.data.host,
           user_id,
           clientId,
-          socket: data.socket,
           object_id: message_id2,
           status: "canceled",
           sourceData: item.data
@@ -10875,7 +10858,6 @@ ${systemMessage ?? ""}`.trim()
           host: activeData?.host ?? activeSession?.host,
           user_id,
           clientId,
-          socket: data.socket,
           object_id: message_id2,
           status: "canceled",
           sourceData: activeData ?? data
@@ -10921,7 +10903,7 @@ ${systemMessage ?? ""}`.trim()
       has_conversation_id: Boolean(data.ai.conversation_id),
       has_prompt: typeof data.ai.prompt === "string" && data.ai.prompt.length > 0,
       prompt_length: typeof data.ai.prompt === "string" ? data.ai.prompt.length : 0,
-      has_socket_id: Boolean(data.socketId ?? data.socket?.id)
+      has_socket_id: Boolean(data.socketId)
     });
     data.ai.user_message_id ||= (0,node_crypto__WEBPACK_IMPORTED_MODULE_1__.randomUUID)();
     const queue = getConversationQueue(data);
@@ -10944,9 +10926,8 @@ ${systemMessage ?? ""}`.trim()
           organization_id: data.organization_id,
           database: data.database,
           host: data.host,
-          user_id: data.socket?.user_id ?? data.user_id,
+          user_id: data.user_id,
           clientId: data.clientId,
-          socket: data.socket,
           object_id: data.ai?.user_message_id,
           status: "error",
           sourceData: data
@@ -10958,9 +10939,9 @@ ${systemMessage ?? ""}`.trim()
         await sendToClient({
           method: "ai.chat",
           organization_id: data.organization_id,
-          user_id: data.socket?.user_id ?? data.user_id,
+          user_id: data.user_id,
           clientId: data.clientId,
-          socketId: data.socketId ?? data.socket?.id,
+          socketId: data.socketId,
           uuid: data.uuid,
           ai: {
             status: "error",
@@ -11008,9 +10989,8 @@ ${systemMessage ?? ""}`.trim()
           organization_id: data.organization_id,
           database: data.database,
           host: data.host,
-          user_id: data.socket?.user_id ?? data.user_id,
+          user_id: data.user_id,
           clientId: data.clientId,
-          socket: data.socket,
           object_id: message_id,
           status: "queued",
           steer: data.ai.steer === true,
@@ -11049,7 +11029,7 @@ ${systemMessage ?? ""}`.trim()
       return runAiSession(data);
     },
     async stop(reason = "shutdown", options2 = {}) {
-      process.removeListener("organization.evicted", onOrganizationEvicted);
+      process.removeListener("orgDisconnected", onOrganizationDisconnected);
       server.shutdownHandlers?.delete(onShutdown);
       return lifecycle.stop(reason, options2);
     }
@@ -11879,7 +11859,6 @@ function createFileTools({
   allowUnconfirmedLocalWrite
 }) {
   const files = server.files;
-  const wsManager = server.wsManager;
   const workspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_2__/* .createWorkspaceResolver */ .IN)(server);
   const normalizeVirtualPath = (filePath) => filePath.startsWith("/") ? filePath : `/${filePath}`;
   const inferMimeType = (pathname) => {
@@ -12000,7 +11979,7 @@ function createFileTools({
           }]
         });
       }
-      await wsManager.send({
+      await server.send({
         method: "ai.file.updated",
         organization_id: context.organization_id,
         user_id: context.user_id,
@@ -12077,7 +12056,7 @@ function createFileTools({
           query: virtualPathQuery(filePath)
         }
       });
-      await wsManager.send({
+      await server.send({
         method: "ai.file.deleted",
         organization_id: context.organization_id,
         user_id: context.user_id,
@@ -12669,7 +12648,7 @@ function createServerClusterTool({ server }) {
               isPrimary: server.isPrimary,
               isWorker: server.isWorker,
               workerId: server.workerId,
-              totalWorkers: server.totalWorkers,
+              totalWorkers: server.workers.size,
               infrastructure: server.infrastructure,
               location: server.location,
               isCordoned: server.state.isCordon,
@@ -12759,7 +12738,6 @@ function createServerClusterTool({ server }) {
 /* harmony export */   m: () => (/* binding */ createSocketTool)
 /* harmony export */ });
 function createSocketTool({ server }) {
-  const wsManager = server.wsManager;
   return {
     name: "send_socket_message",
     handler: async ({ data = {}, clientId, broadcast = false }, context) => {
@@ -12775,7 +12753,7 @@ function createSocketTool({ server }) {
         broadcast: broadcast === true,
         log: data.log ?? false
       };
-      await wsManager.send(payload);
+      await server.send(payload);
       return payload;
     }
   };

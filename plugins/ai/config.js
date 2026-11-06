@@ -1,6 +1,5 @@
 import config from '@cocreate/config';
 import { dotNotationToObject } from '@cocreate/utils';
-import { join } from 'node:path';
 
 export const defaults = {
     enabled: true,
@@ -11,7 +10,6 @@ export const defaults = {
     allowPlatformCommands: false,
     platformCommandTimeout: 600000,
     platformCommandMaxOutputBytes: 1048576,
-    localFsRoot: join(process.cwd(), 'organizations'),
     cliPath: undefined,
     cliDirectory: undefined,
     requestTimeout: 600000,
@@ -30,6 +28,8 @@ export async function resolveAIConfig(server, options = {}) {
     dotNotationToObject(databaseConfig, aiConfig);
     dotNotationToObject(options, aiConfig);
 
+    // Project paths belong to Cluster's repository configuration, never AI.
+    delete aiConfig.localFsRoot;
     return aiConfig;
 }
 

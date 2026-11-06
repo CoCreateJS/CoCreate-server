@@ -90,6 +90,10 @@ for (const [key, plugin] of plugins) {
             cwd: packageDirectory,
             encoding: "utf8"
         }).trim(),
+        sourceDirty: Boolean(execFileSync("git", ["status", "--porcelain"], {
+            cwd: packageDirectory,
+            encoding: "utf8"
+        }).trim()),
         files
     };
     console.log(`Built plugin ${key}: plugins/${outputName}`);

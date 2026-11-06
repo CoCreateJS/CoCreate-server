@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "builtAt": "2026-11-02T16:57:19.254Z",
+  "builtAt": "2026-11-06T02:17:12.105Z",
   "node": "v24.18.0",
   "platform": "linux",
   "arch": "x64",
@@ -8,31 +8,32 @@
     "ai": {
       "package": "@cocreate/ai",
       "version": "1.1.0",
-      "commit": "8bebe3b9335633268203c6422bd4677c3b29a0b6",
+      "commit": "b3b1bcdc3d8a17ca394ce23fdf8425ba3f177643",
+      "sourceDirty": true,
       "files": {
         "bootstrap.js": {
           "bytes": 2188,
           "sha256": "8d0ae0fedf3bd9c3d2e4fd7c8177584a26d8134c9738927a16ce098e26713226"
         },
         "config.js": {
-          "bytes": 1100,
-          "sha256": "87ccff70818c9ee3fb1aeec4e312e6ff9c11f946492854f7ddee4b7322c3fa53"
+          "bytes": 1121,
+          "sha256": "90d1f7fb91d6699c25c6dbd1bf62b02fe56cfa9289e410de10b09014a82d3109"
         },
         "copilot-linux-x64": {
           "bytes": 159517504,
           "sha256": "5ffc36e7c41adebc28791d8edf4934f90656a0f25e62006bd0d71039ae42f9a2"
         },
         "index.js": {
-          "bytes": 29633,
-          "sha256": "6a2ed8f9a11a75e764ac813fce838b262cd42e064346ae4024d264b3cbe844f5"
+          "bytes": 29404,
+          "sha256": "9bd07f4a582a798d274abf8cb90b820369e3244860edb87376e08e1f7c5f93db"
         },
         "package.json": {
           "bytes": 42,
           "sha256": "609158e6c5fbc237939fa3ddf7faab80ab690bdc0c8d584414a885130103c4e8"
         },
         "runtime.js": {
-          "bytes": 651634,
-          "sha256": "f778a058be2e295d76f8d48a1eb1d477326dac9aff1b22fc8e41290b595bc256"
+          "bytes": 664347,
+          "sha256": "ac2abc52b2987ac8084526cf731cca2d46947d0afed6367192b68b3e5dcd386c"
         }
       }
     }

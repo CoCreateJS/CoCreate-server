@@ -556,8 +556,6 @@ function getValueFromObject(object = {}, path = "", throwError = false) {
 /* unused harmony export defaults */
 /* harmony import */ var _cocreate_config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(405);
 /* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(604);
-/* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(663);
-
 
 
 const defaults = {
@@ -569,7 +567,6 @@ const defaults = {
   allowPlatformCommands: false,
   platformCommandTimeout: 6e5,
   platformCommandMaxOutputBytes: 1048576,
-  localFsRoot: (0,node_path__WEBPACK_IMPORTED_MODULE_2__.join)(process.cwd(), "organizations"),
   cliPath: void 0,
   cliDirectory: void 0,
   requestTimeout: 6e5,
@@ -585,6 +582,7 @@ async function resolveAIConfig(server, options = {}) {
   }, server.crud);
   (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .dotNotationToObject */ .O)(databaseConfig, aiConfig);
   (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .dotNotationToObject */ .O)(options, aiConfig);
+  delete aiConfig.localFsRoot;
   return aiConfig;
 }
 /* unused harmony default export */ var __WEBPACK_DEFAULT_EXPORT__ = ((/* unused pure expression or super */ null && (resolveAIConfig)));
@@ -632,7 +630,7 @@ const x = (y) => {
 	const x = {}; __webpack_require__.d(x, y); return x
 } 
 const y = (x) => (() => (x))
-module.exports = x({ ["default"]: () => (__WEBPACK_EXTERNAL_MODULE_node_path_02319fef__["default"]), ["join"]: () => (__WEBPACK_EXTERNAL_MODULE_node_path_02319fef__.join) });
+module.exports = x({ ["default"]: () => (__WEBPACK_EXTERNAL_MODULE_node_path_02319fef__["default"]) });
 
 /***/ },
 

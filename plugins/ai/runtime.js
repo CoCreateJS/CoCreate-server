@@ -8720,8 +8720,6 @@ function getValueFromObject(object = {}, path = "", throwError = false) {
 /* harmony export */ });
 /* harmony import */ var _cocreate_config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9405);
 /* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5604);
-/* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5663);
-
 
 
 const defaults = {
@@ -8733,7 +8731,6 @@ const defaults = {
   allowPlatformCommands: false,
   platformCommandTimeout: 6e5,
   platformCommandMaxOutputBytes: 1048576,
-  localFsRoot: (0,node_path__WEBPACK_IMPORTED_MODULE_2__.join)(process.cwd(), "organizations"),
   cliPath: void 0,
   cliDirectory: void 0,
   requestTimeout: 6e5,
@@ -8749,6 +8746,7 @@ async function resolveAIConfig(server, options = {}) {
   }, server.crud);
   (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .dotNotationToObject */ .O)(databaseConfig, aiConfig);
   (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .dotNotationToObject */ .O)(options, aiConfig);
+  delete aiConfig.localFsRoot;
   return aiConfig;
 }
 /* unused harmony default export */ var __WEBPACK_DEFAULT_EXPORT__ = ((/* unused pure expression or super */ null && (resolveAIConfig)));
@@ -8898,27 +8896,29 @@ var __webpack_import_meta__ = Object.assign(Object.create(import.meta), import.m
 /* harmony import */ var _github_copilot_sdk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4127);
 /* harmony import */ var node_crypto__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2561);
 /* harmony import */ var node_fs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9627);
-/* harmony import */ var node_os__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6674);
-/* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5663);
-/* harmony import */ var node_url__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(9061);
-/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(1099);
-/* harmony import */ var _tools_crud_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(9745);
-/* harmony import */ var _tools_files_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(4898);
-/* harmony import */ var _tools_api_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(3501);
-/* harmony import */ var _tools_send_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(6843);
-/* harmony import */ var _tools_socket_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(8332);
-/* harmony import */ var _tools_storage_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(8192);
-/* harmony import */ var _tools_servers_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(3889);
-/* harmony import */ var _tools_errors_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(626);
-/* harmony import */ var _tools_routes_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(1819);
-/* harmony import */ var _tools_autoscaler_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(7942);
-/* harmony import */ var _tools_history_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(7505);
-/* harmony import */ var _tools_coc_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(8354);
-/* harmony import */ var _tools_git_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(4257);
-/* harmony import */ var _tools_command_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(9364);
-/* harmony import */ var _context_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(4374);
-/* harmony import */ var _workspace_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(7936);
-/* harmony import */ var _credentials_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(5435);
+/* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5663);
+/* harmony import */ var node_url__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9061);
+/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(1099);
+/* harmony import */ var _tools_crud_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(9745);
+/* harmony import */ var _tools_files_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(4898);
+/* harmony import */ var _tools_api_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(3501);
+/* harmony import */ var _tools_send_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(6843);
+/* harmony import */ var _tools_socket_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(8332);
+/* harmony import */ var _tools_storage_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(8192);
+/* harmony import */ var _tools_servers_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(3889);
+/* harmony import */ var _tools_errors_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(626);
+/* harmony import */ var _tools_routes_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(1819);
+/* harmony import */ var _tools_autoscaler_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(7942);
+/* harmony import */ var _tools_history_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(7505);
+/* harmony import */ var _tools_coc_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(8354);
+/* harmony import */ var _tools_git_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(4257);
+/* harmony import */ var _tools_command_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(9364);
+/* harmony import */ var _context_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(4374);
+/* harmony import */ var _workspace_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(7936);
+/* harmony import */ var _lifecycle_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(8793);
+/* harmony import */ var _platform_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(9170);
+/* harmony import */ var _credentials_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(5435);
+
 
 
 
@@ -8974,7 +8974,7 @@ function resolveCopilotCliPath() {
       const packageUrl = moduleMeta.resolve(
         `@github/copilot-${variant}-${process.arch}`
       );
-      return (0,node_url__WEBPACK_IMPORTED_MODULE_5__.fileURLToPath)(packageUrl);
+      return (0,node_url__WEBPACK_IMPORTED_MODULE_4__.fileURLToPath)(packageUrl);
     } catch {
     }
   }
@@ -8989,7 +8989,7 @@ function prepareCopilotCli(cliDirectory) {
     `copilot-${variant}${extension}`,
     cliDirectory
   );
-  const sourcePath = (0,node_url__WEBPACK_IMPORTED_MODULE_5__.fileURLToPath)(sourceUrl);
+  const sourcePath = (0,node_url__WEBPACK_IMPORTED_MODULE_4__.fileURLToPath)(sourceUrl);
   if (!(0,node_fs__WEBPACK_IMPORTED_MODULE_2__.existsSync)(sourcePath)) {
     throw new Error(`Bundled Copilot executable was not found at ${sourcePath}`);
   }
@@ -9000,14 +9000,14 @@ function resolveBundledCopilotCliPath() {
   if (!process.argv[1]) return;
   const variant = `${process.platform}-${process.arch}`;
   const extension = process.platform === "win32" ? ".exe" : "";
-  const entryDirectory = (0,node_path__WEBPACK_IMPORTED_MODULE_4__.dirname)((0,node_path__WEBPACK_IMPORTED_MODULE_4__.resolve)(process.argv[1]));
-  const bundledPath = (0,node_path__WEBPACK_IMPORTED_MODULE_4__.join)(
+  const entryDirectory = (0,node_path__WEBPACK_IMPORTED_MODULE_3__.dirname)((0,node_path__WEBPACK_IMPORTED_MODULE_3__.resolve)(process.argv[1]));
+  const bundledPath = (0,node_path__WEBPACK_IMPORTED_MODULE_3__.join)(
     entryDirectory,
     `copilot-${variant}${extension}`
   );
   if (!(0,node_fs__WEBPACK_IMPORTED_MODULE_2__.existsSync)(bundledPath)) return;
   return prepareCopilotCli(
-    (0,node_url__WEBPACK_IMPORTED_MODULE_5__.pathToFileURL)(`${entryDirectory}${node_path__WEBPACK_IMPORTED_MODULE_4__.sep}`).href
+    (0,node_url__WEBPACK_IMPORTED_MODULE_4__.pathToFileURL)(`${entryDirectory}${node_path__WEBPACK_IMPORTED_MODULE_3__.sep}`).href
   );
 }
 const requiredToolConfigs = {
@@ -9053,7 +9053,7 @@ const requiredToolConfigs = {
     }
   },
   coc: {
-    description: "Runs the constrained CoCreate CLI workflow against the configured local project. Use download to refresh database-backed site files locally before editing. Use upload only after edits are complete and the user requested the changes live. This tool cannot execute arbitrary commands.",
+    description: "Platform organization only. Runs the constrained CoCreate CLI workflow against the configured local project. Use download to refresh database-backed site files locally before editing. Use upload only after edits are complete and the user requested the changes live. This tool cannot execute arbitrary commands.",
     parameters: {
       type: "object",
       properties: {
@@ -9083,7 +9083,7 @@ const requiredToolConfigs = {
 async function init(server, options = {}, resolvedConfig) {
   const workerId = server?.workerId || process.env.WORKER_ID;
   aiLogPrefix = `[@cocreate/ai] ${workerId ? `[WORKER ${workerId}]` : "[MASTER]"}`;
-  const aiConfig = resolvedConfig || await (0,_config_js__WEBPACK_IMPORTED_MODULE_6__/* .resolveAIConfig */ .Pw)(server, options);
+  const aiConfig = resolvedConfig || await (0,_config_js__WEBPACK_IMPORTED_MODULE_5__/* .resolveAIConfig */ .Pw)(server, options);
   const {
     enabled: aiEnabled,
     defaultProvider,
@@ -9095,14 +9095,13 @@ async function init(server, options = {}, resolvedConfig) {
     allowPlatformCommands,
     platformCommandTimeout,
     platformCommandMaxOutputBytes,
-    localFsRoot,
     cliPath,
     cliDirectory,
     requestTimeout,
     publicPath,
     tools: configuredTools
   } = aiConfig;
-  const sessionWaitTimeout = Number.isFinite(Number(requestTimeout)) && Number(requestTimeout) > 0 ? Number(requestTimeout) : _config_js__WEBPACK_IMPORTED_MODULE_6__/* .defaults */ .NT.requestTimeout;
+  const sessionWaitTimeout = Number.isFinite(Number(requestTimeout)) && Number(requestTimeout) > 0 ? Number(requestTimeout) : _config_js__WEBPACK_IMPORTED_MODULE_5__/* .defaults */ .NT.requestTimeout;
   const crud = server.crud;
   const wsManager = server.wsManager;
   let defaultInstructions = /* @__PURE__ */ new Map();
@@ -9117,7 +9116,7 @@ async function init(server, options = {}, resolvedConfig) {
     return response.object?.[0];
   }
   try {
-    defaultInstructions = await (0,_context_js__WEBPACK_IMPORTED_MODULE_21__/* .loadDefaultInstructions */ .n)({
+    defaultInstructions = await (0,_context_js__WEBPACK_IMPORTED_MODULE_20__/* .loadDefaultInstructions */ .n)({
       crud,
       organization_id: server.organization_id
     });
@@ -9127,11 +9126,12 @@ async function init(server, options = {}, resolvedConfig) {
   } catch (error) {
     console.warn(`${aiLogPrefix} Default AI instructions could not be loaded.`, error.message);
   }
-  function getBaseSystemMessage() {
+  function getBaseSystemMessage(organization_id) {
+    const local = allowLocalFileSystem && (0,_platform_js__WEBPACK_IMPORTED_MODULE_23__/* .isPlatformOrganization */ .dk)(server, organization_id);
     const instructions = defaultInstructions.get("default");
     return [
       instructions?.instructions ?? instructions?.content,
-      `Runtime context: storageTarget=${defaultStorageTarget}, localFsEnabled=${allowLocalFileSystem}, localFsRoot=${localFsRoot}, publicPath=${publicPath}.`
+      `Runtime context: storageTarget=${(0,_platform_js__WEBPACK_IMPORTED_MODULE_23__/* .projectStorageTarget */ .Us)(server, organization_id, void 0, defaultStorageTarget)}, localFsEnabled=${local}${local ? `, repository=${(0,_workspace_js__WEBPACK_IMPORTED_MODULE_21__/* .getRepositoryWorkspace */ .IT)(server) ?? "unavailable"}` : ""}, publicPath=${publicPath}.`
     ].filter(Boolean).join("\n\n");
   }
   function configureTool(tool) {
@@ -9158,10 +9158,18 @@ async function init(server, options = {}, resolvedConfig) {
   const cancelledMessages = /* @__PURE__ */ new Set();
   const pendingCredentialRequests = /* @__PURE__ */ new Map();
   const conversationQueues = /* @__PURE__ */ new Map();
-  const workspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_22__/* .createWorkspaceResolver */ .I)(localFsRoot);
-  const aiWorkspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_22__/* .createWorkspaceResolver */ .I)(localFsRoot, ".ai");
-  const temporaryWorkspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_22__/* .createWorkspaceResolver */ .I)((0,node_path__WEBPACK_IMPORTED_MODULE_4__.join)((0,node_os__WEBPACK_IMPORTED_MODULE_3__.tmpdir)(), "cocreate-ai"));
-  const temporaryAiWorkspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_22__/* .createWorkspaceResolver */ .I)((0,node_path__WEBPACK_IMPORTED_MODULE_4__.join)((0,node_os__WEBPACK_IMPORTED_MODULE_3__.tmpdir)(), "cocreate-ai"), ".ai");
+  const organizationLocks = /* @__PURE__ */ new Map();
+  const organizationGenerations = /* @__PURE__ */ new Map();
+  const activeOrganizationRequests = /* @__PURE__ */ new Map();
+  const lifecycle = (0,_lifecycle_js__WEBPACK_IMPORTED_MODULE_22__/* .createLifecycle */ .R)({ server, quiesce: async () => {
+    for (const queue of conversationQueues.values()) {
+      queue.paused = true;
+      queue.items.length = 0;
+    }
+    await Promise.allSettled([...activeSessions.values()].map((item) => item.session.abort()));
+    await Promise.allSettled([...clients.values()].map(async (promise) => (await promise).stop()));
+    clients.clear();
+  } });
   const getMessageKey = ({ organization_id, clientId, ai }) => `${organization_id}:${clientId}:${ai?.user_message_id}`;
   const getQueueKey = ({ organization_id, conversation_id }) => `${organization_id}:${conversation_id}`;
   function getConversationQueue(data) {
@@ -9186,6 +9194,89 @@ async function init(server, options = {}, resolvedConfig) {
     const queue = conversationQueues.get(key);
     return queue.user_id === user_id ? queue : null;
   }
+  async function withOrganizationLock(organization_id, operation) {
+    const previous = organizationLocks.get(organization_id) ?? Promise.resolve();
+    let release;
+    const current = new Promise((resolve2) => {
+      release = resolve2;
+    });
+    organizationLocks.set(organization_id, current);
+    await previous.catch(() => {
+    });
+    try {
+      return await operation();
+    } finally {
+      release();
+      if (organizationLocks.get(organization_id) === current) {
+        organizationLocks.delete(organization_id);
+      }
+    }
+  }
+  async function cleanupOrganization(organization_id, event = {}) {
+    if (!organization_id) return;
+    const generation = (organizationGenerations.get(organization_id) ?? 0) + 1;
+    organizationGenerations.set(organization_id, generation);
+    return withOrganizationLock(organization_id, async () => {
+      const queueEntries = [...conversationQueues.entries()].filter(([, queue]) => queue.organization_id === organization_id);
+      const activeQueueItems = queueEntries.map(([, queue]) => queue.active).filter((item) => item?.data);
+      const sessionEntries = [...activeSessions.entries()].filter(([, session]) => session.organization_id === organization_id);
+      for (const key of cancelledMessages) {
+        if (key.startsWith(`${organization_id}:`)) cancelledMessages.delete(key);
+      }
+      for (const [key] of sessionEntries) cancelledMessages.add(key);
+      for (const item of activeQueueItems) cancelledMessages.add(getMessageKey(item.data));
+      for (const [key, queue] of queueEntries) {
+        queue.paused = true;
+        queue.items.length = 0;
+        queue.active = null;
+        queue.messages.clear();
+        if (conversationQueues.get(key) === queue) conversationQueues.delete(key);
+      }
+      for (const [key, session] of sessionEntries) {
+        if (activeSessions.get(key) === session) activeSessions.delete(key);
+      }
+      const credentialEntries = [...pendingCredentialRequests.entries()].filter(([, data]) => data.organization_id === organization_id);
+      for (const [key] of credentialEntries) pendingCredentialRequests.delete(key);
+      const clientPrefix = `copilot:${organization_id}:`;
+      const customProviderKey = `custom-provider-runtime:${organization_id}`;
+      const clientEntries = [...clients.entries()].filter(([key]) => key.startsWith(clientPrefix) || key === customProviderKey);
+      for (const [key, clientPromise] of clientEntries) {
+        if (clients.get(key) === clientPromise) clients.delete(key);
+      }
+      const cleanupResults = await Promise.allSettled([
+        ...sessionEntries.map(([, session]) => session.session.abort()),
+        ...clientEntries.map(async ([, clientPromise]) => {
+          const client = await clientPromise;
+          const errors = await client.stop();
+          if (errors?.length) {
+            throw new AggregateError(errors, "Copilot client shutdown reported errors.");
+          }
+        })
+      ]);
+      const cleanupErrors = cleanupResults.filter((result) => result.status === "rejected").map((result) => result.reason?.message ?? String(result.reason));
+      logAiLifecycle("organization_evicted", { organization_id }, {
+        reason: event.reason ?? "evicted",
+        stopped_clients: clientEntries.length,
+        aborted_sessions: sessionEntries.length,
+        cleared_queues: queueEntries.length,
+        cleared_credential_requests: credentialEntries.length,
+        cleanup_errors: cleanupErrors
+      });
+      if (cleanupErrors.length) {
+        console.warn(`${aiLogPrefix} Organization cleanup completed with errors:`, cleanupErrors);
+      }
+    }).finally(() => {
+      if (!activeOrganizationRequests.has(organization_id) && organizationGenerations.get(organization_id) === generation) {
+        organizationGenerations.delete(organization_id);
+      }
+    });
+  }
+  const onOrganizationEvicted = (organization_id, event) => {
+    void cleanupOrganization(organization_id, event).catch((error) => {
+      console.error(`${aiLogPrefix} Failed to clean up evicted organization ${organization_id}:`, error);
+    });
+  };
+  process.on("organization.evicted", onOrganizationEvicted);
   const sendQueueStatus = (data, ai) => sendToClient({
     method: "ai.chat",
     organization_id: data.organization_id,
@@ -9249,6 +9340,11 @@ async function init(server, options = {}, resolvedConfig) {
             queue.messages.set(item.message_id, "complete");
           }
         } catch (error) {
+          const streamKey = getMessageKey(item.data);
+          if (cancelledMessages.delete(streamKey)) {
+            queue.messages.set(item.message_id, "canceled");
+            continue;
+          }
           logAiFailure("queued_session_failed", item.data, error, {
             conversation_id: queue.conversation_id,
             user_message_id: item.message_id
@@ -9309,32 +9405,58 @@ async function init(server, options = {}, resolvedConfig) {
     queue.draining = false;
     if (queue.items.length && !queue.paused) void drainConversationQueue(queue);
   }
-  async function getClient({ provider, organization_id }) {
-    const isCopilot = provider.type === "copilot";
-    const credentialId = (0,node_crypto__WEBPACK_IMPORTED_MODULE_1__.createHash)("sha256").update(provider.key).digest("hex");
-    const clientKey = isCopilot ? `copilot:${organization_id}:${provider.profile._id}:${credentialId}` : `custom-provider-runtime:${organization_id}`;
-    if (!clients.has(clientKey)) {
-      const workingDirectory = allowLocalFileSystem ? await workspaces.ensure(organization_id) : await temporaryWorkspaces.ensure(organization_id);
-      const baseDirectory = allowLocalFileSystem ? await aiWorkspaces.ensure(organization_id) : await temporaryAiWorkspaces.ensure(organization_id);
-      const client = new _github_copilot_sdk__WEBPACK_IMPORTED_MODULE_0__/* .CopilotClient */ .ue({
-        mode: "empty",
-        baseDirectory,
-        workingDirectory,
-        connection: _github_copilot_sdk__WEBPACK_IMPORTED_MODULE_0__/* .RuntimeConnection */ .$6.forStdio({
-          path: cliPath ?? (cliDirectory ? prepareCopilotCli(cliDirectory) : resolveBundledCopilotCliPath() ?? resolveCopilotCliPath())
-        }),
-        ...isCopilot ? {
-          gitHubToken: provider.key,
-          useLoggedInUser: false
-        } : { useLoggedInUser: false }
-      });
-      const started = client.start().then(() => client).catch((error) => {
-        clients.delete(clientKey);
+  async function getClient({ provider, organization_id, evictionGeneration }) {
+    return withOrganizationLock(organization_id, async () => {
+      if (lifecycle.stopping) throw new Error("AI is shutting down; new runtimes are unavailable.");
+      const currentGeneration = organizationGenerations.get(organization_id) ?? 0;
+      if (evictionGeneration !== currentGeneration) {
+        throw new Error("Organization was evicted before its AI runtime could start.");
+      }
+      const isCopilot = provider.type === "copilot";
+      const credentialId = (0,node_crypto__WEBPACK_IMPORTED_MODULE_1__.createHash)("sha256").update(provider.key).digest("hex");
+      const clientKey = isCopilot ? `copilot:${organization_id}:${provider.profile._id}:${credentialId}` : `custom-provider-runtime:${organization_id}`;
+      if (clients.has(clientKey)) return clients.get(clientKey);
+      const useProjectWorkspace = allowLocalFileSystem && (0,_platform_js__WEBPACK_IMPORTED_MODULE_23__/* .isPlatformOrganization */ .dk)(server, organization_id);
+      const directories = await (0,_workspace_js__WEBPACK_IMPORTED_MODULE_21__/* .createRuntimeDirectories */ .sU)(server, organization_id, { useRepository: useProjectWorkspace });
+      const { workingDirectory, baseDirectory } = directories;
+      try {
+        if ((organizationGenerations.get(organization_id) ?? 0) !== evictionGeneration) {
+          throw new Error("Organization was evicted before its AI runtime could start.");
+        }
+        if (lifecycle.stopping) throw new Error("AI is shutting down; new runtimes are unavailable.");
+        const client = new _github_copilot_sdk__WEBPACK_IMPORTED_MODULE_0__/* .CopilotClient */ .ue({
+          mode: "empty",
+          baseDirectory,
+          workingDirectory,
+          connection: _github_copilot_sdk__WEBPACK_IMPORTED_MODULE_0__/* .RuntimeConnection */ .$6.forStdio({
+            path: cliPath ?? (cliDirectory ? prepareCopilotCli(cliDirectory) : resolveBundledCopilotCliPath() ?? resolveCopilotCliPath())
+          }),
+          ...isCopilot ? {
+            gitHubToken: provider.key,
+            useLoggedInUser: false
+          } : { useLoggedInUser: false }
+        });
+        const stop = client.stop.bind(client);
+        client.stop = async (...args) => {
+          try {
+            return await stop(...args);
+          } finally {
+            await directories.cleanup();
+          }
+        };
+        let started;
+        started = client.start().then(() => client).catch(async (error) => {
+          if (clients.get(clientKey) === started) clients.delete(clientKey);
+          await directories.cleanup();
+          throw error;
+        });
+        clients.set(clientKey, started);
+        return started;
+      } catch (error) {
+        await directories.cleanup();
         throw error;
-      });
-      clients.set(clientKey, started);
-    }
-    return clients.get(clientKey);
+      }
+    });
   }
   const sendToClient = ({ organization_id, clientId, user_id, socketId, ...payload }) => {
     return wsManager.send({
@@ -9353,35 +9475,31 @@ async function init(server, options = {}, resolvedConfig) {
       handler: (payload = {}) => tool.handler(payload, context)
     };
   }
-  const fileToolsModule = (0,_tools_files_js__WEBPACK_IMPORTED_MODULE_8__/* .createFileTools */ .i)({
+  const fileToolsModule = (0,_tools_files_js__WEBPACK_IMPORTED_MODULE_7__/* .createFileTools */ .i)({
     server,
     crud,
     defaultStorageTarget,
     allowLocalFileSystem,
-    allowUnconfirmedLocalWrite,
-    localFsRoot
+    allowUnconfirmedLocalWrite
   });
-  const socketTool = (0,_tools_socket_js__WEBPACK_IMPORTED_MODULE_11__/* .createSocketTool */ .m)({ server });
-  const storageTool = (0,_tools_storage_js__WEBPACK_IMPORTED_MODULE_12__/* .createStorageTool */ ._)({ server });
-  const serverClusterTool = (0,_tools_servers_js__WEBPACK_IMPORTED_MODULE_13__/* .createServerClusterTool */ .S)({ server });
-  const routeTool = (0,_tools_routes_js__WEBPACK_IMPORTED_MODULE_15__/* .createRouteTool */ .Q)({ server });
-  const autoscalerTool = (0,_tools_autoscaler_js__WEBPACK_IMPORTED_MODULE_16__/* .createAutoscalerTool */ .m)({ server });
-  const cocTool = (0,_tools_coc_js__WEBPACK_IMPORTED_MODULE_18__/* .createCocTool */ .Y)({
+  const socketTool = (0,_tools_socket_js__WEBPACK_IMPORTED_MODULE_10__/* .createSocketTool */ .m)({ server });
+  const storageTool = (0,_tools_storage_js__WEBPACK_IMPORTED_MODULE_11__/* .createStorageTool */ ._)({ server });
+  const serverClusterTool = (0,_tools_servers_js__WEBPACK_IMPORTED_MODULE_12__/* .createServerClusterTool */ .S)({ server });
+  const routeTool = (0,_tools_routes_js__WEBPACK_IMPORTED_MODULE_14__/* .createRouteTool */ .Q)({ server });
+  const autoscalerTool = (0,_tools_autoscaler_js__WEBPACK_IMPORTED_MODULE_15__/* .createAutoscalerTool */ .m)({ server });
+  const cocTool = (0,_tools_coc_js__WEBPACK_IMPORTED_MODULE_17__/* .createCocTool */ .Y)({
     server,
     allowLocalFileSystem,
-    allowUnconfirmedLocalWrite,
-    localFsRoot
+    allowUnconfirmedLocalWrite
   });
-  const gitTool = (0,_tools_git_js__WEBPACK_IMPORTED_MODULE_19__/* .createGitTool */ .P)({
+  const gitTool = (0,_tools_git_js__WEBPACK_IMPORTED_MODULE_18__/* .createGitTool */ .P)({
     server,
     allowLocalFileSystem,
-    allowUnconfirmedLocalWrite,
-    localFsRoot
+    allowUnconfirmedLocalWrite
   });
-  const commandTool = (0,_tools_command_js__WEBPACK_IMPORTED_MODULE_20__/* .createCommandTool */ .m)({
+  const commandTool = (0,_tools_command_js__WEBPACK_IMPORTED_MODULE_19__/* .createCommandTool */ .m)({
     server,
     enabled: allowPlatformCommands,
-    localFsRoot,
     timeout: platformCommandTimeout,
     maxOutputBytes: platformCommandMaxOutputBytes
   });
@@ -9598,6 +9716,28 @@ Current user message:
 ${prompt}`;
   }
   async function runAiSession(data) {
+    if (lifecycle.stopping) throw new Error("AI is shutting down; new requests are unavailable.");
+    const organization_id = data.organization_id;
+    const evictionGeneration = organizationGenerations.get(organization_id) ?? 0;
+    activeOrganizationRequests.set(
+      organization_id,
+      (activeOrganizationRequests.get(organization_id) ?? 0) + 1
+    );
+    try {
+      return await runAiSessionWithGeneration(data, evictionGeneration);
+    } finally {
+      const activeCount = activeOrganizationRequests.get(organization_id) ?? 0;
+      if (activeCount <= 1) {
+        activeOrganizationRequests.delete(organization_id);
+        if (!organizationLocks.has(organization_id)) {
+          organizationGenerations.delete(organization_id);
+        }
+      } else {
+        activeOrganizationRequests.set(organization_id, activeCount - 1);
+      }
+    }
+  }
+  async function runAiSessionWithGeneration(data, evictionGeneration) {
     const sessionStartedAt = Date.now();
     const {
       organization_id,
@@ -9648,7 +9788,7 @@ ${prompt}`;
       return responseQueue;
     };
     const selectedProviderId = provider ?? modelProvider ?? defaultProvider;
-    if (!organization_id) throw new Error("organization_id is required");
+    if (typeof organization_id !== "string" || !organization_id.trim()) throw new Error("An authenticated organization_id is required");
     if (!user_id) throw new Error("Authenticated user_id is required");
     const providerConfig = configuredProviders?.[selectedProviderId];
     if (!providerConfig) {
@@ -9656,11 +9796,11 @@ ${prompt}`;
         `Provider "${selectedProviderId ?? "undefined"}" is not configured.`
       );
     }
-    const credentialRequirements = (0,_credentials_js__WEBPACK_IMPORTED_MODULE_23__/* .getCredentialRequirements */ .y$)(
+    const credentialRequirements = (0,_credentials_js__WEBPACK_IMPORTED_MODULE_24__/* .getCredentialRequirements */ .y$)(
       providerConfig,
       selectedProviderId
     );
-    const hasAllCredentials = (profile) => (0,_credentials_js__WEBPACK_IMPORTED_MODULE_23__/* .getMissingCredentialKeys */ .Cu)(profile, credentialRequirements.keys).length === 0;
+    const hasAllCredentials = (profile) => (0,_credentials_js__WEBPACK_IMPORTED_MODULE_24__/* .getMissingCredentialKeys */ .Cu)(profile, credentialRequirements.keys).length === 0;
     const providerResponse = await crud.send({
       method: "object.read",
       array: "apis",
@@ -9700,7 +9840,7 @@ ${prompt}`;
         `No active API configuration found for provider "${selectedProviderId}".`
       );
     }
-    const missingCredentialKeys = (0,_credentials_js__WEBPACK_IMPORTED_MODULE_23__/* .getMissingCredentialKeys */ .Cu)(
+    const missingCredentialKeys = (0,_credentials_js__WEBPACK_IMPORTED_MODULE_24__/* .getMissingCredentialKeys */ .Cu)(
       apiProfile,
       credentialRequirements.keys
     );
@@ -9708,7 +9848,7 @@ ${prompt}`;
       ...providerConfig,
       url: apiProfile.url,
       profile: apiProfile,
-      key: (0,_credentials_js__WEBPACK_IMPORTED_MODULE_23__/* .getCredentialValue */ .lR)(apiProfile, providerConfig.apiKeyKey || "key")
+      key: (0,_credentials_js__WEBPACK_IMPORTED_MODULE_24__/* .getCredentialValue */ .lR)(apiProfile, providerConfig.apiKeyKey || "key")
     };
     const selectedModel = modelName ?? selectedProvider.models.default;
     if (!prompt) throw new Error("Prompt is required");
@@ -9845,7 +9985,7 @@ ${historyPrompt}` : historyPrompt;
     if (data._aiDirectQueue === true) {
       await reserveDirectQueueItem(data, activeUserMessageId);
     }
-    const serverCrudTool = configureTool((0,_tools_crud_js__WEBPACK_IMPORTED_MODULE_7__/* .createCrudTool */ .N)({ crud, organization_id, host }));
+    const serverCrudTool = configureTool((0,_tools_crud_js__WEBPACK_IMPORTED_MODULE_6__/* .createCrudTool */ .N)({ crud, organization_id, host }));
     const displayReferences = [];
     const readReferences = [];
     const crudReadReferences = [];
@@ -9968,13 +10108,13 @@ ${historyPrompt}` : historyPrompt;
         return { reference };
       }
     });
-    const sendTool = configureTool((0,_tools_send_js__WEBPACK_IMPORTED_MODULE_10__/* .createSendTool */ .v)({ server, organization_id }));
-    const apiTool = configureTool((0,_tools_api_js__WEBPACK_IMPORTED_MODULE_9__/* .createApiTool */ .b)({
+    const sendTool = configureTool((0,_tools_send_js__WEBPACK_IMPORTED_MODULE_9__/* .createSendTool */ .v)({ server, organization_id }));
+    const apiTool = configureTool((0,_tools_api_js__WEBPACK_IMPORTED_MODULE_8__/* .createApiTool */ .b)({
       server,
       organization_id,
       host
     }));
-    const historyTool = configureTool((0,_tools_history_js__WEBPACK_IMPORTED_MODULE_17__/* .createHistoryTool */ .D)({
+    const historyTool = configureTool((0,_tools_history_js__WEBPACK_IMPORTED_MODULE_16__/* .createHistoryTool */ .D)({
       crud,
       organization_id,
       host,
@@ -9992,7 +10132,7 @@ ${historyPrompt}` : historyPrompt;
           };
         }
         const [providerId, providerConfig2] = requestedProvider;
-        const requirements = (0,_credentials_js__WEBPACK_IMPORTED_MODULE_23__/* .getCredentialRequirements */ .y$)(providerConfig2, providerId);
+        const requirements = (0,_credentials_js__WEBPACK_IMPORTED_MODULE_24__/* .getCredentialRequirements */ .y$)(providerConfig2, providerId);
         const response = await crud.send({
           method: "object.read",
           array: "apis",
@@ -10062,7 +10202,7 @@ ${historyPrompt}` : historyPrompt;
       host,
       user_id,
       clientId,
-      storageTarget: storageTarget ?? defaultStorageTarget,
+      storageTarget: (0,_platform_js__WEBPACK_IMPORTED_MODULE_23__/* .projectStorageTarget */ .Us)(server, organization_id, storageTarget, defaultStorageTarget),
       confirmLocalWrite: confirmLocalWrite === true
     };
     const getToolStatus = (tool, payload) => {
@@ -10121,10 +10261,10 @@ ${historyPrompt}` : historyPrompt;
       historyTool,
       credentialTool,
       instructionsTool,
-      ...sharedToolTemplates.filter((tool) => tool.name !== "execute_command" || organization_id === server.organization_id).map((tool) => bindTool(tool, toolContext))
-    ].filter(Boolean).map((tool) => ({
+      ...sharedToolTemplates.filter((tool) => (0,_platform_js__WEBPACK_IMPORTED_MODULE_23__/* .isToolAvailable */ .gk)(server, organization_id, tool.name)).map((tool) => bindTool(tool, toolContext))
+    ].filter((tool) => tool && (0,_platform_js__WEBPACK_IMPORTED_MODULE_23__/* .isToolAvailable */ .gk)(server, organization_id, tool.name)).map((tool) => ({
       ...tool,
-      handler: async (payload = {}) => {
+      handler: (payload = {}) => lifecycle.track(async () => {
         const showProgress = tool.name !== "request_api_credential";
         if (showProgress) {
           await queueResponse({
@@ -10142,7 +10282,7 @@ ${historyPrompt}` : historyPrompt;
         }
         try {
           const result = await tool.handler(payload);
-          (0,_tools_errors_js__WEBPACK_IMPORTED_MODULE_14__/* .assertToolResult */ .wb)(result, tool.name);
+          (0,_tools_errors_js__WEBPACK_IMPORTED_MODULE_13__/* .assertToolResult */ .wb)(result, tool.name);
           if (tool.name === "crud" && payload.method === "object.read" && payload.array === "apps" && Array.isArray(result?.object)) {
             rememberApps(result.object);
           }
@@ -10194,16 +10334,17 @@ ${historyPrompt}` : historyPrompt;
               status: "progress",
               conversation_id: activeConversationId,
               user_message_id,
-              message: (0,_tools_errors_js__WEBPACK_IMPORTED_MODULE_14__/* .getRecoveryStatus */ .c)(tool.name, error)
+              message: (0,_tools_errors_js__WEBPACK_IMPORTED_MODULE_13__/* .getRecoveryStatus */ .c)(tool.name, error)
             }
           });
           throw error;
         }
-      }
+      })
     }));
     const copilotClient = await getClient({
       provider: selectedProvider,
-      organization_id
+      organization_id,
+      evictionGeneration
     });
     const wireApi = selectedProvider.wireApi ?? (selectedProvider.type === "openai" && selectedProvider.url?.startsWith("https://api.openai.com/") ? "responses" : void 0);
     const sessionProvider = selectedProvider.type === "copilot" ? void 0 : {
@@ -10213,28 +10354,20 @@ ${historyPrompt}` : historyPrompt;
       ...wireApi && { wireApi },
       ...selectedProvider.azure && { azure: selectedProvider.azure }
     };
-    const baseSystemMessage = getBaseSystemMessage();
+    const baseSystemMessage = getBaseSystemMessage(organization_id);
     const session = await copilotClient.createSession({
       model: selectedModel,
       enableFileChangeTracking: false,
       ...sessionProvider ? { provider: sessionProvider } : {},
       tools,
       availableTools: new _github_copilot_sdk__WEBPACK_IMPORTED_MODULE_0__/* .ToolSet */ .Z2().addCustom("*"),
-      onPermissionRequest: async (permission) => {
-        if (["shell", "write", "read"].includes(permission.kind)) {
-          return {
-            kind: "reject",
-            feedback: `${permission.kind} tools are disabled for this server session.`
-          };
-        }
-        return { kind: "approve-once" };
-      },
+      onPermissionRequest: (0,_platform_js__WEBPACK_IMPORTED_MODULE_23__/* .createPermissionHandler */ .cM)(server, organization_id, tools),
       systemMessage: {
         mode: "append",
         content: `${baseSystemMessage}
 - Active provider: ${selectedProviderId}
 - Active model: ${selectedModel}
-- Execution profile: ${organization_id === server.organization_id && allowPlatformCommands ? "platform (unrestricted command execution available)" : "organization (isolated project tools only)"}
+- Execution profile: ${(0,_platform_js__WEBPACK_IMPORTED_MODULE_23__/* .isPlatformOrganization */ .dk)(server, organization_id) ? "platform (local tools subject to server configuration)" : "organization (chat and scoped database/API tools; local files, Git, and CLI unavailable)"}
 
 ${systemMessage ?? ""}`.trim()
       }
@@ -10451,6 +10584,7 @@ ${systemMessage ?? ""}`.trim()
     }
   }
   wsManager.on("ai", async (data = {}) => {
+    if (lifecycle.stopping) return sendToClient({ ...data, success: false, error: "AI is shutting down; new requests are unavailable." });
     if (data.method === "ai.stop") {
       const organization_id = data.organization_id;
       const clientId = data.clientId;
@@ -10914,14 +11048,15 @@ ${systemMessage ?? ""}`.trim()
     async send(data = {}) {
       return runAiSession(data);
     },
-    async stop() {
-      const activeClients = await Promise.allSettled(clients.values());
-      await Promise.allSettled(
-        activeClients.filter((result) => result.status === "fulfilled").map((result) => result.value.stop())
-      );
-      clients.clear();
+    async stop(reason = "shutdown", options2 = {}) {
+      process.removeListener("organization.evicted", onOrganizationEvicted);
+      server.shutdownHandlers?.delete(onShutdown);
+      return lifecycle.stop(reason, options2);
     }
   };
+  const onShutdown = (reason, signal) => api.stop(reason, { signal });
+  server.shutdownHandlers ??= /* @__PURE__ */ new Set();
+  server.shutdownHandlers.add(onShutdown);
   return api;
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -10931,6 +11066,111 @@ ${systemMessage ?? ""}`.trim()
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
 /* harmony export */   "Ay", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
+
+
+/***/ },
+
+/***/ 8793
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   R: () => (/* binding */ createLifecycle)
+/* harmony export */ });
+function createLifecycle({ server, quiesce = async () => {
+} }) {
+  const pending = /* @__PURE__ */ new Set();
+  let stopping = false;
+  let shutdown;
+  return {
+    get stopping() {
+      return stopping || server.state?.isShuttingDown === true;
+    },
+    track(operation) {
+      if (this.stopping) return Promise.reject(new Error("AI is shutting down; new operations are unavailable."));
+      const promise = Promise.resolve().then(operation);
+      pending.add(promise);
+      promise.then(() => pending.delete(promise), () => pending.delete(promise));
+      return promise;
+    },
+    stop(reason = "shutdown", { signal: outerSignal } = {}) {
+      if (shutdown) return shutdown;
+      stopping = true;
+      const controller = new AbortController();
+      const abort = () => controller.abort(outerSignal.reason || new Error("AI shutdown cancelled."));
+      if (outerSignal?.aborted) abort();
+      else outerSignal?.addEventListener("abort", abort, { once: true });
+      const timeoutMs = 1e4;
+      const timer = setTimeout(() => controller.abort(new Error("AI shutdown deadline exceeded.")), timeoutMs);
+      const abortPromise = new Promise((_, reject) => controller.signal.addEventListener("abort", () => reject(controller.signal.reason), { once: true }));
+      if (controller.signal.aborted) clearTimeout(timer);
+      const operation = async () => {
+        controller.signal.throwIfAborted();
+        await quiesce();
+        await Promise.allSettled([...pending]);
+        controller.signal.throwIfAborted();
+        return { stopped: true };
+      };
+      shutdown = Promise.race([operation(), abortPromise]).finally(() => {
+        clearTimeout(timer);
+        outerSignal?.removeEventListener("abort", abort);
+      });
+      return shutdown;
+    }
+  };
+}
+
+
+/***/ },
+
+/***/ 9170
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Us: () => (/* binding */ projectStorageTarget),
+/* harmony export */   cM: () => (/* binding */ createPermissionHandler),
+/* harmony export */   dk: () => (/* binding */ isPlatformOrganization),
+/* harmony export */   gi: () => (/* binding */ platformAccessError),
+/* harmony export */   gk: () => (/* binding */ isToolAvailable)
+/* harmony export */ });
+const platformTools = /* @__PURE__ */ new Set([
+  "read_local_file",
+  "edit_local_file",
+  "write_local_file",
+  "git_project",
+  "coc",
+  "execute_command",
+  "request_server_file",
+  "manage_server_storage",
+  "manage_server_routes",
+  "manage_server_autoscaler",
+  "manage_server_cluster",
+  "send_server_message"
+]);
+function isPlatformOrganization(server, organization_id) {
+  return typeof organization_id === "string" && organization_id.trim().length > 0 && typeof server?.organization_id === "string" && organization_id === server.organization_id;
+}
+function platformAccessError(server, organization_id) {
+  if (isPlatformOrganization(server, organization_id)) return;
+  return {
+    success: false,
+    error: "Unauthorized: local filesystem, Git, CLI, and server control access is restricted to the platform organization."
+  };
+}
+function isToolAvailable(server, organization_id, name) {
+  return !platformTools.has(name) || isPlatformOrganization(server, organization_id);
+}
+function projectStorageTarget(server, organization_id, requested, fallback) {
+  return requested ?? (isPlatformOrganization(server, organization_id) ? fallback : "virtual");
+}
+function createPermissionHandler(server, organization_id, tools) {
+  const registered = new Set(tools.map((tool) => tool.name));
+  return async (permission) => {
+    if (typeof organization_id === "string" && organization_id.trim() && permission?.managedApprovalRequired !== true && permission?.kind === "custom-tool" && registered.has(permission.toolName) && isToolAvailable(server, organization_id, permission.toolName)) {
+      return { kind: "approve-once" };
+    }
+    return { kind: "reject", feedback: "Only the configured, authorized CoCreate tools may run in this session." };
+  };
+}
 
 
 /***/ },
@@ -10945,6 +11185,9 @@ function createApiTool({ server, organization_id, host }) {
   return {
     name: "execute_server_api",
     handler: async (input = {}) => {
+      if (typeof organization_id !== "string" || !organization_id.trim()) {
+        return { success: false, error: "An authenticated organization_id is required for API calls." };
+      }
       const api = server.api;
       if (typeof api?.send !== "function") {
         throw new Error("The CoCreate server API capability is not initialized.");
@@ -10973,17 +11216,15 @@ function createApiTool({ server, organization_id, host }) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   m: () => (/* binding */ createAutoscalerTool)
 /* harmony export */ });
+/* harmony import */ var _platform_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9170);
+
 function createAutoscalerTool({ server }) {
   const autoscaler = server.autoscaler;
   return {
     name: "manage_server_autoscaler",
-    handler: async ({ action, value }, context) => {
-      if (context.organization_id !== server.organization_id) {
-        return {
-          success: false,
-          error: "Unauthorized: server.autoscaler is restricted to the platform organization."
-        };
-      }
+    handler: async ({ action, value }, context = {}) => {
+      const denied = (0,_platform_js__WEBPACK_IMPORTED_MODULE_0__/* .platformAccessError */ .gi)(server, context?.organization_id);
+      if (denied) return denied;
       switch (action) {
         case "getConfig":
           return autoscaler.config;
@@ -11014,6 +11255,8 @@ function createAutoscalerTool({ server }) {
 /* harmony import */ var node_fs_promises__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8298);
 /* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5663);
 /* harmony import */ var _workspace_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7936);
+/* harmony import */ var _platform_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9170);
+
 
 
 
@@ -11042,10 +11285,9 @@ function getContent(file) {
 function createCocTool({
   server,
   allowLocalFileSystem,
-  allowUnconfirmedLocalWrite,
-  localFsRoot
+  allowUnconfirmedLocalWrite
 }) {
-  const workspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_2__/* .createWorkspaceResolver */ .I)(localFsRoot);
+  const workspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_2__/* .createWorkspaceResolver */ .IN)(server);
   const crud = server.crud;
   async function downloadTarget(target, context, overwrite) {
     const pathname = normalizeVirtualPath(target);
@@ -11109,7 +11351,9 @@ function createCocTool({
   }
   return {
     name: "coc",
-    handler: async ({ action, paths = [], site = false, overwrite = false }, context) => {
+    handler: async ({ action, paths = [], site = false, overwrite = false }, context = {}) => {
+      const denied = (0,_platform_js__WEBPACK_IMPORTED_MODULE_3__/* .platformAccessError */ .gi)(server, context?.organization_id);
+      if (denied) return denied;
       if (!allowLocalFileSystem) {
         return { success: false, error: "Local file system access is disabled." };
       }
@@ -11200,6 +11444,8 @@ function createCocTool({
 /* harmony import */ var node_fs_promises__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8298);
 /* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5663);
 /* harmony import */ var _workspace_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7936);
+/* harmony import */ var _platform_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9170);
+
 
 
 
@@ -11213,24 +11459,19 @@ function resolveTimeout(value, maximum) {
 function createCommandTool({
   server,
   enabled,
-  localFsRoot,
   timeout = 6e5,
   maxOutputBytes = 1024 * 1024
 }) {
-  const workspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_3__/* .createWorkspaceResolver */ .I)(localFsRoot);
+  const workspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_3__/* .createWorkspaceResolver */ .IN)(server);
   const maximumTimeout = Math.max(1e3, Math.trunc(Number(timeout)) || 6e5);
   const outputLimit = Math.max(1024, Math.trunc(Number(maxOutputBytes)) || 1024 * 1024);
   return {
     name: "execute_command",
     handler: async ({ command, cwd, timeout: requestedTimeout, input }, context = {}) => {
+      const denied = (0,_platform_js__WEBPACK_IMPORTED_MODULE_4__/* .platformAccessError */ .gi)(server, context?.organization_id);
+      if (denied) return denied;
       if (!enabled) {
         return { success: false, error: "Platform command execution is disabled." };
-      }
-      if (context.organization_id !== server.organization_id) {
-        return {
-          success: false,
-          error: "Unauthorized: command execution is restricted to the platform organization."
-        };
       }
       if (typeof command !== "string" || !command.trim()) {
         throw new Error("A non-empty command is required.");
@@ -11355,7 +11596,14 @@ function createCrudTool({ crud, organization_id, host }) {
   return {
     name: "crud",
     handler: async (payload) => {
+      if (typeof organization_id !== "string" || !organization_id.trim()) {
+        return { success: false, error: "An authenticated organization_id is required for CRUD." };
+      }
+      if (!/^(storage|database|array|index|object)\.(create|read|update|delete)$/.test(payload?.method ?? "")) {
+        return { success: false, error: "The CRUD tool accepts only CRUD methods; use the scoped API tool for API calls." };
+      }
       const {
+        socket: _ignoredSocket,
         fields,
         limit,
         projection,
@@ -11618,6 +11866,8 @@ function getRecoveryStatus(toolName, error) {
 /* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5663);
 /* harmony import */ var node_fs_promises__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8298);
 /* harmony import */ var _workspace_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7936);
+/* harmony import */ var _platform_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9170);
+
 
 
 
@@ -11626,12 +11876,11 @@ function createFileTools({
   crud,
   defaultStorageTarget,
   allowLocalFileSystem,
-  allowUnconfirmedLocalWrite,
-  localFsRoot
+  allowUnconfirmedLocalWrite
 }) {
   const files = server.files;
   const wsManager = server.wsManager;
-  const workspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_2__/* .createWorkspaceResolver */ .I)(localFsRoot);
+  const workspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_2__/* .createWorkspaceResolver */ .IN)(server);
   const normalizeVirtualPath = (filePath) => filePath.startsWith("/") ? filePath : `/${filePath}`;
   const inferMimeType = (pathname) => {
     const extension = node_path__WEBPACK_IMPORTED_MODULE_0__["default"].extname(pathname).toLowerCase();
@@ -11659,7 +11908,9 @@ function createFileTools({
   const resolveLocalPath = (filePath, context, options) => workspaces.resolvePath(context?.organization_id, filePath, options);
   const requestServerFileTool = {
     name: "request_server_file",
-    handler: async ({ path: pathname }, context) => {
+    handler: async ({ path: pathname }, context = {}) => {
+      const denied = (0,_platform_js__WEBPACK_IMPORTED_MODULE_3__/* .platformAccessError */ .gi)(server, context?.organization_id);
+      if (denied) return denied;
       return files.resolveFile({
         pathname,
         hostname: context.host,
@@ -11851,6 +12102,8 @@ function createFileTools({
   const localFsReadTool = {
     name: "read_local_file",
     handler: async ({ filePath, startLine = 1, endLine }, context = {}) => {
+      const denied = (0,_platform_js__WEBPACK_IMPORTED_MODULE_3__/* .platformAccessError */ .gi)(server, context?.organization_id);
+      if (denied) return denied;
       if (!allowLocalFileSystem) {
         return { success: false, error: "Local file system access is disabled." };
       }
@@ -11874,6 +12127,8 @@ function createFileTools({
   const localFsEditTool = {
     name: "edit_local_file",
     handler: async ({ filePath, oldText, newText }, context = {}) => {
+      const denied = (0,_platform_js__WEBPACK_IMPORTED_MODULE_3__/* .platformAccessError */ .gi)(server, context?.organization_id);
+      if (denied) return denied;
       if (!allowLocalFileSystem) {
         return { success: false, error: "Local file system access is disabled." };
       }
@@ -11912,6 +12167,8 @@ function createFileTools({
   const localFsWriteTool = {
     name: "write_local_file",
     handler: async ({ filePath, content }, context = {}) => {
+      const denied = (0,_platform_js__WEBPACK_IMPORTED_MODULE_3__/* .platformAccessError */ .gi)(server, context?.organization_id);
+      if (denied) return denied;
       if (!allowLocalFileSystem) {
         return { success: false, error: "Local file system access is disabled." };
       }
@@ -11929,8 +12186,13 @@ function createFileTools({
   };
   const readProjectFileTool = {
     name: "read_project_file",
-    handler: async ({ filePath, target = "auto", startLine, endLine }, context) => {
-      const selected = target === "auto" ? context.storageTarget ?? defaultStorageTarget : target;
+    handler: async ({ filePath, target = "auto", startLine, endLine }, context = {}) => {
+      const selected = (0,_platform_js__WEBPACK_IMPORTED_MODULE_3__/* .projectStorageTarget */ .Us)(
+        server,
+        context?.organization_id,
+        target === "auto" ? context?.storageTarget : target,
+        defaultStorageTarget
+      );
       if (target === "local" && !allowLocalFileSystem) {
         return {
           success: false,
@@ -11945,8 +12207,13 @@ function createFileTools({
   };
   const writeProjectFileTool = {
     name: "write_project_file",
-    handler: async ({ filePath, content, mimeType, target = "auto" }, context) => {
-      const selected = target === "auto" ? context.storageTarget ?? defaultStorageTarget : target;
+    handler: async ({ filePath, content, mimeType, target = "auto" }, context = {}) => {
+      const selected = (0,_platform_js__WEBPACK_IMPORTED_MODULE_3__/* .projectStorageTarget */ .Us)(
+        server,
+        context?.organization_id,
+        target === "auto" ? context?.storageTarget : target,
+        defaultStorageTarget
+      );
       if (target === "local" && !allowLocalFileSystem) {
         return {
           success: false,
@@ -11983,87 +12250,22 @@ function createFileTools({
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   P: () => (/* binding */ createGitTool)
 /* harmony export */ });
-/* unused harmony export ensureGitWorkspace */
-/* unused harmony import specifier */ var fs;
-/* unused harmony import specifier */ var path;
-/* unused harmony import specifier */ var createWorkspaceResolver;
 /* harmony import */ var node_child_process__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6564);
-/* harmony import */ var node_fs_promises__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8298);
-/* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5663);
-/* harmony import */ var node_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4472);
-/* harmony import */ var _workspace_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(7936);
+/* harmony import */ var node_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4472);
+/* harmony import */ var _workspace_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7936);
+/* harmony import */ var _platform_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9170);
 
 
 
 
-
-const execFileAsync = (0,node_util__WEBPACK_IMPORTED_MODULE_3__.promisify)(node_child_process__WEBPACK_IMPORTED_MODULE_0__.execFile);
+const execFileAsync = (0,node_util__WEBPACK_IMPORTED_MODULE_1__.promisify)(node_child_process__WEBPACK_IMPORTED_MODULE_0__.execFile);
 const MAX_OUTPUT_BYTES = 256 * 1024;
 const DEFAULT_LIMIT = 50;
 const MAX_LIMIT = 200;
 const SAFE_REVISION = /^[A-Za-z0-9][A-Za-z0-9._/~^{}-]*$/;
-const workspaceInitializations = /* @__PURE__ */ (/* unused pure expression or super */ null && (new Map()));
 const sanitizedEnvironment = () => Object.fromEntries(
   Object.entries(process.env).filter(([name]) => !name.startsWith("GIT_"))
 );
-async function ensureGitWorkspace({ localFsRoot, organization_id, gitBinary = "git" }) {
-  const workspaces = createWorkspaceResolver(localFsRoot);
-  const aiWorkspaces = createWorkspaceResolver(localFsRoot, ".ai");
-  const workspace = await workspaces.ensure(organization_id);
-  await aiWorkspaces.ensure(organization_id);
-  const repositoryPath = path.join(workspace, ".git");
-  const initializationKey = `${workspace}\0${gitBinary}`;
-  if (!workspaceInitializations.has(initializationKey)) {
-    const initialization2 = (async () => {
-      try {
-        const stats = await fs.lstat(repositoryPath);
-        if (!stats.isDirectory() || stats.isSymbolicLink()) {
-          throw new Error("The Git metadata path must be a directory inside the organization workspace.");
-        }
-      } catch (error) {
-        if (error.code !== "ENOENT") throw error;
-        await execFileAsync(gitBinary, ["init", "--initial-branch=main"], {
-          cwd: workspace,
-          encoding: "utf8",
-          maxBuffer: MAX_OUTPUT_BYTES,
-          timeout: 3e4,
-          windowsHide: true,
-          env: {
-            ...sanitizedEnvironment(),
-            GIT_TERMINAL_PROMPT: "0"
-          }
-        });
-      }
-      const { stdout } = await execFileAsync(gitBinary, [
-        "rev-parse",
-        "--is-inside-work-tree"
-      ], {
-        cwd: workspace,
-        encoding: "utf8",
-        maxBuffer: MAX_OUTPUT_BYTES,
-        timeout: 3e4,
-        windowsHide: true,
-        env: {
-          ...sanitizedEnvironment(),
-          GIT_TERMINAL_PROMPT: "0"
-        }
-      });
-      if (stdout.trim() !== "true") {
-        throw new Error(`Organization sites workspace is not a Git repository: ${workspace}`);
-      }
-      return workspace;
-    })();
-    workspaceInitializations.set(initializationKey, initialization2);
-  }
-  const initialization = workspaceInitializations.get(initializationKey);
-  try {
-    return await initialization;
-  } finally {
-    if (workspaceInitializations.get(initializationKey) === initialization) {
-      workspaceInitializations.delete(initializationKey);
-    }
-  }
-}
 function boundedLimit(value) {
   const number = Math.trunc(Number(value)) || DEFAULT_LIMIT;
   return Math.min(MAX_LIMIT, Math.max(1, number));
@@ -12095,10 +12297,9 @@ function createGitTool({
   server,
   allowLocalFileSystem,
   allowUnconfirmedLocalWrite,
-  localFsRoot,
   gitBinary = "git"
 }) {
-  const workspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_4__/* .createWorkspaceResolver */ .I)(localFsRoot);
+  const workspaces = (0,_workspace_js__WEBPACK_IMPORTED_MODULE_2__/* .createWorkspaceResolver */ .IN)(server);
   const mutationQueues = /* @__PURE__ */ new Map();
   const withMutationLock = async (organization_id, operation) => {
     const previous = mutationQueues.get(organization_id) ?? Promise.resolve();
@@ -12166,30 +12367,16 @@ function createGitTool({
     const { stdout } = await runGit(workspace, ["rev-parse", "--is-inside-work-tree"]);
     if (stdout.trim() !== "true") throw new Error("The project workspace is not a Git repository.");
   };
-  const ensureRepository = async (workspace, organization_id) => {
-    try {
-      await assertRepository(workspace);
-      return;
-    } catch (error) {
-      const isTenant = organization_id !== server?.organization_id;
-      if (!isTenant || typeof server?.organizations?.provision !== "function") {
-        throw error;
-      }
-      await server.organizations.provision({
-        organization_id,
-        organization: { _id: organization_id }
-      });
-      await assertRepository(workspace);
-    }
-  };
   return {
     name: "git_project",
     handler: async (payload = {}, context = {}) => {
+      const denied = (0,_platform_js__WEBPACK_IMPORTED_MODULE_3__/* .platformAccessError */ .gi)(server, context?.organization_id);
+      if (denied) return denied;
       if (!allowLocalFileSystem) {
         return { success: false, error: "Organization workspace access is disabled." };
       }
       const workspace = await workspaces.ensure(context.organization_id);
-      await ensureRepository(workspace, context.organization_id);
+      await assertRepository(workspace);
       const action = payload.action;
       const paths = validatePaths(context.organization_id, payload.paths);
       if (action === "status") {
@@ -12250,8 +12437,8 @@ function createGitTool({
         return { success: true, action, revision, content: stdout };
       }
       if (action === "commit") {
-        const denied = requireConfirmation(context, allowUnconfirmedLocalWrite, "Git commit");
-        if (denied) return denied;
+        const denied2 = requireConfirmation(context, allowUnconfirmedLocalWrite, "Git commit");
+        if (denied2) return denied2;
         if (!paths.length) throw new Error("paths is required for a Git commit.");
         const message = validateMessage(payload.message);
         return withMutationLock(context.organization_id, async () => {
@@ -12270,8 +12457,8 @@ function createGitTool({
         });
       }
       if (action === "create_branch") {
-        const denied = requireConfirmation(context, allowUnconfirmedLocalWrite, "Branch creation");
-        if (denied) return denied;
+        const denied2 = requireConfirmation(context, allowUnconfirmedLocalWrite, "Branch creation");
+        if (denied2) return denied2;
         if (typeof payload.branch !== "string" || !payload.branch) {
           throw new Error("branch is required.");
         }
@@ -12282,8 +12469,8 @@ function createGitTool({
         });
       }
       if (action === "switch_branch") {
-        const denied = requireConfirmation(context, allowUnconfirmedLocalWrite, "Branch switching");
-        if (denied) return denied;
+        const denied2 = requireConfirmation(context, allowUnconfirmedLocalWrite, "Branch switching");
+        if (denied2) return denied2;
         if (typeof payload.branch !== "string" || !payload.branch) {
           throw new Error("branch is required.");
         }
@@ -12294,8 +12481,8 @@ function createGitTool({
         });
       }
       if (action === "revert") {
-        const denied = requireConfirmation(context, allowUnconfirmedLocalWrite, "Git revert");
-        if (denied) return denied;
+        const denied2 = requireConfirmation(context, allowUnconfirmedLocalWrite, "Git revert");
+        if (denied2) return denied2;
         const revision = validateRevision(payload.revision);
         return withMutationLock(context.organization_id, async () => {
           const status = await runGit(workspace, [
@@ -12383,17 +12570,15 @@ function createHistoryTool({ crud, organization_id, host, conversation_id }) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Q: () => (/* binding */ createRouteTool)
 /* harmony export */ });
+/* harmony import */ var _platform_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9170);
+
 function createRouteTool({ server }) {
   const routes = server.routes;
   return {
     name: "manage_server_routes",
-    handler: async ({ action, routePath, responseContent, contentType = "text/plain" }, context) => {
-      if (context.organization_id !== server.organization_id) {
-        return {
-          success: false,
-          error: "Unauthorized: Route management (server.routes) is a platform-level action restricted to platform organization requests."
-        };
-      }
+    handler: async ({ action, routePath, responseContent, contentType = "text/plain" }, context = {}) => {
+      const denied = (0,_platform_js__WEBPACK_IMPORTED_MODULE_0__/* .platformAccessError */ .gi)(server, context?.organization_id);
+      if (denied) return denied;
       if (action === "list") {
         const activeRoutes = Array.from(routes.keys());
         return { success: true, routes: activeRoutes, count: activeRoutes.length };
@@ -12426,16 +12611,14 @@ function createRouteTool({ server }) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   v: () => (/* binding */ createSendTool)
 /* harmony export */ });
+/* harmony import */ var _platform_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9170);
+
 function createSendTool({ server, organization_id }) {
   return {
     name: "send_server_message",
     handler: async (payload) => {
-      if (organization_id !== server.organization_id) {
-        return {
-          success: false,
-          error: "Unauthorized: server.send is restricted to the platform organization."
-        };
-      }
+      const denied = (0,_platform_js__WEBPACK_IMPORTED_MODULE_0__/* .platformAccessError */ .gi)(server, organization_id);
+      if (denied) return denied;
       const routedPayload = {
         ...payload,
         organization_id
@@ -12455,6 +12638,8 @@ function createSendTool({ server, organization_id }) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   S: () => (/* binding */ createServerClusterTool)
 /* harmony export */ });
+/* harmony import */ var _platform_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9170);
+
 function createServerClusterTool({ server }) {
   const crud = server.crud;
   return {
@@ -12469,13 +12654,9 @@ function createServerClusterTool({ server }) {
       worker,
       value,
       organizations
-    }, context) => {
-      if (context.organization_id !== server.organization_id) {
-        return {
-          success: false,
-          error: "Unauthorized: Cluster topology (servers collection) is restricted exclusively to platform organization requests."
-        };
-      }
+    }, context = {}) => {
+      const denied = (0,_platform_js__WEBPACK_IMPORTED_MODULE_0__/* .platformAccessError */ .gi)(server, context?.organization_id);
+      if (denied) return denied;
       switch (action) {
         case "self": {
           return {
@@ -12609,17 +12790,15 @@ function createSocketTool({ server }) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   _: () => (/* binding */ createStorageTool)
 /* harmony export */ });
+/* harmony import */ var _platform_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9170);
+
 function createStorageTool({ server }) {
   const storage = server.storage;
   return {
     name: "manage_server_storage",
-    handler: async ({ action, key, value }, context) => {
-      if (context.organization_id !== server.organization_id) {
-        return {
-          success: false,
-          error: "Unauthorized: server.storage is restricted to the platform organization."
-        };
-      }
+    handler: async ({ action, key, value }, context = {}) => {
+      const denied = (0,_platform_js__WEBPACK_IMPORTED_MODULE_0__/* .platformAccessError */ .gi)(server, context?.organization_id);
+      if (denied) return denied;
       switch (action) {
         case "get":
           return storage.get(key);
@@ -12645,53 +12824,54 @@ function createStorageTool({ server }) {
 (__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   I: () => (/* binding */ createWorkspaceResolver)
+/* harmony export */   IN: () => (/* binding */ createWorkspaceResolver),
+/* harmony export */   IT: () => (/* binding */ getRepositoryWorkspace),
+/* harmony export */   sU: () => (/* binding */ createRuntimeDirectories)
 /* harmony export */ });
 /* harmony import */ var node_fs_promises__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8298);
 /* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5663);
+/* harmony import */ var node_os__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6674);
+/* harmony import */ var _platform_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9170);
 
 
-const ORGANIZATION_SEGMENT = /^[A-Za-z0-9_-]+$/;
-function createWorkspaceResolver(baseDirectory, workspaceDirectory = "sites") {
-  const root = node_path__WEBPACK_IMPORTED_MODULE_1__["default"].resolve(baseDirectory);
-  if (!ORGANIZATION_SEGMENT.test(workspaceDirectory) && workspaceDirectory !== ".ai") {
-    throw new Error(`Invalid organization workspace directory: ${workspaceDirectory}`);
-  }
+
+
+function getRepositoryWorkspace(server) {
+  const checkout = server?.repository?.repositories?.find((entry) => entry?.enabled !== false && entry?.checkout?.workspace)?.checkout.workspace;
+  if (typeof checkout === "string" && node_path__WEBPACK_IMPORTED_MODULE_1__["default"].isAbsolute(checkout)) return node_path__WEBPACK_IMPORTED_MODULE_1__["default"].resolve(checkout);
+  const inherited = process.env.SERVER_REPOSITORY_ROOT;
+  if ((0,_platform_js__WEBPACK_IMPORTED_MODULE_3__/* .isPlatformOrganization */ .dk)(server, process.env.SERVER_REPOSITORY_ORGANIZATION_ID) && typeof inherited === "string" && node_path__WEBPACK_IMPORTED_MODULE_1__["default"].isAbsolute(inherited)) return node_path__WEBPACK_IMPORTED_MODULE_1__["default"].resolve(inherited);
+}
+function createWorkspaceResolver(server) {
   const assertContained = (workspace, target, filePath) => {
     if (target !== workspace && !target.startsWith(`${workspace}${node_path__WEBPACK_IMPORTED_MODULE_1__["default"].sep}`)) {
-      throw new Error(`Local file path escapes the organization workspace: ${filePath}`);
+      throw new Error(`Local file path escapes the prepared repository workspace: ${filePath}`);
     }
   };
   const organizationRoot = (organization_id) => {
-    if (!organization_id || !ORGANIZATION_SEGMENT.test(organization_id)) {
-      throw new Error("A valid authenticated organization_id is required for local workspace access.");
+    if (!(0,_platform_js__WEBPACK_IMPORTED_MODULE_3__/* .isPlatformOrganization */ .dk)(server, organization_id)) {
+      throw new Error("Local workspace access is restricted to the platform organization.");
     }
-    return node_path__WEBPACK_IMPORTED_MODULE_1__["default"].join(root, organization_id, workspaceDirectory);
+    const root = getRepositoryWorkspace(server);
+    if (!root) throw new Error("No prepared cluster repository is available for local workspace access.");
+    return root;
   };
   const resolve = (organization_id, filePath = ".") => {
+    const workspace = organizationRoot(organization_id);
     if (typeof filePath !== "string" || node_path__WEBPACK_IMPORTED_MODULE_1__["default"].isAbsolute(filePath)) {
-      throw new Error(`Local file path must be relative to the organization workspace: ${filePath}`);
+      throw new Error(`Local file path must be relative to the prepared repository workspace: ${filePath}`);
     }
     const [firstSegment] = filePath.replaceAll("\\", "/").split("/").filter(Boolean);
-    if (workspaceDirectory === "sites" && [".ai", ".git"].includes(firstSegment)) {
+    if ([".ai", ".git"].includes(firstSegment)) {
       throw new Error(`The ${firstSegment} directory is reserved and cannot be accessed by project file tools.`);
     }
-    const workspace = organizationRoot(organization_id);
     const target = node_path__WEBPACK_IMPORTED_MODULE_1__["default"].resolve(workspace, filePath);
     assertContained(workspace, target, filePath);
     return target;
   };
   const ensure = async (organization_id) => {
-    const organizationDirectory = node_path__WEBPACK_IMPORTED_MODULE_1__["default"].join(root, organization_id);
     const workspace = organizationRoot(organization_id);
-    await node_fs_promises__WEBPACK_IMPORTED_MODULE_0__["default"].mkdir(root, { recursive: true, mode: 448 });
-    await node_fs_promises__WEBPACK_IMPORTED_MODULE_0__["default"].mkdir(organizationDirectory, { recursive: true, mode: 448 });
-    await node_fs_promises__WEBPACK_IMPORTED_MODULE_0__["default"].mkdir(workspace, { recursive: true, mode: 448 });
-    const realRoot = await node_fs_promises__WEBPACK_IMPORTED_MODULE_0__["default"].realpath(root);
-    const realOrganizationDirectory = await node_fs_promises__WEBPACK_IMPORTED_MODULE_0__["default"].realpath(organizationDirectory);
-    const realWorkspace = await node_fs_promises__WEBPACK_IMPORTED_MODULE_0__["default"].realpath(workspace);
-    assertContained(realRoot, realOrganizationDirectory, organization_id);
-    assertContained(realOrganizationDirectory, realWorkspace, workspaceDirectory);
+    if (!(await node_fs_promises__WEBPACK_IMPORTED_MODULE_0__["default"].stat(workspace)).isDirectory()) throw new Error("The prepared cluster checkout must be an existing directory.");
     return workspace;
   };
   const resolvePath = async (organization_id, filePath = ".", { forWrite = false } = {}) => {
@@ -12724,7 +12904,31 @@ function createWorkspaceResolver(baseDirectory, workspaceDirectory = "sites") {
       return target;
     }
   };
-  return { root, organizationRoot, resolve, resolvePath, ensure };
+  return { organizationRoot, resolve, resolvePath, ensure };
+}
+async function createRuntimeDirectories(server, organization_id, { useRepository = false } = {}) {
+  if (typeof organization_id !== "string" || !organization_id.trim()) {
+    throw new Error("An authenticated organization_id is required for an AI runtime.");
+  }
+  if (useRepository) {
+    const workingDirectory2 = await createWorkspaceResolver(server).ensure(organization_id);
+    const baseDirectory2 = node_path__WEBPACK_IMPORTED_MODULE_1__["default"].join(node_path__WEBPACK_IMPORTED_MODULE_1__["default"].dirname(workingDirectory2), ".cocreate", "ai", node_path__WEBPACK_IMPORTED_MODULE_1__["default"].basename(workingDirectory2));
+    await node_fs_promises__WEBPACK_IMPORTED_MODULE_0__["default"].mkdir(baseDirectory2, { recursive: true, mode: 448 });
+    return { workingDirectory: workingDirectory2, baseDirectory: baseDirectory2, cleanup: async () => {
+    } };
+  }
+  const root = await node_fs_promises__WEBPACK_IMPORTED_MODULE_0__["default"].mkdtemp(node_path__WEBPACK_IMPORTED_MODULE_1__["default"].join((0,node_os__WEBPACK_IMPORTED_MODULE_2__.tmpdir)(), "cocreate-ai-"));
+  const workingDirectory = node_path__WEBPACK_IMPORTED_MODULE_1__["default"].join(root, "work");
+  const baseDirectory = node_path__WEBPACK_IMPORTED_MODULE_1__["default"].join(root, "state");
+  const cleanup = () => node_fs_promises__WEBPACK_IMPORTED_MODULE_0__["default"].rm(root, { recursive: true, force: true });
+  try {
+    await node_fs_promises__WEBPACK_IMPORTED_MODULE_0__["default"].mkdir(workingDirectory, { mode: 448 });
+    await node_fs_promises__WEBPACK_IMPORTED_MODULE_0__["default"].mkdir(baseDirectory, { mode: 448 });
+    return { workingDirectory, baseDirectory, cleanup };
+  } catch (error) {
+    await cleanup();
+    throw error;
+  }
 }
 
 

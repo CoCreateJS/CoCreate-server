@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "builtAt": "2026-11-06T23:11:27.018Z",
+  "builtAt": "2026-11-07T00:02:27.952Z",
   "node": "v24.18.0",
   "platform": "linux",
   "arch": "x64",
@@ -8,7 +8,7 @@
     "ai": {
       "package": "@cocreate/ai",
       "version": "1.1.0",
-      "commit": "9ccba874647fb71866d7d551701cb4bbd94ce6df",
+      "commit": "01503bd7cd42a15844d8b6b2ac91cc736a279d6b",
       "sourceDirty": true,
       "files": {
         "bootstrap.js": {
@@ -32,8 +32,8 @@
           "sha256": "609158e6c5fbc237939fa3ddf7faab80ab690bdc0c8d584414a885130103c4e8"
         },
         "runtime.js": {
-          "bytes": 663189,
-          "sha256": "24891d992b5b979467fac8be0b33dc39039b6e44644d9f4dd59c702006831dea"
+          "bytes": 663101,
+          "sha256": "260e4fb26c2235803b318ae48c4e4fdcb52fb13484b6fd9b59b3f0e4bf312eeb"
         }
       }
     }

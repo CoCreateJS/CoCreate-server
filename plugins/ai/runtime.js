@@ -10572,7 +10572,6 @@ ${systemMessage ?? ""}`.trim()
   }
   wsManager.on("ai", async (data = {}) => {
     data = { ...data };
-    delete data.socket;
     if (lifecycle.stopping) return sendToClient({ ...data, success: false, error: "AI is shutting down; new requests are unavailable." });
     if (data.method === "ai.stop") {
       const organization_id = data.organization_id;
@@ -11175,7 +11174,6 @@ function createApiTool({ server, organization_id, host }) {
       const {
         organization_id: _ignoredOrganizationId,
         host: _ignoredHost,
-        socket: _ignoredSocket,
         ...apiPayload
       } = input;
       return api.send({
@@ -11583,7 +11581,6 @@ function createCrudTool({ crud, organization_id, host }) {
         return { success: false, error: "The CRUD tool accepts only CRUD methods; use the scoped API tool for API calls." };
       }
       const {
-        socket: _ignoredSocket,
         fields,
         limit,
         projection,

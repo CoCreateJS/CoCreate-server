@@ -1,7 +1,7 @@
 {
   "name": "@cocreate/server",
   "version": "2.0.0",
-  "description": "The master entry point wrapper for the CoCreate ecosystem. Orchestrates a highly scalable, multi-tenant server infrastructure architecture with dynamic process auto-scaling, federated cross-database routing, and real-time distributed network state synchronization.",
+  "description": "The primary entry point wrapper for the CoCreate ecosystem. Orchestrates a highly scalable, multi-tenant server infrastructure architecture with dynamic process auto-scaling, federated cross-database routing, and real-time distributed network state synchronization.",
   "keywords": [
     "server",
     "websocket",

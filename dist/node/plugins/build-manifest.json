@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "builtAt": "2026-11-07T03:04:28.376Z",
+  "node": "v24.18.0",
+  "platform": "linux",
+  "arch": "x64",
+  "plugins": {
+    "ai": {
+      "package": "@cocreate/ai",
+      "version": "1.1.0",
+      "commit": "91f79c807b57b9872333461bbc791dba79417fa3",
+      "sourceDirty": false,
+      "files": {
+        "bootstrap.js": {
+          "bytes": 2188,
+          "sha256": "8d0ae0fedf3bd9c3d2e4fd7c8177584a26d8134c9738927a16ce098e26713226"
+        },
+        "config.js": {
+          "bytes": 1121,
+          "sha256": "90d1f7fb91d6699c25c6dbd1bf62b02fe56cfa9289e410de10b09014a82d3109"
+        },
+        "copilot-linux-x64": {
+          "bytes": 159517504,
+          "sha256": "5ffc36e7c41adebc28791d8edf4934f90656a0f25e62006bd0d71039ae42f9a2"
+        },
+        "index.js": {
+          "bytes": 29404,
+          "sha256": "9bd07f4a582a798d274abf8cb90b820369e3244860edb87376e08e1f7c5f93db"
+        },
+        "package.json": {
+          "bytes": 42,
+          "sha256": "609158e6c5fbc237939fa3ddf7faab80ab690bdc0c8d584414a885130103c4e8"
+        },
+        "runtime.js": {
+          "bytes": 663101,
+          "sha256": "260e4fb26c2235803b318ae48c4e4fdcb52fb13484b6fd9b59b3f0e4bf312eeb"
+        }
+      }
+    }
+  }
+}

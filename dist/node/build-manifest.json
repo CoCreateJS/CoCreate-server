@@ -1,0 +1,242 @@
+{
+  "builtAt": "2026-11-07T03:04:35.939Z",
+  "package": "@cocreate/server",
+  "packageVersion": "2.0.0",
+  "node": "v24.18.0",
+  "platform": "linux",
+  "arch": "x64",
+  "commit": "f88c676459664d7e63e18f4d2d887228693800e8",
+  "repositories": {
+    "modules.cluster": {
+      "package": "@cocreate/cluster",
+      "version": "3.0.1",
+      "commit": "f7c0279dacecbf758abe890958c3db96c9b7bbf5"
+    },
+    "modules.autoscaler": {
+      "package": "@cocreate/autoscaler",
+      "version": "2.1.2",
+      "commit": "7a951f843fed3dcc06b75bdbbd0307fdff6d0006"
+    },
+    "modules.telemetry": {
+      "package": "@cocreate/telemetry",
+      "version": "2.0.3",
+      "commit": "a883ce68c20ccc519336db53eb2af9ea104d4b7f"
+    },
+    "modules.crud": {
+      "package": "@cocreate/crud",
+      "version": "2.0.4",
+      "commit": "17e2db810e6082044dfd1325db5a94c242e639d2"
+    },
+    "modules.tls": {
+      "package": "@cocreate/tls",
+      "version": "2.0.2",
+      "commit": "061270a27c72c06fdc602cbf364877c76da737bc"
+    },
+    "modules.authenticate": {
+      "package": "@cocreate/authenticate",
+      "version": "2.0.2",
+      "commit": "8aab6e3385da16b7c24303523e06b99fe0d36390"
+    },
+    "modules.authorize": {
+      "package": "@cocreate/authorize",
+      "version": "2.1.2",
+      "commit": "d8e5e0354ad68f6d981a5e735267145b7949a1a2"
+    },
+    "modules.socket": {
+      "package": "@cocreate/socket",
+      "version": "3.0.1",
+      "commit": "e0e5c0926d52d5f8fe27e4e80208d88a6be78973"
+    },
+    "modules.file": {
+      "package": "@cocreate/file",
+      "version": "2.0.2",
+      "commit": "4fe69118b53e43c02ed47ab996fa2543156c9d1f"
+    },
+    "modules.sitemap": {
+      "package": "@cocreate/sitemap",
+      "version": "2.0.2",
+      "commit": "50d763c173a0bc702fc2d09f1c4969cf94b98176"
+    },
+    "modules.cron": {
+      "package": "@cocreate/cron",
+      "version": "2.0.2",
+      "commit": "58316306e6fe6bd82e83794b33cff27931510ed0"
+    },
+    "modules.usage": {
+      "package": "@cocreate/usage",
+      "version": "2.0.3",
+      "commit": "bc1c0ac7c133746a9a49e66b540428ae8f080e57"
+    },
+    "modules.config": {
+      "package": "@cocreate/config",
+      "version": "2.0.2",
+      "commit": "7e9754e7567d5f990ee1676297cf3b44071f2761"
+    },
+    "modules.api": {
+      "package": "@cocreate/api",
+      "version": "2.1.2",
+      "commit": "e439d94f0c95c2e39a717099d540efd3c259467c"
+    },
+    "modules.lazy-loader": {
+      "package": "@cocreate/lazy-loader",
+      "version": "2.0.2",
+      "commit": "2d164044b45379a69100eb081354d0290e504352"
+    },
+    "modules.notification": {
+      "package": "@cocreate/notification",
+      "version": "2.0.3",
+      "commit": "3d9f531e21949615679ce25808f2631830d00acf"
+    },
+    "modules.organizations": {
+      "package": "@cocreate/organizations",
+      "version": "3.0.2",
+      "commit": "4386e1f256ed700b8e9237b82c6b316a524f3fbf"
+    },
+    "modules.users": {
+      "package": "@cocreate/users",
+      "version": "2.0.3",
+      "commit": "e5ad64bc2000bfb27aaf1a083c326c25085affe4"
+    },
+    "modules.workflows": {
+      "package": "@cocreate/workflows",
+      "version": "1.1.2",
+      "commit": "0fd59d55feb56580bcd864a071d489ea45200bf5"
+    },
+    "modules.utils": {
+      "package": "@cocreate/utils",
+      "version": "2.0.3",
+      "commit": "2afe1f2d4fad8dd50c08de830855675dfa7f50bc"
+    },
+    "modules.cli": {
+      "package": "@cocreate/cli",
+      "version": "2.1.2",
+      "commit": "df193867c8aa5b5dc520e51e011384b85867fb6b"
+    }
+  },
+  "files": {
+    "index.js": {
+      "bytes": 1439916,
+      "sha256": "678b0c8f5da1a8f7b5802fb0a87d456607b14af17e30aa164ace520d6e67a977"
+    },
+    "package.json": {
+      "bytes": 42,
+      "sha256": "609158e6c5fbc237939fa3ddf7faab80ab690bdc0c8d584414a885130103c4e8"
+    },
+    "plugins/ai/bootstrap.js": {
+      "bytes": 2188,
+      "sha256": "8d0ae0fedf3bd9c3d2e4fd7c8177584a26d8134c9738927a16ce098e26713226"
+    },
+    "plugins/ai/config.js": {
+      "bytes": 1121,
+      "sha256": "90d1f7fb91d6699c25c6dbd1bf62b02fe56cfa9289e410de10b09014a82d3109"
+    },
+    "plugins/ai/copilot-linux-x64": {
+      "bytes": 159517504,
+      "sha256": "5ffc36e7c41adebc28791d8edf4934f90656a0f25e62006bd0d71039ae42f9a2"
+    },
+    "plugins/ai/index.js": {
+      "bytes": 29404,
+      "sha256": "9bd07f4a582a798d274abf8cb90b820369e3244860edb87376e08e1f7c5f93db"
+    },
+    "plugins/ai/package.json": {
+      "bytes": 42,
+      "sha256": "609158e6c5fbc237939fa3ddf7faab80ab690bdc0c8d584414a885130103c4e8"
+    },
+    "plugins/ai/runtime.js": {
+      "bytes": 663101,
+      "sha256": "260e4fb26c2235803b318ae48c4e4fdcb52fb13484b6fd9b59b3f0e4bf312eeb"
+    },
+    "storages/amazon-redshift.js": {
+      "bytes": 239571,
+      "sha256": "0667f8e60deb5e095abb572abb617adaacf0c44b92b3415b7094b549bcae7d47"
+    },
+    "storages/auroradb.js": {
+      "bytes": 239571,
+      "sha256": "0667f8e60deb5e095abb572abb617adaacf0c44b92b3415b7094b549bcae7d47"
+    },
+    "storages/cockroachdb.js": {
+      "bytes": 239571,
+      "sha256": "0667f8e60deb5e095abb572abb617adaacf0c44b92b3415b7094b549bcae7d47"
+    },
+    "storages/cosmosdb.js": {
+      "bytes": 1736753,
+      "sha256": "71bfc59740ca25ec6ebf038d7c507499f2ab1bfe541025fa7838f3e5ec5210b0"
+    },
+    "storages/documentdb.js": {
+      "bytes": 1736753,
+      "sha256": "71bfc59740ca25ec6ebf038d7c507499f2ab1bfe541025fa7838f3e5ec5210b0"
+    },
+    "storages/dqlite.js": {
+      "bytes": 401202,
+      "sha256": "b12b9a22b6c35788859fa9580d0c0d1cfa109e8fc40a9f572b217174f2e3aa49"
+    },
+    "storages/dynamodb.js": {
+      "bytes": 1218671,
+      "sha256": "c04788fdbd093a90475a057b4629d8c39b6bba36c6ee062b90205a34d18f5ad0"
+    },
+    "storages/ferretdb.js": {
+      "bytes": 1736753,
+      "sha256": "71bfc59740ca25ec6ebf038d7c507499f2ab1bfe541025fa7838f3e5ec5210b0"
+    },
+    "storages/firestore.js": {
+      "bytes": 4342499,
+      "sha256": "0d717b6b2996bf8e3b32074942b75a6e58ad730cdd475334070712d5184526a5"
+    },
+    "storages/manifest.json": {
+      "bytes": 6440,
+      "sha256": "b393ef7f2d01196a7b27191c82dc565c67db67b7925c59f13ad243fc6e4e39f9"
+    },
+    "storages/mariadb.js": {
+      "bytes": 1240993,
+      "sha256": "f9dcc9c4cb8e41b2bbdf09ef0ec4d7b9e355441b25fcb75634338586a9e1fe16"
+    },
+    "storages/mongodb.js": {
+      "bytes": 1736406,
+      "sha256": "f0eed0353d74af3bc8b50dd892f082d069e8d4200d3c7ade06b9bbd4c18733fc"
+    },
+    "storages/mysql.js": {
+      "bytes": 1240504,
+      "sha256": "2f0fd2c699ed4edffe3d81bb4d31f9c68338bbd7f34711937de534b22856d227"
+    },
+    "storages/oracledb.js": {
+      "bytes": 1736753,
+      "sha256": "71bfc59740ca25ec6ebf038d7c507499f2ab1bfe541025fa7838f3e5ec5210b0"
+    },
+    "storages/planetscale.js": {
+      "bytes": 1240993,
+      "sha256": "f9dcc9c4cb8e41b2bbdf09ef0ec4d7b9e355441b25fcb75634338586a9e1fe16"
+    },
+    "storages/postgresql.js": {
+      "bytes": 239091,
+      "sha256": "1deb533d288344ffa6efe66fe01e31de4ca3d653545a324f09fade0ae9f300c0"
+    },
+    "storages/qdrant.js": {
+      "bytes": 1395607,
+      "sha256": "832dbef84778d7b05cfb06d8aaf3811cf3f1efc43b6545261d41d1fd00c4e602"
+    },
+    "storages/rqlite.js": {
+      "bytes": 401202,
+      "sha256": "b12b9a22b6c35788859fa9580d0c0d1cfa109e8fc40a9f572b217174f2e3aa49"
+    },
+    "storages/sqlite.js": {
+      "bytes": 400684,
+      "sha256": "b8419a4a0b2b928441ffe4d5787edb47745ebcd2a5fc2b382c4bf9c700f48cbe"
+    },
+    "storages/tidb.js": {
+      "bytes": 1240993,
+      "sha256": "f9dcc9c4cb8e41b2bbdf09ef0ec4d7b9e355441b25fcb75634338586a9e1fe16"
+    },
+    "storages/timescaledb.js": {
+      "bytes": 239571,
+      "sha256": "0667f8e60deb5e095abb572abb617adaacf0c44b92b3415b7094b549bcae7d47"
+    },
+    "storages/turso.js": {
+      "bytes": 401202,
+      "sha256": "b12b9a22b6c35788859fa9580d0c0d1cfa109e8fc40a9f572b217174f2e3aa49"
+    },
+    "storages/yugabytedb.js": {
+      "bytes": 239571,
+      "sha256": "0667f8e60deb5e095abb572abb617adaacf0c44b92b3415b7094b549bcae7d47"
+    }
+  }
+}

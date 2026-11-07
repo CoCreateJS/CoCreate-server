@@ -1,1 +1,2 @@
 /plugins/ai/copilot-* filter=lfs diff=lfs merge=lfs -text
+/dist/node/plugins/ai/copilot-* filter=lfs diff=lfs merge=lfs -text

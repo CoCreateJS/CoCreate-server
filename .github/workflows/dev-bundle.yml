@@ -25,7 +25,7 @@ jobs:
       run:
         working-directory: CoCreate-server
     steps:
-      - name: Checkout dev source and prepared distributions
+      - name: Checkout dev source and committed local distributions
         uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
@@ -37,17 +37,11 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Install Yarn
-        run: npm install --global yarn@1.22.22
-
-      - name: Install published dependencies
-        run: yarn install --frozen-lockfile --ignore-scripts --non-interactive
-
-      - name: Verify prepared distributions and build Server
+      - name: Verify committed local Server distribution
         run: |
-          yarn verify:storages
-          yarn verify:plugins
-          yarn build
+          node scripts/verify-storages.js
+          node scripts/verify-plugins.js
+          node scripts/verify-node-artifact.js
           node --check dist/node/index.js
 
       # AI's JS distribution is committed. Its native CLI must match the runner.

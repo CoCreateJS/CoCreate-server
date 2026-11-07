@@ -8,6 +8,7 @@
 !/scripts/verify-plugins.js
 !/scripts/verify-storages.js
 !/scripts/verify-node.js
+!/scripts/verify-node-artifact.js
 !/scripts/build-node-dev.sh
 !/scripts/release-node-dev.sh
 !/scripts/package-node-archive.sh
@@ -60,7 +61,10 @@ lerna-debug.log*
 # ==============================================================================
 # 3. Build Outputs & Bundlers (Rollup, Vite, Webpack, etc.)
 # ==============================================================================
-dist/
+dist/*
+!dist/node/
+dist/node/*
+!dist/node/**
 build/
 out/
 .next/
@@ -110,6 +114,3 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
-
-# Release builds install this exact dependency graph.
-!/yarn.lock

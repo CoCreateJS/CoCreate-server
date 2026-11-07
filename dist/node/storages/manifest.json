@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "builtAt": "2026-11-07T03:04:22.338Z",
+  "node": "v24.18.0",
+  "platform": "linux",
+  "arch": "x64",
+  "providers": {
+    "amazon-redshift": {
+      "package": "@cocreate/amazon-redshift",
+      "version": "2.0.2",
+      "commit": "0188db984db6954c4f18d9a9c463f433c6e8175c",
+      "file": "amazon-redshift.js",
+      "bytes": 239571,
+      "sha256": "0667f8e60deb5e095abb572abb617adaacf0c44b92b3415b7094b549bcae7d47"
+    },
+    "auroradb": {
+      "package": "@cocreate/auroradb",
+      "version": "2.0.2",
+      "commit": "4f8451906cccea79f8a0ba708a8e05ea9e53aeca",
+      "file": "auroradb.js",
+      "bytes": 239571,
+      "sha256": "0667f8e60deb5e095abb572abb617adaacf0c44b92b3415b7094b549bcae7d47"
+    },
+    "cockroachdb": {
+      "package": "@cocreate/cockroachdb",
+      "version": "2.0.2",
+      "commit": "b3174f9331002fd8fb9283035b195664fc531f9b",
+      "file": "cockroachdb.js",
+      "bytes": 239571,
+      "sha256": "0667f8e60deb5e095abb572abb617adaacf0c44b92b3415b7094b549bcae7d47"
+    },
+    "cosmosdb": {
+      "package": "@cocreate/cosmosdb",
+      "version": "2.0.2",
+      "commit": "85b1d1ae4bff9990771cf5f0bb191dd389753c66",
+      "file": "cosmosdb.js",
+      "bytes": 1736753,
+      "sha256": "71bfc59740ca25ec6ebf038d7c507499f2ab1bfe541025fa7838f3e5ec5210b0"
+    },
+    "documentdb": {
+      "package": "@cocreate/documentdb",
+      "version": "2.0.2",
+      "commit": "5b55339c780c4ed8021f7020af216ed3e64b83c0",
+      "file": "documentdb.js",
+      "bytes": 1736753,
+      "sha256": "71bfc59740ca25ec6ebf038d7c507499f2ab1bfe541025fa7838f3e5ec5210b0"
+    },
+    "dqlite": {
+      "package": "@cocreate/dqlite",
+      "version": "2.0.2",
+      "commit": "096f11fb25bfe795f38d7e0833e985675e019da8",
+      "file": "dqlite.js",
+      "bytes": 401202,
+      "sha256": "b12b9a22b6c35788859fa9580d0c0d1cfa109e8fc40a9f572b217174f2e3aa49"
+    },
+    "dynamodb": {
+      "package": "@cocreate/dynamodb",
+      "version": "2.0.2",
+      "commit": "9178f01ba94188c1f231fdc9a9b81e585c08ff09",
+      "file": "dynamodb.js",
+      "bytes": 1218671,
+      "sha256": "c04788fdbd093a90475a057b4629d8c39b6bba36c6ee062b90205a34d18f5ad0"
+    },
+    "ferretdb": {
+      "package": "@cocreate/ferretdb",
+      "version": "2.0.2",
+      "commit": "fd6323e25adfcebfb3db286e414d0986c089834d",
+      "file": "ferretdb.js",
+      "bytes": 1736753,
+      "sha256": "71bfc59740ca25ec6ebf038d7c507499f2ab1bfe541025fa7838f3e5ec5210b0"
+    },
+    "firestore": {
+      "package": "@cocreate/firestore",
+      "version": "2.0.2",
+      "commit": "b20079f450456ae02d2331247b353d306dd26979",
+      "file": "firestore.js",
+      "bytes": 4342499,
+      "sha256": "0d717b6b2996bf8e3b32074942b75a6e58ad730cdd475334070712d5184526a5"
+    },
+    "mariadb": {
+      "package": "@cocreate/mariadb",
+      "version": "2.0.2",
+      "commit": "213e0bd8d2a071a7e13b12d3dccf7f5f1bb73747",
+      "file": "mariadb.js",
+      "bytes": 1240993,
+      "sha256": "f9dcc9c4cb8e41b2bbdf09ef0ec4d7b9e355441b25fcb75634338586a9e1fe16"
+    },
+    "mongodb": {
+      "package": "@cocreate/mongodb",
+      "version": "2.0.2",
+      "commit": "86b80dd55be7360e2c0b4ed1321e2a967a89979e",
+      "file": "mongodb.js",
+      "bytes": 1736406,
+      "sha256": "f0eed0353d74af3bc8b50dd892f082d069e8d4200d3c7ade06b9bbd4c18733fc"
+    },
+    "mysql": {
+      "package": "@cocreate/mysql",
+      "version": "2.0.2",
+      "commit": "86a7c3e59ba8409fc068c04aa81477150637eefa",
+      "file": "mysql.js",
+      "bytes": 1240504,
+      "sha256": "2f0fd2c699ed4edffe3d81bb4d31f9c68338bbd7f34711937de534b22856d227"
+    },
+    "oracledb": {
+      "package": "@cocreate/oracledb",
+      "version": "2.0.2",
+      "commit": "89feb3ca5b76cbaae4f0a55fa0d30a6d9f8f6c77",
+      "file": "oracledb.js",
+      "bytes": 1736753,
+      "sha256": "71bfc59740ca25ec6ebf038d7c507499f2ab1bfe541025fa7838f3e5ec5210b0"
+    },
+    "planetscale": {
+      "package": "@cocreate/planetscale",
+      "version": "2.0.2",
+      "commit": "4738fdf2f8dbc247ef19ed1b8b05e8aa4cc13bfd",
+      "file": "planetscale.js",
+      "bytes": 1240993,
+      "sha256": "f9dcc9c4cb8e41b2bbdf09ef0ec4d7b9e355441b25fcb75634338586a9e1fe16"
+    },
+    "postgresql": {
+      "package": "@cocreate/postgresql",
+      "version": "2.0.2",
+      "commit": "8c3b972432a65106cb983af23d452c90e1dbdfad",
+      "file": "postgresql.js",
+      "bytes": 239091,
+      "sha256": "1deb533d288344ffa6efe66fe01e31de4ca3d653545a324f09fade0ae9f300c0"
+    },
+    "qdrant": {
+      "package": "@cocreate/qdrant",
+      "version": "2.0.2",
+      "commit": "1c84e2a47942854f3b338b08c1d31d6ef4c95542",
+      "file": "qdrant.js",
+      "bytes": 1395607,
+      "sha256": "832dbef84778d7b05cfb06d8aaf3811cf3f1efc43b6545261d41d1fd00c4e602"
+    },
+    "rqlite": {
+      "package": "@cocreate/rqlite",
+      "version": "2.0.2",
+      "commit": "d0f457f209c50a825acdd3ace69f22873df232c0",
+      "file": "rqlite.js",
+      "bytes": 401202,
+      "sha256": "b12b9a22b6c35788859fa9580d0c0d1cfa109e8fc40a9f572b217174f2e3aa49"
+    },
+    "sqlite": {
+      "package": "@cocreate/sqlite",
+      "version": "2.0.2",
+      "commit": "47cc5f5693f943897348e988ebed157685774098",
+      "file": "sqlite.js",
+      "bytes": 400684,
+      "sha256": "b8419a4a0b2b928441ffe4d5787edb47745ebcd2a5fc2b382c4bf9c700f48cbe"
+    },
+    "tidb": {
+      "package": "@cocreate/tidb",
+      "version": "2.0.2",
+      "commit": "824f8fb8068f8c3de5acfce1b1acbe2c92e88c2a",
+      "file": "tidb.js",
+      "bytes": 1240993,
+      "sha256": "f9dcc9c4cb8e41b2bbdf09ef0ec4d7b9e355441b25fcb75634338586a9e1fe16"
+    },
+    "timescaledb": {
+      "package": "@cocreate/timescaledb",
+      "version": "2.0.2",
+      "commit": "2f8c00ecfa72f865b624ee1fccdfcbef39a8b041",
+      "file": "timescaledb.js",
+      "bytes": 239571,
+      "sha256": "0667f8e60deb5e095abb572abb617adaacf0c44b92b3415b7094b549bcae7d47"
+    },
+    "turso": {
+      "package": "@cocreate/turso",
+      "version": "2.0.2",
+      "commit": "ff5dc3cb2165868d3344ed62b2c9a28473edd929",
+      "file": "turso.js",
+      "bytes": 401202,
+      "sha256": "b12b9a22b6c35788859fa9580d0c0d1cfa109e8fc40a9f572b217174f2e3aa49"
+    },
+    "yugabytedb": {
+      "package": "@cocreate/yugabytedb",
+      "version": "2.0.2",
+      "commit": "cecbf9788c193b52cfb52368d00c8dd24137a48e",
+      "file": "yugabytedb.js",
+      "bytes": 239571,
+      "sha256": "0667f8e60deb5e095abb572abb617adaacf0c44b92b3415b7094b549bcae7d47"
+    }
+  }
+}

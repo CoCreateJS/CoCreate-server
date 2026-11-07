@@ -33,8 +33,8 @@ if [[ "${CURRENT_BRANCH}" != "${BRANCH}" ]]; then
     exit 1
 fi
 
-echo "Packaging the Linux ${AWS_ARCH} Node runtime with committed, verified storage and plugin distributions..."
-yarn package:node
+echo "Building and packaging the Linux ${AWS_ARCH} runtime from locally linked CoCreate repositories..."
+yarn build:local
 
 mkdir -p "${RELEASE_DIR}"
 cp "${ROOT}/dist/${ARCHIVE}" "${RELEASE_DIR}/${ARCHIVE}"

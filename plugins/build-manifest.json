@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "builtAt": "2026-11-07T00:02:27.952Z",
+  "builtAt": "2026-11-07T03:04:28.376Z",
   "node": "v24.18.0",
   "platform": "linux",
   "arch": "x64",
@@ -8,8 +8,8 @@
     "ai": {
       "package": "@cocreate/ai",
       "version": "1.1.0",
-      "commit": "01503bd7cd42a15844d8b6b2ac91cc736a279d6b",
-      "sourceDirty": true,
+      "commit": "91f79c807b57b9872333461bbc791dba79417fa3",
+      "sourceDirty": false,
       "files": {
         "bootstrap.js": {
           "bytes": 2188,

@@ -30,6 +30,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
           path: CoCreate-server
+          fetch-depth: 0
           lfs: true
 
       - name: Setup Node.js

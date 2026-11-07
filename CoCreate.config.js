@@ -77,9 +77,9 @@ export default {
             path: "../CoCreate-modules/telemetry",
             repo: "github.com/CoCreateJS/telemetry.git"
         },
-        "crud-server": {
-            import: "@cocreate/crud-server",
-            path: "../CoCreate-modules/crud-server",
+        "crud": {
+            import: "@cocreate/crud",
+            path: "../CoCreate-modules/crud",
             repo: "github.com/CoCreateJS/crud-server.git"
         },
         "tls": {

@@ -51,17 +51,17 @@
   },
   "dependencies": {
     "@cocreate/ai": "^1.0.0",
-    "@cocreate/cron": "^2.0.0",
-    "@cocreate/notification": "^2.0.0",
-    "@cocreate/organizations": "^2.0.0",
-    "@cocreate/cluster": "^2.0.0",
-    "@cocreate/workflows": "^1.0.0",
-    "@cocreate/usage": "^2.0.0",
-    "@cocreate/users": "^2.0.0",
-    "@cocreate/socket": "^2.0.1"
+    "@cocreate/cron": "^2.0.1",
+    "@cocreate/notification": "^2.0.2",
+    "@cocreate/organizations": "^3.0.1",
+    "@cocreate/cluster": "^3.0.0",
+    "@cocreate/workflows": "^1.1.1",
+    "@cocreate/usage": "^2.0.2",
+    "@cocreate/users": "^2.0.2",
+    "@cocreate/socket": "^3.0.0"
   },
   "devDependencies": {
-    "@cocreate/cli": "^2.0.0",
+    "@cocreate/cli": "^2.1.1",
     "webpack": "^5.101.3",
     "webpack-cli": "^6.0.1"
   }

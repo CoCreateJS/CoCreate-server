@@ -9103,7 +9103,6 @@ async function init(server, options = {}, resolvedConfig) {
   } = aiConfig;
   const sessionWaitTimeout = Number.isFinite(Number(requestTimeout)) && Number(requestTimeout) > 0 ? Number(requestTimeout) : _config_js__WEBPACK_IMPORTED_MODULE_5__/* .defaults */ .NT.requestTimeout;
   const crud = server.crud;
-  const wsManager = server.wsManager;
   let defaultInstructions = /* @__PURE__ */ new Map();
   async function readInstructions(query, organization_id, host) {
     const response = await crud.send({
@@ -10570,7 +10569,7 @@ ${systemMessage ?? ""}`.trim()
       await session.disconnect();
     }
   }
-  wsManager.on("ai", async (data = {}) => {
+  server.on("ai", async (data = {}) => {
     data = { ...data };
     if (lifecycle.stopping) return sendToClient({ ...data, success: false, error: "AI is shutting down; new requests are unavailable." });
     if (data.method === "ai.stop") {

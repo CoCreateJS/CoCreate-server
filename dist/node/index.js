@@ -10,6 +10,7 @@ import * as __WEBPACK_EXTERNAL_MODULE_node_http_b674be28__ from "node:http";
 import * as __WEBPACK_EXTERNAL_MODULE_node_https_b78f5be9__ from "node:https";
 import * as __WEBPACK_EXTERNAL_MODULE_node_os_e12349cb__ from "node:os";
 import * as __WEBPACK_EXTERNAL_MODULE_node_path_02319fef__ from "node:path";
+import * as __WEBPACK_EXTERNAL_MODULE_node_process_8d178d73__ from "node:process";
 import * as __WEBPACK_EXTERNAL_MODULE_node_readline_153c82ca__ from "node:readline";
 import * as __WEBPACK_EXTERNAL_MODULE_node_tls_c49a8b7e__ from "node:tls";
 import * as __WEBPACK_EXTERNAL_MODULE_node_url_da953c0c__ from "node:url";
@@ -10088,7 +10089,7 @@ const x = (y) => {
 	const x = {}; __webpack_require__.d(x, y); return x
 } 
 const y = (x) => (() => (x))
-module.exports = x({ ["createHash"]: () => (__WEBPACK_EXTERNAL_MODULE_node_crypto_803ecaf5__.createHash), ["createPrivateKey"]: () => (__WEBPACK_EXTERNAL_MODULE_node_crypto_803ecaf5__.createPrivateKey), ["default"]: () => (__WEBPACK_EXTERNAL_MODULE_node_crypto_803ecaf5__["default"]), ["generateKeyPair"]: () => (__WEBPACK_EXTERNAL_MODULE_node_crypto_803ecaf5__.generateKeyPair), ["randomUUID"]: () => (__WEBPACK_EXTERNAL_MODULE_node_crypto_803ecaf5__.randomUUID) });
+module.exports = x({ ["createHash"]: () => (__WEBPACK_EXTERNAL_MODULE_node_crypto_803ecaf5__.createHash), ["createPrivateKey"]: () => (__WEBPACK_EXTERNAL_MODULE_node_crypto_803ecaf5__.createPrivateKey), ["default"]: () => (__WEBPACK_EXTERNAL_MODULE_node_crypto_803ecaf5__["default"]), ["randomUUID"]: () => (__WEBPACK_EXTERNAL_MODULE_node_crypto_803ecaf5__.randomUUID) });
 
 /***/ },
 
@@ -10180,6 +10181,17 @@ module.exports = x({ ["default"]: () => (__WEBPACK_EXTERNAL_MODULE_node_path_023
 
 /***/ },
 
+/***/ 7721
+(module, __unused_webpack_exports, __webpack_require__) {
+
+const x = (y) => {
+	const x = {}; __webpack_require__.d(x, y); return x
+} 
+const y = (x) => (() => (x))
+module.exports = x({ ["getBuiltinModule"]: () => (__WEBPACK_EXTERNAL_MODULE_node_process_8d178d73__.getBuiltinModule) });
+
+/***/ },
+
 /***/ 9182
 (module, __unused_webpack_exports, __webpack_require__) {
 
@@ -10220,7 +10232,7 @@ const x = (y) => {
 	const x = {}; __webpack_require__.d(x, y); return x
 } 
 const y = (x) => (() => (x))
-module.exports = x({ ["default"]: () => (__WEBPACK_EXTERNAL_MODULE_node_util_1f093676__["default"]), ["isDeepStrictEqual"]: () => (__WEBPACK_EXTERNAL_MODULE_node_util_1f093676__.isDeepStrictEqual), ["promisify"]: () => (__WEBPACK_EXTERNAL_MODULE_node_util_1f093676__.promisify) });
+module.exports = x({ ["default"]: () => (__WEBPACK_EXTERNAL_MODULE_node_util_1f093676__["default"]), ["promisify"]: () => (__WEBPACK_EXTERNAL_MODULE_node_util_1f093676__.promisify) });
 
 /***/ },
 
@@ -10304,11 +10316,11 @@ module.exports = __WEBPACK_EXTERNAL_createRequire_require("zlib");
 /***/ 5440
 (__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
-/* unused harmony exports init, send, http, webhook, makeHttpRequest, getApiConfig */
+/* unused harmony exports init, send, webhook, makeHttpRequest, getApiConfig */
 /* harmony import */ var node_url__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9061);
 /* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5018);
 /* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1078);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(99);
+/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5304);
 /* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9180);
 /********************************************************************************
  * Copyright (C) 2023-2026 CoCreate and Contributors.
@@ -10345,7 +10357,6 @@ function sendToServer(data) {
 
 const API = {
     send,
-    http,
     webhook,
     getApiConfig
 };
@@ -10370,7 +10381,7 @@ async function init(Server) {
 /**
  * Creates a Proxy firewall wrapper to automatically inject multi-tenant scope parameters (`organization_id` and `host`) into target method invocations.
  *
- * @param {Object} target - Target service instance to proxy (e.g., crud or wsManager).
+ * @param {Object} target - Target service instance to proxy.
  * @param {string} orgId - Multi-tenant organization identifier.
  * @param {string} host - Host domain identifier.
  * @returns {Proxy|undefined} Proxied target service with auto-injected tenant parameters, or undefined if target is falsy.
@@ -10407,7 +10418,7 @@ function createTenantProxy(target, orgId, host) {
  * @param {Object} [context.request] - Incoming HTTP request object.
  * @param {Object} [context.response] - Outgoing HTTP response object.
  * @param {Object} [context.crud] - Database service interface instance.
- * @param {Object} [context.wsManager] - WebSocket manager instance.
+ * @param {Object} [context.socket] - Socket service proxy.
  * @param {string} [context.key] - Provider key/credential string.
  * @param {Object} [context.config] - Full provider API configuration object.
  * @param {string} context.organization_id - Target multi-tenant organization ID.
@@ -10419,7 +10430,7 @@ function createTenantProxy(target, orgId, host) {
 function createSandbox(context) {
     const isPlatformOrg = server?.organization_id && (context.organization_id === server.organization_id);
     const secureCrud = createTenantProxy(context.crud, context.organization_id, context.host);
-    const secureWs = createTenantProxy({ send: payload => server.send(payload) }, context.organization_id, context.host);
+    const secureSocket = createTenantProxy({ send: payload => server.send(payload) }, context.organization_id, context.host);
 
     const sandbox = {
         // Provider fields are configuration variables. For example, a
@@ -10438,8 +10449,7 @@ function createSandbox(context) {
         Buffer,
 
         crud: secureCrud,
-        socket: secureWs,
-        wsManager: secureWs,
+        socket: secureSocket,
         security: _cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .security */ .rG,
 
         key: context.key,
@@ -10470,7 +10480,6 @@ function createSandbox(context) {
         $header: sandbox.header,
         $crud: sandbox.crud,
         $socket: sandbox.socket,
-        $wsManager: sandbox.wsManager,
         $security: sandbox.security,
         $config: sandbox.config,
         $api: sandbox.api
@@ -10506,7 +10515,7 @@ function createSandbox(context) {
  */
 async function send(data, parentContext = null) {
     try {
-        const wsManager = server?.wsManager;
+        const socket = server?.socket;
         const orgId = parentContext?.organization_id || data.organization_id;
         const host = parentContext?.host || data.host;
 
@@ -10559,7 +10568,7 @@ async function send(data, parentContext = null) {
             organization_id: orgId,
             host,
             crud: parentContext?.crud || crud,
-            wsManager: parentContext?.wsManager || wsManager,
+            socket: parentContext?.socket || socket,
             key: apiConfig.key,
             config: apiConfig
         };
@@ -10655,7 +10664,6 @@ async function send(data, parentContext = null) {
         sendToServer(data);
         return data;
     } catch (error) {
-        const wsManager = server?.wsManager;
         if (!Array.isArray(data.error)) {
             data.error = data.error ? [data.error] : [];
         }
@@ -10672,85 +10680,6 @@ async function send(data, parentContext = null) {
 }
 
 /**
- * Handles inbound API HTTP requests, resolves host scope and authorizes before execution.
- * @param {object} req - Native HTTP request.
- * @param {object} res - Native HTTP response.
- * @param {object} [parsedInput] - Body already read by the manager HTTP entrance.
- * @param {Function} [execute] - Trusted dispatcher invoked only after request authorization.
- * @returns {Promise<object|undefined>} Successful execution result, otherwise undefined.
- * @public
- * @environment server
- */
-async function http(req, res, parsedInput, execute = request => server.api.send(request)) {
-    const reply = (status, body) => {
-        res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
-        res.end(JSON.stringify(body));
-    };
-    if (req.method !== 'POST') {
-        res.setHeader('Allow', 'POST');
-        return reply(405, { error: 'Use POST for this operation.' });
-    }
-    if (req.headers['content-type']?.split(';')[0].trim().toLowerCase() !== 'application/json') {
-        return reply(415, { error: 'An application/json body is required.' });
-    }
-    let input = parsedInput;
-    try {
-        if (input === undefined) {
-            const chunks = [];
-            let size = 0;
-            for await (const chunk of req) {
-                const buffer = Buffer.from(chunk);
-                size += buffer.length;
-                if (size > 1024 * 1024) return reply(413, { error: 'Request body exceeds 1 MiB.' });
-                chunks.push(buffer);
-            }
-            input = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-        }
-        if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error();
-    } catch {
-        return reply(400, { error: 'A JSON object is required.' });
-    }
-
-    const bearer = req.headers.authorization?.match(/^Bearer\s+(\S+)$/i)?.[1];
-    const apikey = bearer || input.apikey;
-    if ((apikey !== undefined && (typeof apikey !== 'string' || !apikey.trim())) ||
-        (bearer && input.apikey !== undefined && input.apikey !== bearer)) {
-        return reply(401, { error: 'A valid API key is required.' });
-    }
-
-    try {
-        const host = new node_url__WEBPACK_IMPORTED_MODULE_0__.URL(`https://${req.headers.host}`).hostname;
-        const organization = await server.crud.getOrganization({ host });
-        if (!organization?._id || organization.error) return reply(404, { error: 'Organization not found.' });
-        if (typeof input.api !== 'string' || !input.api.trim() ||
-            typeof input.endpoint !== 'string' || !input.endpoint.trim() ||
-            typeof input.method !== 'string' || !input.method.trim()) {
-            return reply(400, { error: 'api, endpoint and method are required.' });
-        }
-        const envelope = pickHttpFields(input, ['api', 'endpoint', 'method', 'data', 'region', 'headers', 'searchParams', 'timeout']);
-        // Scope and identity are server-resolved, never supplied by the caller.
-        Object.assign(envelope, { organization_id: organization._id, host, apikey });
-        const request = await server.authorize?.request(envelope);
-        if (!request) return reply(403, { error: 'Operation is not authorized.' });
-        const result = await execute(request);
-        const failed = result?.success === false || hasHttpErrors(result?.error);
-        reply(failed ? 400 : 200, result);
-        return failed ? undefined : result;
-    } catch (error) {
-        if (error.code === 'AUTHORIZATION_DENIED') return reply(403, { error: error.message });
-        return reply(500, { error: 'Unable to process the operation.' });
-    }
-}
-
-function hasHttpErrors(error) {
-    return Array.isArray(error) ? error.length > 0 : Boolean(error);
-}
-
-function pickHttpFields(input, fields) {
-    return Object.fromEntries(fields.filter(field => Object.hasOwn(input, field)).map(field => [field, input[field]]));
-}
-
-/**
  * Processes incoming HTTP webhook requests, verifies HMAC/JWT security signatures, and executes pipelines.
  *
  * @async
@@ -10762,7 +10691,7 @@ function pickHttpFields(input, fields) {
  */
 async function webhook(req, res) {
     try {
-        const wsManager = server?.wsManager;
+        const socket = server?.socket;
         const urlObject = new node_url__WEBPACK_IMPORTED_MODULE_0__.URL(`http://${req.headers.host}${req.url}`);
         const hostname = urlObject.hostname;
 
@@ -10818,7 +10747,7 @@ async function webhook(req, res) {
             organization,
             organization_id: organization._id,
             crud,
-            wsManager,
+            socket,
             key: apiConfig.key,
             config: apiConfig
         };
@@ -11616,6 +11545,11 @@ async function checkAuthorization({ key, data, user_id }) {
         return false;
     }
 
+    // A managed key may act only for its assigned tenant, within platform scope.
+    if (authorized.managedOrganization && authorized.managedOrganization !== data.managedOrganization) {
+        return false;
+    }
+
     // Validate host restriction list
     if (Array.isArray(authorized.host) && authorized.host.length > 0) {
         const isAllowedHost =
@@ -12039,7 +11973,7 @@ function generateDotNotation(data, path, isExclusion = false) {
  * @environment server
  */
 async function request(data, user_id) {
-    const fields = ['organization_id', 'host', 'method', 'api', 'endpoint', 'array'];
+    const fields = ['organization_id', 'host', 'managedOrganization', 'method', 'api', 'endpoint', 'array'];
     const expected = Object.fromEntries(fields.map(field => [field, data[field]]));
     const permission = await (this?.check || check)(data, user_id);
     const error = permission?.error;
@@ -12086,17 +12020,18 @@ async function deleteServer(server, serverId, {
     scopes = [{ organization_id: server.organization_id, host: server.host }],
     notifyManager = true
 } = {}) {
+    const payload = {
+        method: 'object.delete', array: 'servers', object: [{ _id: serverId }],
+        organization_id: server.organization_id, host: server.host
+    };
     let result;
     for (const scope of scopes) {
-        result = await server.crud.send({
-            method: 'object.delete', array: 'servers', object: [{ _id: serverId }], ...scope
-        });
+        // CRUD resolves database/storage on its input; keep that local to this scope.
+        result = await server.crud.send({ ...payload, ...scope });
         if (failed(result)) throw new Error(`Unable to delete server inventory ${serverId}.`);
     }
     if (notifyManager && server.manager?.organization_id) {
-        const mirrored = await server.manager.send({
-            method: 'object.delete', array: 'servers', object: { _id: serverId }
-        });
+        const mirrored = await server.manager.send(payload);
         if (failed(mirrored)) throw new Error(`Unable to delete managed server inventory ${serverId}.`);
     }
     return result;
@@ -12141,10 +12076,12 @@ function startServerCleanup(server) {
 (__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   $9: () => (/* binding */ getCloudProvider),
-/* harmony export */   MT: () => (/* binding */ loadCloudProviders)
+/* harmony export */   A7: () => (/* binding */ loadDnsLocations),
+/* harmony export */   MT: () => (/* binding */ loadCloudProviders),
+/* harmony export */   cP: () => (/* binding */ selectPlacement),
+/* harmony export */   s7: () => (/* binding */ getDensityTarget)
 /* harmony export */ });
-/* unused harmony exports calculateHaversineDistance, findNearestCloudRegion, calculateWeightedCentroid */
+/* unused harmony exports calculateHaversineDistance, findNearestDnsLocations, findNearestCloudRegion, calculateWeightedCentroid, getCloudProvider */
 /* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7076);
 /********************************************************************************
  * Copyright (C) 2026 CoCreate and Contributors.
@@ -12256,6 +12193,53 @@ function calculateHaversineDistance(latitude1, longitude1, latitude2, longitude2
     return R * c;
 }
 
+/** Flatten normalized DNS catalogs while retaining provider and location identity. */
+function loadDnsLocations(dns = {}) {
+    if (!dns || typeof dns !== 'object' || Array.isArray(dns)) return [];
+    return Object.entries(dns).flatMap(([provider, locations]) =>
+        locations.filter(location => location.enabled !== false &&
+            location.allowLatencyRouting !== false &&
+            Number.isFinite(location.latitude) && Number.isFinite(location.longitude))
+            .map(location => ({ ...location, provider }))
+    );
+}
+
+/** Select one POP per DNS connection (or provider for raw catalogs) and order them by their exact distance from demand. */
+function findNearestDnsLocations(latitude, longitude, locations) {
+    const nearestByProvider = new Map();
+    for (const location of locations) {
+        const distance = calculateHaversineDistance(latitude, longitude, location.latitude, location.longitude);
+        const connection = location.apiId || location.provider;
+        const nearest = nearestByProvider.get(connection);
+        if (!nearest || distance < nearest.distance) {
+            nearestByProvider.set(connection, { location, distance });
+        }
+    }
+    return [...nearestByProvider.values()]
+        .sort((a, b) => a.distance - b.distance)
+        .map(({ location, distance }) => ({ ...location, distanceKm: Math.round(distance) }));
+}
+
+function selectPlacement(coordinates, options = {}) {
+    if (!coordinates || !Number.isFinite(coordinates.latitude) || !Number.isFinite(coordinates.longitude) ||
+        Math.abs(coordinates.latitude) > 90 || Math.abs(coordinates.longitude) > 180) {
+        throw new Error("Placement requires valid latitude and longitude.");
+    }
+    const centroid = coordinates;
+    const cloudProviders = options.cloudProviders || loadCloudProviders(options.autoscaleConfig || options.clouds || options);
+    const dnsLocations = loadDnsLocations(options.autoscaleConfig?.dns);
+    const dns = centroid
+        ? findNearestDnsLocations(centroid.latitude, centroid.longitude, dnsLocations)
+        : [];
+    const origin = dns[0] || centroid;
+    const nearestCloudRegion = origin ? findNearestCloudRegion(origin.latitude, origin.longitude, {
+        providers: options.providers,
+        cloudProviders,
+        autoscaleConfig: options.autoscaleConfig
+    }) : null;
+    return { dns, nearestCloudRegion };
+}
+
 /**
  * Finds the nearest cloud datacenter region across active cloud providers
  * to a target latitude/longitude centroid, returning region metadata and instance catalog.
@@ -12271,7 +12255,7 @@ function findNearestCloudRegion(targetLatitude, targetLongitude, options = {}) {
     }
 
     let locations = options.cloudProviders || options.cloudProvidersList;
-    if (!locations || locations.length === 0) {
+    if (!locations) {
         locations = loadCloudProviders(options.autoscaleConfig || options.clouds || options);
     }
 
@@ -12356,40 +12340,28 @@ function calculateWeightedCentroid(clients) {
 }
 
 /**
- * Primary entry point: Calculates optimal cloud provider target and datacenter location.
- * Implements optional continent-based load shedding and fallback behavior.
- * Returns clean, normalized cloud target metadata.
+ * Calculates demand coordinates independently of dns and cloud catalogs.
+ * Applies optional continent-based load shedding before calculating the centroid.
  * 
  * @param {Array<Object>} clients - Active client instances or location distribution map
  * @param {Object} [options] - Configuration options passed from Autoscaler
- * @returns {Object|null} Complete recommended target metadata containing cloud provider, region, and instances catalog
+ * @returns {Object|null} Target centroid and demand distribution metadata
  */
-function getCloudProvider(clients, options = {}) {
+function getDensityTarget(clients, options = {}) {
     if (!clients || clients.length === 0) {
         console.log("[@cocreate/autoscaler] [GEO-SCALING] No active client location data provided.");
         return null;
     }
-
-    // Load active cloud providers directly from the passed config/options
-    const locations = options.cloudProviders || loadCloudProviders(options.autoscaleConfig || options.clouds || options);
-
-    const providers = options.providers;
 
     const totalActiveClients = clients.reduce((sum, item) => sum + (item.count || 1), 0);
 
     // 1. GLOBAL SCALING MODE (Default behavior if continent scaling is disabled)
     if (!options.geoScaleByContinent) {
         const globalCentroid = calculateWeightedCentroid(clients);
-        const nearestCloud = globalCentroid ? findNearestCloudRegion(globalCentroid.latitude, globalCentroid.longitude, {
-            providers,
-            cloudProviders: locations,
-            autoscaleConfig: options.autoscaleConfig
-        }) : null;
 
         return {
             geoScaleByContinent: false,
             targetCentroid: globalCentroid,
-            nearestCloudRegion: nearestCloud,
             totalActiveClients,
             timestamp: Date.now()
         };
@@ -12439,15 +12411,6 @@ function getCloudProvider(clients, options = {}) {
 
     // Calculate centroid strictly using the clients from the targeted continent
     const regionalCentroid = calculateWeightedCentroid(targetContinentData.clients);
-    let nearestCloud = null;
-
-    if (regionalCentroid) {
-        nearestCloud = findNearestCloudRegion(regionalCentroid.latitude, regionalCentroid.longitude, {
-            providers,
-            cloudProviders: locations,
-            autoscaleConfig: options.autoscaleConfig
-        });
-    }
 
     return {
         geoScaleByContinent: true,
@@ -12460,10 +12423,16 @@ function getCloudProvider(clients, options = {}) {
             percentage: parseFloat(((c.weight / totalActiveClients) * 100).toFixed(1))
         })),
         targetCentroid: regionalCentroid,
-        nearestCloudRegion: nearestCloud,
         totalActiveClients,
         timestamp: Date.now()
     };
+}
+
+/** Resolve density first, then pass only its coordinates to placement. */
+function getCloudProvider(clients, options = {}) {
+    const density = getDensityTarget(clients, options);
+    if (!density?.targetCentroid) return null;
+    return { ...density, ...selectPlacement(density.targetCentroid, options) };
 }
 
 /* unused harmony default export */ var __WEBPACK_DEFAULT_EXPORT__ = ((/* unused pure expression or super */ null && (getCloudProvider)));
@@ -12474,18 +12443,13 @@ function getCloudProvider(clients, options = {}) {
 /***/ 6160
 (__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   tg: () => (/* reexport safe */ _cleanup_js__WEBPACK_IMPORTED_MODULE_1__.tg)
-/* harmony export */ });
-/* unused harmony exports loadAutoscaleConfig, determineScaleOutTarget, scaleOut, determineScaleInTarget, scaleIn, init */
+/* unused harmony exports loadAutoscaleConfig, resolveClusterConfig, determineScaleOutTarget, determineDeployment, scaleOut, runWorkflow, determineScaleInTarget, scaleIn, init */
 /* harmony import */ var node_cluster__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8698);
 /* harmony import */ var _cleanup_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(400);
 /* harmony import */ var _cocreate_config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9298);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5264);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(3105);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(2623);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(7076);
-/* harmony import */ var _geoScaling_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(7448);
+/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2623);
+/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(7076);
+/* harmony import */ var _geoScaling_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(7448);
 /********************************************************************************
  * Copyright (C) 2026 CoCreate and Contributors.
  *
@@ -12517,8 +12481,8 @@ const isPrimary = node_cluster__WEBPACK_IMPORTED_MODULE_0__["default"].isPrimary
 let server = null;
 
 let autoscaleConfig = {};
+let clusterConfig = null;
 let allowedApis = [];
-let clusterHost;
 const workerStreaks = new Map();
 let evaluating = false;
 let organizationIdle = false;
@@ -12528,7 +12492,7 @@ let cleanupTimer;
 let lastFloorCheckAt = 0;
 
 function isAutoscalingEnabled() {
-    return (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'autoscaling.enabled') === true;
+    return (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'autoscaling.enabled') === true;
 }
 
 /**
@@ -12543,9 +12507,7 @@ function isAutoscalingEnabled() {
  * @environment server
  */
 async function loadAutoscaleConfig() {
-    const resolved = {};
-    let clusterCloudIds;
-    clusterHost = undefined;
+    clusterConfig = null;
     if (server.id) {
         const response = await server.crud.send({
             method: 'object.read',
@@ -12564,47 +12526,78 @@ async function loadAutoscaleConfig() {
             host: server.host,
             filter: { query: { _id: server.cluster_id }, limit: 1 }
         });
-        const clusterConfig = response?.object?.[0];
-        if (clusterConfig) {
-            // Keep the cluster's cloud API IDs separate from `clouds.<name>`
-            // autoscaler settings merged below.
-            clusterCloudIds = clusterConfig.clouds ?? clusterConfig.providers;
-            clusterHost = clusterConfig.host;
-            (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_5__/* .dotNotationToObject */ .O)(clusterConfig, resolved);
+        const clusterRecord = response?.object?.[0];
+        if (clusterRecord) {
+            clusterConfig = structuredClone(clusterRecord);
         }
     }
 
+    const resolved = await resolveClusterConfig(clusterConfig);
+    autoscaleConfig = resolved.autoscaleConfig;
+    allowedApis = resolved.allowedApis;
+    return autoscaleConfig;
+}
+
+/** Resolve one cluster's policies and catalogs without changing another cluster's runtime. */
+async function resolveClusterConfig(targetCluster) {
+    const resolved = {};
+    if (targetCluster) (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_3__/* .dotNotationToObject */ .O)(structuredClone(targetCluster), resolved);
+    const clusterCloudIds = targetCluster?.clouds ?? targetCluster?.providers;
+    const clusterDnsIds = targetCluster?.dns;
     const sysConfig = await _cocreate_config__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A.get('autoscaler');
 
-    const dbConfig = await _cocreate_config__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A.query({
-        type: ['startupscript', 'autoscaler'],
+    const scope = {
         organization_id: server.organization_id,
         server: server.host,
-        cluster: server.cluster_id
-    }, server.crud);
+        cluster: targetCluster?._id
+    };
+    // Catalogs have provider keys at their root; keep DNS and clouds separate.
+    const [dbConfig, clouds, dns] = await Promise.all([
+        _cocreate_config__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A.query({ ...scope, type: 'autoscaler' }, server.crud),
+        _cocreate_config__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A.query({ ...scope, type: 'clouds' }, server.crud),
+        _cocreate_config__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A.query({ ...scope, type: 'dns' }, server.crud)
+    ]);
+    if (clouds && Object.keys(clouds).length) resolved.clouds = clouds;
+    if (dns && Object.keys(dns).length) resolved.dns = dns;
 
     // The cluster is the baseline; matching configs overwrite it in query order.
-    if (sysConfig) (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_5__/* .dotNotationToObject */ .O)(sysConfig, resolved);
-    if (dbConfig) (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_5__/* .dotNotationToObject */ .O)(dbConfig, resolved);
+    if (sysConfig) (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_3__/* .dotNotationToObject */ .O)(sysConfig, resolved);
+    if (dbConfig) (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_3__/* .dotNotationToObject */ .O)(dbConfig, resolved);
 
-    // `clouds` is the current cluster field. Fall back to `providers` for
-    // existing cluster records until they are migrated. The IDs are captured
-    // before merging `clouds.<name>` autoscaler settings into `resolved`.
-    const providerIds = clusterCloudIds;
-    allowedApis = [];
-    if (Array.isArray(providerIds) && providerIds.length) {
-        const responses = await Promise.all(providerIds.map(id => server.crud.send({
-            method: 'object.read',
-            array: 'apis',
-            organization_id: server.organization_id,
-            host: server.host,
-            filter: { query: { _id: id, type: 'cloud', enabled: true }, limit: 1 }
-        })));
-        allowedApis = responses.map(response => response?.object?.[0]).filter(Boolean);
+    const readApis = async (type, selection) => {
+        const ids = selection == null || selection === '' ? [] :
+            typeof selection === 'string' ? [selection] : selection;
+        if (!Array.isArray(ids) || ids.some(id => typeof id !== 'string' || !id.trim())) {
+            throw new Error(`Cluster ${type} selection must contain API IDs.`);
+        }
+        const response = await server.crud.send({
+            method: 'object.read', array: 'apis',
+            organization_id: server.organization_id, host: server.host,
+            filter: { query: { type, enabled: true, ...(ids.length && { _id: { $in: ids } }) }, limit: 0 }
+        });
+        if (!response || response.success === false ||
+            (Array.isArray(response.error) ? response.error.length : response.error) || !Array.isArray(response.object)) {
+            throw new Error(`Unable to read cluster ${type} APIs.`);
+        }
+        return response.object;
+    };
+    const [clusterApis, dnsApis] = await Promise.all([
+        readApis('cloud', clusterCloudIds), readApis('dns', clusterDnsIds)
+    ]);
+    const dnsCatalog = resolved.dns;
+    // Catalogs describe provider POPs; API records determine which connections may use them.
+    resolved.dns = {};
+    for (const api of dnsApis) {
+        const provider = api.provider || api.name;
+        const locations = dnsCatalog?.[provider];
+        if (!Array.isArray(locations)) continue;
+        resolved.dns[provider] ||= [];
+        resolved.dns[provider].push(...locations.map(location => ({ ...location, apiId: api._id })));
     }
-
-    autoscaleConfig = resolved;
-    return resolved;
+    if (clusterDnsIds?.length && !(0,_geoScaling_js__WEBPACK_IMPORTED_MODULE_5__/* .loadDnsLocations */ .A7)(resolved.dns).length) {
+        throw new Error('No eligible DNS locations match the cluster DNS APIs.');
+    }
+    return { autoscaleConfig: resolved, allowedApis: clusterApis };
 }
 
 /**
@@ -12713,10 +12706,10 @@ async function getClusterDetails(query = {}, currentSample) {
  * @private
  * @environment server
  */
-function determineTargetTier(targetRegion, activeClusterServers) {
-    const minimum = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'vertical.min') || {};
-    const maximum = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'vertical.max') || {};
-    const maxNodesPerTier = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'vertical.maxNodesPerTier'));
+function determineTargetTier(targetRegion, activeClusterServers, autoscaleConfig) {
+    const minimum = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'vertical.min') || {};
+    const maximum = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'vertical.max') || {};
+    const maxNodesPerTier = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'vertical.maxNodesPerTier'));
     if (![minimum.vCPU, minimum.memoryGb, maximum.vCPU, maximum.memoryGb, maxNodesPerTier]
         .every(value => Number.isFinite(Number(value)) && Number(value) > 0)) {
         throw new Error('Vertical scaling requires configured min, max, and maxNodesPerTier values.');
@@ -12735,8 +12728,8 @@ function determineTargetTier(targetRegion, activeClusterServers) {
 
     const regionalServers = activeClusterServers.filter((serverNode) =>
         serverNode.region === targetRegion ||
-        serverNode.infrastructure?.region === targetRegion ||
-        serverNode.location?.region === targetRegion
+        serverNode.deployment?.region === targetRegion ||
+        serverNode.deployment?.location?.region === targetRegion
     );
 
     if (regionalServers.length === 0) {
@@ -12744,28 +12737,28 @@ function determineTargetTier(targetRegion, activeClusterServers) {
     }
 
     const nodeTiers = regionalServers.map((serverNode) => {
-        const infrastructure = serverNode.infrastructure || {};
-        const provider = serverNode.provider || infrastructure.provider;
-        const instanceType = serverNode.instanceType || serverNode.vmType || infrastructure.vmType;
-        const providerInstances = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(
+        const deployment = serverNode.deployment || {};
+        const provider = serverNode.provider || deployment.provider;
+        const type = serverNode.type || deployment.type;
+        const providerInstances = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(
             autoscaleConfig,
             `clouds.${provider}.instances`
         ) || [];
-        const instance = providerInstances.find(({ name }) => name === instanceType);
+        const instance = providerInstances.find(({ name }) => name === type);
 
         return {
             vCPU: Math.min(
                 maxTier.vCPU,
                 Math.max(
                     minTier.vCPU,
-                    Number(serverNode.vCPU || infrastructure.vCPU || instance?.vCPU) || minTier.vCPU
+                    Number(serverNode.vCPU || deployment.vCPU || instance?.vCPU) || minTier.vCPU
                 )
             ),
             memoryGb: Math.min(
                 maxTier.memoryGb,
                 Math.max(
                     minTier.memoryGb,
-                    Number(serverNode.memoryGb || infrastructure.memoryGb || instance?.memoryGb) || minTier.memoryGb
+                    Number(serverNode.memoryGb || deployment.memoryGb || instance?.memoryGb) || minTier.memoryGb
                 )
             )
         };
@@ -12829,7 +12822,7 @@ function selectInstanceType(instances = [], targetTier) {
 }
 
 /**
- * Calculates scale-out targeting details: provider, region, instanceType, vCPU, memoryGb,
+ * Calculates scale-out targeting details: provider, region, type, vCPU, memoryGb,
  * datacenterName, countryCode, and geo latency metadata based on client traffic distribution.
  *
  * @param {Array<Object>} clientLocations - Active client traffic distribution points
@@ -12839,37 +12832,37 @@ function selectInstanceType(instances = [], targetTier) {
  * @environment server
  */
 async function determineScaleOutTarget(clientLocations, activeServers) {
-    if (!isAutoscalingEnabled()) throw new Error('Autoscaling is disabled.');
-    if (!server.cluster_id) throw new Error('Autoscaling requires a cluster ID.');
-    if (!allowedApis.length) throw new Error('Autoscaling requires enabled cloud APIs in cluster clouds.');
-
-    const isGeoEnabled = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'geoScale.enabled');
-    const sheddingThreshold = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'geoScale.sheddingThreshold');
+    if (!isAutoscalingEnabled()) throw new Error("Autoscaling is disabled.");
+    if (!server.cluster_id) throw new Error("Autoscaling requires a cluster ID.");
+    const currentServers = (activeServers ?? (await getClusterDetails()).servers)
+        .filter(item => item.master.status === 'running');
+    const isGeoEnabled = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'geoScale.enabled');
+    const sheddingThreshold = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'geoScale.sheddingThreshold');
     if (isGeoEnabled === true && !Number.isFinite(Number(sheddingThreshold))) {
         throw new Error('Geographic scaling requires a configured shedding threshold.');
     }
-    const regions = (0,_geoScaling_js__WEBPACK_IMPORTED_MODULE_7__/* .loadCloudProviders */ .MT)(autoscaleConfig);
-    const cloudProviders = allowedApis.flatMap(api =>
+    const density = (0,_geoScaling_js__WEBPACK_IMPORTED_MODULE_5__/* .getDensityTarget */ .s7)(clientLocations, {
+        geoScaleByContinent: isGeoEnabled, sheddingThreshold,
+        existingNodes: currentServers.map(item => ({
+            continent: item.deployment?.location?.continent || item.deployment?.continent
+        }))
+    });
+    const target = await determineDeployment(density?.targetCentroid, currentServers);
+    return { ...density, ...target };
+}
+
+/** Generate a deployment from coordinates using the target cluster's resolved configuration. */
+async function determineDeployment(coordinates, activeServers = [], configuration = { autoscaleConfig, allowedApis }) {
+    const { autoscaleConfig: placementConfig, allowedApis: clusterApis } = configuration;
+    if (!clusterApis.length) throw new Error('Autoscaling requires enabled cloud APIs in cluster clouds.');
+    const regions = (0,_geoScaling_js__WEBPACK_IMPORTED_MODULE_5__/* .loadCloudProviders */ .MT)(placementConfig);
+    const cloudProviders = clusterApis.flatMap(api =>
         regions.filter(region => region.provider === api.provider).map(region => ({
-            ...region,
-            provider: api.name,
-            providerType: api.provider,
-            apiId: api._id
+            ...region, provider: api.name, providerType: api.provider, apiId: api._id
         }))
     );
-
-    const currentServers = (activeServers ?? (await getClusterDetails()).servers)
-        .filter(item => item.master.status === 'running');
-    const geoTarget = await (0,_geoScaling_js__WEBPACK_IMPORTED_MODULE_7__/* .getCloudProvider */ .$9)(clientLocations, {
-        geoScaleByContinent: isGeoEnabled,
-        sheddingThreshold,
-        cloudProviders,
-        existingNodes: currentServers.map(item => ({
-            continent: item.location?.continent || item.infrastructure?.continent
-        })),
-        autoscaleConfig
-    });
-
+    const currentServers = activeServers.filter(item => item.master.status === 'running');
+    const geoTarget = (0,_geoScaling_js__WEBPACK_IMPORTED_MODULE_5__/* .selectPlacement */ .cP)(coordinates, { cloudProviders, autoscaleConfig: placementConfig });
     const cloudRegion = geoTarget?.nearestCloudRegion;
     if (!cloudRegion) throw new Error('No configured region matches the enabled cluster providers.');
     const provider = cloudRegion.provider;
@@ -12882,15 +12875,15 @@ async function determineScaleOutTarget(clientLocations, activeServers) {
         .every(value => Number.isFinite(Number(value)) && Number(value) > 0))) {
         throw new Error(`The default instance for ${providerType} needs vCPU and memoryGb.`);
     }
-    const targetTier = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'vertical.enabled') === true
-        ? determineTargetTier(region, currentServers)
+    const targetTier = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(placementConfig, 'vertical.enabled') === true
+        ? determineTargetTier(region, currentServers, placementConfig)
         : defaultInstance && {
             vCPU: Number(defaultInstance.vCPU),
             memoryGb: Number(defaultInstance.memoryGb),
             tierIndex: 0
         };
     if (!targetTier) throw new Error(`No default instance is configured for ${providerType}.`);
-    const instanceType = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'vertical.enabled') === true
+    const type = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(placementConfig, 'vertical.enabled') === true
         ? selectInstanceType(providerInstances, targetTier)
         : defaultInstance.name;
 
@@ -12899,7 +12892,7 @@ async function determineScaleOutTarget(clientLocations, activeServers) {
         providerType,
         apiId: cloudRegion.apiId,
         region,
-        instanceType,
+        type,
         vCPU: targetTier.vCPU,
         memoryGb: targetTier.memoryGb,
         targetTier,
@@ -12907,11 +12900,7 @@ async function determineScaleOutTarget(clientLocations, activeServers) {
         countryCode: cloudRegion.countryCode,
         coordinates: cloudRegion.coordinates,
         distanceKm: cloudRegion.distanceKm,
-        geoScaleByContinent: geoTarget.geoScaleByContinent,
-        targetContinent: geoTarget.targetContinent,
-        isSheddingTarget: geoTarget.isSheddingTarget,
-        targetPercentage: geoTarget.targetPercentage,
-        totalActiveClients: geoTarget.totalActiveClients,
+        dns: geoTarget.dns,
         timestamp: Date.now()
     };
 
@@ -12921,130 +12910,48 @@ async function determineScaleOutTarget(clientLocations, activeServers) {
 
 /**
  * Triggers horizontal scale-out provisioning workflow:
- * 1. Computes optimal cloud provider, region, instance type, vCPU, memory, datacenter, and country code via determineScaleOutTarget.
- * 2. Fetches static configurations (spot, startupScript, os, application, create endpoint) directly from autoscaleConfig.
- * 3. Dispatches instance creation API call via server.api.send.
+ * Chooses the current deployment, then sends the saved cluster to the common
+ * provisioning workflow locally or through the upstream manager transport.
  *
- * @param {Array<Object>} clientLocations - Active client traffic location points
+ * @param {Array<Object>|Object} input - Client locations to calculate density, or the target cluster
  * @param {Array<Object>} [activeServers] - Cluster snapshot, fetched when omitted
+ * @param {Object} [coordinates] - Organization location when input is a target cluster
  * @returns {Promise<Object>} API execution result payload
  * @public
  * @environment server
  */
-async function scaleOut(clientLocations, activeServers) {
-    const target = await determineScaleOutTarget(clientLocations, activeServers);
-    const provider = target.provider;
-    const providerType = target.providerType;
-
-    // Retrieve static provisioning configurations directly from autoscaleConfig
-    const spot = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'spot');
-    const startupScript = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, `clouds.${providerType}.startupScript`) || (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'startupScript');
-    const os = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, `clouds.${providerType}.os`) || (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'os');
-    const application = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, `clouds.${providerType}.application`) || (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'application');
-    const endpoint = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, `clouds.${providerType}.endpoint.create`) ||
-        (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'endpoint.create');
-    const method = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, `clouds.${providerType}.method.create`);
-    if (!endpoint) throw new Error(`No create endpoint is configured for ${providerType}.`);
-    if (!startupScript) throw new Error('Scale-out requires a startup script.');
-    const binaryUrl = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'binaryUrl');
-    const deploymentHost = clusterHost || (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'host') || server.host;
-    if (!binaryUrl || !deploymentHost) {
-        throw new Error('Scale-out requires a binary URL and deployment host.');
-    }
-
-    const storageId = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'storage');
-    if (typeof storageId !== 'string' || !storageId.trim()) {
-        throw new Error('Scale-out requires the cluster storage API record ID.');
-    }
-
-    const serverId = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_3__/* .ObjectId */ .V)().toString();
-    const clusterName = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'name');
-    const serverName = `${clusterName}-${target.provider}-${target.region}-${(0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .uuid */ .u)(6)}`;
-    const newServer = {
-        _id: serverId,
-        name: serverName,
-        cluster_id: server.cluster_id,
-        ...(server.manager?.organization_id && { manager: { ...server.manager } }),
-        cloud: target.apiId,
-        storage: storageId,
-        host: deploymentHost,
-        totalWorkers: 0,
-        master: { status: 'provisioning' },
-        infrastructure: {
-            provider: providerType,
-            region: target.region,
-            vmType: target.instanceType,
-            vCPU: target.vCPU,
-            memoryGb: target.memoryGb
-        }
+async function scaleOut(input, activeServers, coordinates) {
+    const targetCluster = Array.isArray(input) ? clusterConfig : input;
+    if (!targetCluster?._id) throw new Error('Scale-out requires the saved cluster configuration.');
+    const target = Array.isArray(input)
+        ? await determineScaleOutTarget(input, activeServers)
+        : await determineDeployment(coordinates, activeServers || [], await resolveClusterConfig(targetCluster));
+    const deployment = {
+        cloud: target.apiId, region: target.region, type: target.type,
+        vCPU: target.vCPU, memoryGb: target.memoryGb, dns: target.dns,
+        location: target.coordinates
     };
-    const created = await server.crud.send({
-        method: 'object.create',
-        array: 'servers',
-        object: newServer,
-        organization_id: server.organization_id,
-        host: server.host
-    });
-    if (created?.error?.length || !created?.object?.length) {
-        throw new Error('Unable to reserve a server record for scale-out.');
+    const response = await runWorkflow('createOrganizationServer', { ...targetCluster, deployment });
+    if (!response || response.success === false ||
+        (Array.isArray(response.error) ? response.error.length : response.error)) {
+        throw new Error('Server provisioning workflow failed.');
     }
+    return response;
+}
 
-    console.log(`[@cocreate/autoscaler] [SCALE-OUT] Sending instance creation API request for provider [${provider}] on endpoint [${endpoint}] in region [${target.region}]...`);
-
-    const apiPayload = {
-        api: provider,
-        ...(method && { method }),
-        endpoint,
+/** Send each operation's cluster through the same standard workflow envelope. */
+async function runWorkflow(name, targetCluster) {
+    if (!targetCluster?._id) throw new Error('Server workflows require the saved cluster configuration.');
+    const payload = {
+        method: `workflow.${name}`,
         organization_id: server.organization_id,
         host: server.host,
-        region: target.region,
-        data: {
-            provider: providerType,
-            cloud: target.apiId,
-            region: target.region,
-            vmType: target.instanceType,
-            vCPU: target.vCPU,
-            memoryGb: target.memoryGb,
-            datacenterName: target.datacenterName,
-            countryCode: target.countryCode,
-            cluster_id: server.cluster_id,
-            name: serverName,
-            server_id: serverId,
-            host: deploymentHost,
-            binaryUrl,
-            environment: `server_id=${serverId}\ncluster_id=${server.cluster_id}`,
-            storage: storageId,
-            spot,
-            startupScript,
-            os,
-            application
-        }
+        managedOrganization: targetCluster.managedOrganization || server.organization_id,
+        [name]: { ...targetCluster }
     };
-
-    try {
-        const response = await (server.manager?.organization_id ? server.manager.send(apiPayload) : server.api.send(apiPayload));
-        // TODO: Preserve manager.send network errors for bounded retries at this boundary.
-        // A received failure is not a network error: notify the platform for resolution;
-        // do not retry it or try alternative configurations.
-        if (response?.error?.length || response?.success === false) {
-            throw new Error('The cloud API rejected the scale-out request.');
-        }
-        console.log(`[@cocreate/autoscaler] [SCALE-OUT] Provisioning server ${serverId}.`);
-        return response;
-    } catch (error) {
-        console.error('[@cocreate/autoscaler] Scale-out failed; platform notification pending:', {
-            server_id: serverId, cluster_id: server.cluster_id,
-            error_code: error?.cause?.code || error?.code || error?.name
-        });
-        await server.crud.send({
-            method: 'object.update',
-            array: 'servers',
-            object: { _id: serverId, master: { status: 'failed' } },
-            organization_id: server.organization_id,
-            host: server.host
-        });
-        throw error;
-    }
+    return server.manager?.organization_id
+        ? server.manager.send(payload)
+        : server.workflow.run(payload);
 }
 
 /**
@@ -13064,8 +12971,8 @@ async function determineScaleInTarget(options) {
         return { canScaleIn: false, reason: 'Autoscaling requires a cluster ID.', candidateServer: null };
     }
 
-    const minSize = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn.minClusterSize'));
-    const configuredStrategy = options?.strategy || (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn.decommissionStrategy');
+    const minSize = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn.minClusterSize'));
+    const configuredStrategy = options?.strategy || (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn.decommissionStrategy');
     if (!Number.isFinite(minSize) || minSize < 0 || !['local', 'oldest'].includes(configuredStrategy)) {
         return { canScaleIn: false, reason: 'Scale-in policy is incomplete.', candidateServer: null };
     }
@@ -13136,9 +13043,9 @@ async function determineScaleInTarget(options) {
 }
 
 function checkScaleInCapacity(snapshot, candidateId, observedAfter) {
-    const minimum = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn.minClusterSize'));
-    const maxCpu = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleOut.cpuThreshold'));
-    const maxMemory = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleOut.memoryThreshold'));
+    const minimum = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn.minClusterSize'));
+    const maxCpu = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleOut.cpuThreshold'));
+    const maxMemory = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleOut.memoryThreshold'));
     const remaining = snapshot.servers.filter(item => String(item._id) !== String(candidateId));
     if (!Number.isInteger(minimum) || minimum < 0 || remaining.length < minimum) {
         return { ok: false, reason: 'Removing this node would breach the cluster minimum.' };
@@ -13159,8 +13066,8 @@ function checkScaleInCapacity(snapshot, candidateId, observedAfter) {
         const isCandidate = String(item._id) === String(candidateId);
         if (observedAfter && isCandidate) continue;
         const metrics = snapshot.serverMetrics.get(String(item._id));
-        const vCPU = Number(item.infrastructure?.vCPU || item.vCPU);
-        const memoryGb = Number(item.infrastructure?.memoryGb || item.memoryGb);
+        const vCPU = Number(item.deployment?.vCPU || item.vCPU);
+        const memoryGb = Number(item.deployment?.memoryGb || item.memoryGb);
         if (!metrics || ![vCPU, memoryGb].every(value => Number.isFinite(value) && value > 0) ||
             ![metrics.cpu, metrics.memory].every(value => Number.isFinite(value) && value >= 0)) {
             return { ok: false, reason: 'Fresh telemetry and instance capacity are required for every node.' };
@@ -13231,6 +13138,7 @@ async function sendDrain(serverId, value) {
  *
  * @param {Object} [targetServer] - Optional target server document to decommission
  * @param {Object} [options] - Selection options; organization inactivity selects strategy local.
+ * @param {Object} [coordinates] - Organization location when input is a target cluster
  * @returns {Promise<Object>} API execution result payload
  * @public
  * @environment server
@@ -13241,7 +13149,7 @@ async function scaleIn(targetServer, options) {
     let candidateServer = targetServer;
 
     if (candidateServer) {
-        const minSize = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn.minClusterSize'));
+        const minSize = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn.minClusterSize'));
         if (!Number.isFinite(minSize) || minSize < 0) {
             throw new Error('Scale-in requires a configured minimum cluster size.');
         }
@@ -13263,21 +13171,17 @@ async function scaleIn(targetServer, options) {
     }
 
 
-    const apiId = candidateServer.cloud || candidateServer.infrastructure?.cloud ||
-        candidateServer.api_id || candidateServer.infrastructure?.api_id;
+    const apiId = candidateServer.deployment?.cloud || candidateServer.cloud ||
+        candidateServer.api_id || candidateServer.deployment?.api_id;
     const api = allowedApis.find(item => String(item._id) === String(apiId));
     if (!api) throw new Error('The server cloud API is not allowed by the cluster clouds.');
     const provider = api.name;
-    const vmId = candidateServer.infrastructure?.instanceId || candidateServer.infrastructure?.vmId || candidateServer.vmId;
-    const region = candidateServer.infrastructure?.region || candidateServer.region;
+    const deploymentId = candidateServer.deployment?.id;
+    const region = candidateServer.deployment?.region || candidateServer.region;
 
-    // Retrieve delete endpoint directly from autoscaleConfig
-    const endpoint = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, `clouds.${api.provider}.endpoint.delete`) ||
-        (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'endpoint.delete');
-    const method = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, `clouds.${api.provider}.method.delete`);
-    if (!endpoint) throw new Error(`No delete endpoint is configured for ${api.provider}.`);
-    if (!vmId || !region) throw new Error('The scale-in candidate needs a VM ID and region.');
-    const drainWaitSeconds = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn.drainWaitSeconds'));
+    if (!clusterConfig?._id) throw new Error('Scale-in requires the saved cluster configuration.');
+    if (!deploymentId || !region) throw new Error('The scale-in candidate needs an deployment ID and region.');
+    const drainWaitSeconds = Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn.drainWaitSeconds'));
     if (!Number.isInteger(drainWaitSeconds) || drainWaitSeconds < 1) {
         throw new Error('Scale-in requires a configured drain observation interval.');
     }
@@ -13294,21 +13198,14 @@ async function scaleIn(targetServer, options) {
         return null;
     }
 
-    console.log(`[@cocreate/autoscaler] [SCALE-IN] Draining node [${vmId}] before provider [${provider}] termination.`);
+    console.log(`[@cocreate/autoscaler] [SCALE-IN] Draining node [${deploymentId}] before provider [${provider}] termination.`);
 
-    const apiPayload = {
-        api: provider,
-        ...(method && { method }),
-        endpoint,
-        organization_id: server.organization_id,
-        host: server.host,
-        region,
-        data: {
-            server_id: candidateServer._id,
-            cluster_id: server.cluster_id,
-            vmId: vmId,
-            provider: api.provider,
-            region
+    const targetCluster = {
+        ...clusterConfig,
+        deployment: {
+            cloud: apiId, region, type: candidateServer.deployment?.type,
+            dns: candidateServer.deployment?.dns || [],
+            server_id: candidateServer._id, id: deploymentId
         }
     };
 
@@ -13351,13 +13248,13 @@ async function scaleIn(targetServer, options) {
 
     // Commit retirement before provider dispatch so normal State saves preserve it.
     await setMasterStatus(candidateServer._id, 'terminating');
-    console.log(`[@cocreate/autoscaler] [SCALE-IN] Sending termination request for node [${vmId}] to provider [${provider}] endpoint [${endpoint}].`);
+    console.log(`[@cocreate/autoscaler] [SCALE-IN] Sending termination request for node [${deploymentId}] through workflow.deleteOrganizationServer.`);
     let response;
     let terminationError;
     try {
         for (let attempt = 0; attempt < 2; attempt++) {
             try {
-                response = await (server.manager?.organization_id ? server.manager.send(apiPayload) : server.api.send(apiPayload));
+                response = await runWorkflow('deleteOrganizationServer', targetCluster);
                 break;
             } catch (error) {
                 const code = error?.cause?.code || error?.code;
@@ -13415,7 +13312,7 @@ function placementLocations(sample) {
     if (Array.isArray(clients) && clients.length) return clients;
 
     // A server location is a fallback until client geography is supplied by telemetry.
-    const location = server.location || {};
+    const location = server.deployment?.location || {};
     if (Number.isFinite(Number(location.latitude)) && Number.isFinite(Number(location.longitude))) {
         return [{
             latitude: Number(location.latitude),
@@ -13424,7 +13321,7 @@ function placementLocations(sample) {
             count: 1
         }];
     }
-    const firstRegion = (0,_geoScaling_js__WEBPACK_IMPORTED_MODULE_7__/* .loadCloudProviders */ .MT)(autoscaleConfig).find(region =>
+    const firstRegion = (0,_geoScaling_js__WEBPACK_IMPORTED_MODULE_5__/* .loadCloudProviders */ .MT)(autoscaleConfig).find(region =>
         allowedApis.some(api => api.provider === region.provider)
     );
     return firstRegion ? [{
@@ -13439,7 +13336,7 @@ function placementLocations(sample) {
  */
 async function onOrganizationDisconnected(message) {
     if (message.organization_id !== server.organization_id || !isAutoscalingEnabled() ||
-        Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn.minClusterSize')) !== 0) return;
+        Number((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn.minClusterSize')) !== 0) return;
     organizationIdle = true;
     if (evaluating) return;
     evaluating = true;
@@ -13461,8 +13358,8 @@ async function onTelemetry(message) {
     const previous = workerStreaks.get(workerId) || { out: 0, in: 0 };
     if (previous.timestamp === sample.timestamp) return;
 
-    const outPolicy = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleOut') || {};
-    const inPolicy = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_6__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn') || {};
+    const outPolicy = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleOut') || {};
+    const inPolicy = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_4__/* .getValueFromObject */ .r)(autoscaleConfig, 'scaleIn') || {};
     const cpu = Number(sample.cpu?.avg);
     const memory = Number(sample.memory?.avg_used_pct);
     if (!Number.isFinite(cpu) || !Number.isFinite(memory)) return;
@@ -13553,6 +13450,61 @@ async function onTelemetry(message) {
     }
 }
 
+/** Place the first node using the organization location instead of traffic density. */
+async function onOrganizationPeers({ organization_id, peers } = {}) {
+    if (!organization_id || organization_id === server.organization_id || !Array.isArray(peers) || peers.length) return;
+    try {
+        const response = await server.crud.send({
+            method: 'object.read', array: 'clusters', organization_id: server.organization_id, host: server.host,
+            filter: { query: { type: 'organization', managedOrganization: organization_id }, limit: 1 }
+        });
+        if (!response || response.success === false || response.error?.length || !Array.isArray(response.object)) {
+            throw new Error('Unable to read the organization cluster.');
+        }
+        const cluster = response.object[0];
+        if (!cluster) return;
+        const organizationResponse = await server.crud.send({
+            method: 'object.read', array: 'organizations', organization_id: server.organization_id, host: server.host,
+            filter: { query: { _id: organization_id }, limit: 1 }
+        });
+        if (!organizationResponse || organizationResponse.success === false ||
+            (Array.isArray(organizationResponse.error) ? organizationResponse.error.length : organizationResponse.error) ||
+            !Array.isArray(organizationResponse.object)) throw new Error('Unable to read the organization location.');
+        const result = await scaleOut(cluster, [], organizationResponse.object[0]?.location);
+        if (!result.data?.server?._id || !result.data.id) throw new Error('Provisioning returned no server or deployment ID.');
+        watchStartup(result.data.server._id);
+    } catch (error) {
+        console.error('[@cocreate/autoscaler] Organization cluster startup failed:', {
+            organization_id, error_code: error?.cause?.code || error?.code || error?.name
+        });
+    }
+}
+
+/** Check persisted readiness after two minutes; another platform worker may receive the update. */
+function watchStartup(serverId) {
+    const timer = setTimeout(async () => {
+        if (server.state?.isShuttingDown) return;
+        try {
+            const response = await server.crud.send({
+                method: 'object.read', array: 'servers',
+                organization_id: server.organization_id, host: server.host,
+                filter: { query: { _id: serverId }, limit: 1 }
+            });
+            if (!response || response.error?.length || response.success === false || !Array.isArray(response.object)) throw new Error('Unable to read startup state.');
+            const record = response.object.find(record => String(record._id) === serverId);
+            const reported = record && (
+                (typeof record.master?.status === 'string' && record.master.status !== 'provisioning') ||
+                Object.entries(record).some(([key, value]) => /^worker\d+$/.test(key) && typeof value?.status === 'string')
+            );
+            // TODO: Notify the platform and consider at most one replacement.
+            if (!reported) console.error('[@cocreate/cluster] No managed startup update received within two minutes:', serverId);
+        } catch {
+            console.error('[@cocreate/cluster] Unable to verify managed startup update:', serverId);
+        }
+    }, 120000);
+    timer.unref?.();
+}
+
 /**
  *
  * @public
@@ -13566,6 +13518,10 @@ async function init(serverInstance) {
     server = serverInstance;
     await loadAutoscaleConfig();
     organizationIdle = false;
+    const manager = _cocreate_config__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A.get('manager') || {};
+    if (manager.enabled === true && manager.organization_id === server.organization_id) {
+        server.on('organizationPeers', onOrganizationPeers);
+    }
     server.on('telemetry', onTelemetry);
     server.on('orgDisconnected', onOrganizationDisconnected);
     server.on('orgConnected', message => {
@@ -13579,6 +13535,7 @@ async function init(serverInstance) {
     return {
         config: autoscaleConfig,
         scaleOut,
+        determineDeployment,
         determineScaleOutTarget,
         scaleIn,
         determineScaleInTarget,
@@ -13703,10 +13660,65 @@ async function init(server) {
 
 /***/ },
 
-/***/ 8726
+/***/ 6653
 (__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
-/* unused harmony export getInfrastructure */
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (/* binding */ Fetch)
+/* harmony export */ });
+/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3030);
+/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5758);
+
+
+async function readResponseData(response) {
+    const contentType = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .getContentType */ .gt)({ contentType: response.headers.get('content-type') });
+    const value = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_0__/* .decodeContent */ .K)({ value: await response.arrayBuffer(), contentType });
+    if (!/[/+]json$/.test(contentType) || typeof value !== 'string' || !value) return value;
+    try { return JSON.parse(value); }
+    catch { return value; }
+}
+
+/** Fetch with a default timeout and optional parsed HTTP errors; success returns a native Response. */
+async function Fetch(input, init = {}) {
+    const { timeout = 15000, throwHttpErrors = false, signal, ...options } = init;
+    const timeoutSignal = Number.isFinite(timeout) && timeout > 0 ? AbortSignal.timeout(timeout) : undefined;
+    const requestSignal = signal && timeoutSignal
+        ? AbortSignal.any([signal, timeoutSignal])
+        : signal || timeoutSignal;
+
+    let response;
+    try {
+        response = await globalThis.fetch(input, { ...options, ...(requestSignal && { signal: requestSignal }) });
+    } catch (error) {
+        if (timeoutSignal?.aborted && !signal?.aborted) {
+            throw new Error(`HTTP request timed out after ${timeout} ms.`, { cause: error });
+        }
+        throw error;
+    }
+
+    if (!throwHttpErrors || response.ok) return response;
+
+    const data = await readResponseData(response.clone());
+    const detail = typeof data === 'string' ? data.trim() : data?.message;
+    const error = new Error(detail || `HTTP request failed (${response.status} ${response.statusText}).`);
+    error.name = 'FetchError';
+    error.response = {
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+        url: response.url,
+        data
+    };
+    throw error;
+}
+
+
+/***/ },
+
+/***/ 1154
+(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+/* unused harmony export getDeployment */
 /* harmony import */ var node_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9316);
 /* harmony import */ var node_https__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(965);
 /* harmony import */ var node_fs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9627);
@@ -13791,8 +13803,8 @@ async function probeAWS() {
         provider: 'aws',
         region: doc.region,
         zone: doc.availabilityZone,
-        vmId: doc.instanceId,
-        vmType: doc.instanceType
+        id: doc.instanceId,
+        type: doc.instanceType
     };
 }
 
@@ -13811,14 +13823,14 @@ async function probeGCP() {
     const doc = JSON.parse(docStr);
     const zone = doc.zone ? doc.zone.split('/').pop() : 'unknown';
     const region = zone.slice(0, zone.lastIndexOf('-'));
-    const vmType = doc.machineType ? doc.machineType.split('/').pop() : 'unknown';
+    const type = doc.machineType ? doc.machineType.split('/').pop() : 'unknown';
 
     return {
         provider: 'gcp',
         region,
         zone,
-        vmId: doc.id ? String(doc.id) : 'unknown',
-        vmType
+        id: doc.id ? String(doc.id) : 'unknown',
+        type
     };
 }
 
@@ -13841,8 +13853,8 @@ async function probeAzure() {
         provider: 'azure',
         region: compute.location || 'unknown',
         zone: compute.zone || 'unknown',
-        vmId: compute.vmId || 'unknown',
-        vmType: compute.vmSize || 'unknown'
+        id: compute.vmId || 'unknown',
+        type: compute.vmSize || 'unknown'
     };
 }
 
@@ -13862,8 +13874,8 @@ async function probeDigitalOcean() {
         provider: 'digitalocean',
         region: doc.region || 'unknown',
         zone: doc.region ? `${doc.region}-a` : 'unknown',
-        vmId: doc.droplet_id ? String(doc.droplet_id) : 'unknown',
-        vmType: doc.size || 'unknown'
+        id: doc.droplet_id ? String(doc.droplet_id) : 'unknown',
+        type: doc.size || 'unknown'
     };
 }
 
@@ -13884,8 +13896,8 @@ async function probeOCI() {
         provider: 'oracle',
         region: doc.region || 'unknown',
         zone: doc.faultDomain || 'unknown',
-        vmId: doc.id || 'unknown',
-        vmType: doc.shape || 'unknown'
+        id: doc.id || 'unknown',
+        type: doc.shape || 'unknown'
     };
 }
 
@@ -13918,8 +13930,8 @@ async function probeHetzner() {
         provider: 'hetzner',
         region,
         zone,
-        vmId: meta['instance-id'] || 'unknown',
-        vmType: 'cloud-vm'
+        id: meta['instance-id'] || 'unknown',
+        type: 'cloud-vm'
     };
 }
 
@@ -13944,8 +13956,8 @@ async function probeVultr() {
         provider: 'vultr',
         region: 'vultr-global',
         zone: 'vultr-zone',
-        vmId: idStr ? idStr.trim() : 'unknown',
-        vmType: hostStr ? hostStr.trim() : 'vultr-instance'
+        id: idStr ? idStr.trim() : 'unknown',
+        type: hostStr ? hostStr.trim() : 'vultr-instance'
     };
 }
 
@@ -13964,8 +13976,8 @@ async function probeEquinix() {
         provider: 'equinix-metal',
         region: doc.metro || doc.facility || 'unknown',
         zone: doc.facility || 'unknown',
-        vmId: doc.id || 'unknown',
-        vmType: doc.plan || 'baremetal-metal'
+        id: doc.id || 'unknown',
+        type: doc.plan || 'baremetal-metal'
     };
 }
 
@@ -13994,8 +14006,8 @@ function resolveBareMetalIdentity() {
                     provider: 'baremetal',
                     region: 'on-premise',
                     zone: 'on-premise-datacenter',
-                    vmId: productName.replace(/\s+/g, '-').toLowerCase(),
-                    vmType: `${vendorName}-${productName}`.replace(/\s+/g, '-').toLowerCase()
+                    id: productName.replace(/\s+/g, '-').toLowerCase(),
+                    type: `${vendorName}-${productName}`.replace(/\s+/g, '-').toLowerCase()
                 };
             }
         }
@@ -14005,21 +14017,21 @@ function resolveBareMetalIdentity() {
     return null;
 }
 
-/* STREAMING_CHUNK: Running the infallible infrastructure resolver... */
+/* STREAMING_CHUNK: Running the infallible deployment resolver... */
 /**
- * Dynamically resolves the host's physical infrastructure environment.
+ * Dynamically resolves the host's physical deployment environment.
  * Runs exactly once during the server boot sequence. Guaranteed to never throw.
  * 
- * @param {string} masterVmId - The pre-configured fallback instance ID
- * @returns {Promise<Object>} Resolved server.infrastructure payload
+ * @param {string} fallbackId - The pre-configured fallback instance ID
+ * @returns {Promise<Object>} Resolved server.deployment payload
  */
-async function getInfrastructure(masterVmId) {
+async function probeDeployment(fallbackId) {
     const localFallback = {
         provider: 'local',
         region: 'local',
         zone: 'local',
-        vmId: masterVmId,
-        vmType: 'local'
+        id: fallbackId,
+        type: 'local'
     };
 
     try {
@@ -14046,7 +14058,6 @@ async function getInfrastructure(masterVmId) {
         try {
             const bareMetalInfo = resolveBareMetalIdentity();
             if (bareMetalInfo) {
-                bareMetalInfo.instanceId = masterVmId;
                 return bareMetalInfo;
             }
         } catch (err) {
@@ -14059,8 +14070,8 @@ async function getInfrastructure(masterVmId) {
                 provider: process.env.PROVIDER,
                 region: process.env.REGION || 'unknown',
                 zone: process.env.ZONE || 'unknown',
-                vmId: process.env.VM_ID || masterVmId,
-                vmType: process.env.VM_TYPE || 'unknown'
+                id: process.env.VM_ID || fallbackId,
+                type: process.env.SERVER_TYPE || process.env.VM_TYPE || 'unknown'
             };
         }
 
@@ -14072,7 +14083,305 @@ async function getInfrastructure(masterVmId) {
     return localFallback;
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getInfrastructure);
+/** Enrich a saved deployment without dropping configured cloud, DNS or capacity. */
+async function getDeployment(fallbackId, existing = {}) {
+    const reported = await probeDeployment(fallbackId);
+    const deployment = { ...existing };
+    // An unavailable cloud metadata service must not turn a saved cloud deployment
+    // into a local/bare-metal fallback or replace its provider resource ID.
+    if (['local', 'baremetal'].includes(reported.provider) &&
+        existing.provider && existing.provider !== reported.provider) return deployment;
+    for (const [key, value] of Object.entries(reported)) {
+        if (value !== undefined && value !== null && value !== '' && value !== 'unknown') {
+            deployment[key] = value;
+        }
+    }
+    return deployment;
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getDeployment);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, [
+/* harmony export */   "A", 0, __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ ]);
+
+
+/***/ },
+
+/***/ 6265
+(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+/* harmony import */ var node_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9316);
+/* harmony import */ var node_https__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(965);
+/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3105);
+
+
+
+
+/**
+ * Initializes the HTTP and HTTPS listeners on the server context.
+ * @param {object} server - CoCreate server instance.
+ * @returns {Promise<void>}
+ * @public
+ * @environment server
+ */
+async function init(server) {
+    const HTTP_PORT = process.env.HTTP_PORT || 80;
+    const HTTPS_PORT = process.env.HTTPS_PORT || 443;
+    const BIND_IP = process.env.BIND_IP || '0.0.0.0';
+
+    const httpsOptions = server.tls.createHttpsOptions(server);
+    server.https = node_https__WEBPACK_IMPORTED_MODULE_1__["default"].createServer(httpsOptions, (req, res) => handleRequest(server, req, res));
+
+    server.http = node_http__WEBPACK_IMPORTED_MODULE_0__["default"].createServer((req, res) => {
+        const requestUrl = req.url || '/';
+
+        if (requestUrl.startsWith('/.well-known/acme-challenge/')) {
+            return handleRequest(server, req, res);
+        }
+
+        const rawHost = req.headers.host || 'localhost';
+        const host = rawHost.split(':')[0];
+        const portSuffix = (HTTPS_PORT && String(HTTPS_PORT) !== '443') ? `:${HTTPS_PORT}` : '';
+
+        res.writeHead(301, { Location: `https://${host}${portSuffix}${requestUrl}` });
+        res.end();
+    });
+
+    const reportListening = state => {
+        if (process.connected) {
+            process.send({ type: 'listening_state', state });
+        }
+    };
+
+    server.http.on('listening', () => reportListening(true));
+    server.http.on('close', () => reportListening(false));
+    server.http.listen(HTTP_PORT, BIND_IP, () => {
+        console.log(`[@cocreate/cluster] [WORKER ${server.workerId}] HTTP listening on ${BIND_IP}:${HTTP_PORT}`);
+    });
+
+    server.https.listen(HTTPS_PORT, BIND_IP, () => {
+        console.log(`[@cocreate/cluster] [WORKER ${server.workerId}] HTTPS listening on ${BIND_IP}:${HTTPS_PORT}`);
+    });
+}
+
+/**
+ * Handles inbound HTTP requests at the server edge.
+ * @param {object} server - CoCreate server instance.
+ * @param {import('node:http').IncomingMessage} req - Incoming HTTP request.
+ * @param {import('node:http').ServerResponse} res - HTTP response.
+ * @returns {Promise<void>}
+ * @environment server
+ */
+async function handleRequest(server, req, res) {
+    try {
+        const rawUrl = req.url || '/';
+        const [reqPath] = rawUrl.split('?');
+
+        if (
+            !reqPath.startsWith('/.well-known/acme-challenge/') &&
+            server.tls?.checkOrganizationAccess
+        ) {
+            const access = await server.tls.checkOrganizationAccess(req.headers.host);
+            if (access.allowed === false) {
+                res.writeHead(402, {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Cache-Control': 'no-store',
+                    'Account-Balance': 'false'
+                });
+                res.end(JSON.stringify({
+                    error: 'Organization balance depleted',
+                    organizationBalance: false,
+                    balance: access.balance,
+                    currency: access.currency
+                }));
+                return;
+            }
+        }
+
+        // Match registered exact or wildcard routes first.
+        let handler = server.routes.get(reqPath);
+
+        if (!handler) {
+            for (const [routePath, routeHandler] of server.routes.entries()) {
+                if (routePath === '*' || (routePath.endsWith('*') && reqPath.startsWith(routePath.slice(0, -1)))) {
+                    handler = routeHandler;
+                    break;
+                }
+            }
+        }
+
+        if (typeof handler === 'function') {
+            await handler(req, res);
+            if (res.writableEnded || res.headersSent) return;
+        }
+
+        // Webhooks keep their dedicated request contract.
+        if (reqPath.startsWith('/webhooks/')) {
+            return server.api.webhook(req, res);
+        }
+
+        if (req.method === 'POST') {
+            return handleTransport(server, req, res);
+        }
+
+        if (['PUT', 'PATCH', 'DELETE'].includes(req.method)) {
+            return sendJson(res, 405, {
+                error: 'Use POST with a CoCreate payload object containing a method, such as object.read. GET and HEAD requests are handled as files.'
+            }, { Allow: 'GET, HEAD, POST' });
+        }
+
+        return server.files.send(req, res);
+    } catch (error) {
+        console.error('[@cocreate/cluster] Edge request routing error:', error);
+        if (!res.headersSent) {
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+        }
+        res.end('Internal Error: Request routing failed');
+    }
+}
+
+async function handleTransport(server, req, res) {
+    let payload;
+    let responseUuid;
+    try {
+        const chunks = [];
+        let size = 0;
+        for await (const chunk of req) {
+            const buffer = Buffer.from(chunk);
+            size += buffer.length;
+            if (size > 1024 * 1024) {
+                return sendJson(res, 413, { error: 'Request body exceeds 1 MiB.' });
+            }
+            chunks.push(buffer);
+        }
+
+        payload = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+        if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw new Error();
+        if (typeof payload.method !== 'string' || !payload.method.trim()) {
+            return sendJson(res, 400, { error: 'A CoCreate payload object with a method is required.' });
+        }
+        payload.uuid ||= (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_2__/* .uuid */ .u)();
+    } catch {
+        return sendJson(res, 400, { error: 'A valid JSON CoCreate payload is required.' });
+    }
+
+    try {
+        const host = new URL(`https://${req.headers.host}`).hostname;
+        const organization = await server.crud.getOrganization({ host });
+        if (!organization?._id || organization.error) {
+            return sendJson(res, 404, { error: 'Organization not found for this host.' });
+        }
+
+        const bearer = req.headers.authorization?.match(/^Bearer\s+(\S+)$/i)?.[1];
+        const token = bearer || getCookieToken(req.headers.cookie);
+        let user_id;
+        if (token && server.authenticate) {
+            try {
+                const session = await server.authenticate.decodeToken(token, organization._id, undefined, host);
+                if (session?.user_id && session.expires > Date.now()) user_id = session.user_id;
+            } catch { /* Invalid sessions remain anonymous. */ }
+        }
+
+        const apiKeyHeader = req.headers['x-api-key'];
+        if (bearer && apiKeyHeader && bearer !== apiKeyHeader && !user_id) {
+            return sendJson(res, 401, { error: 'Conflicting API keys were provided.' });
+        }
+        const apikey = apiKeyHeader || (user_id ? undefined : bearer);
+        if (apikey !== undefined && (typeof apikey !== 'string' || !apikey.trim())) {
+            return sendJson(res, 401, { error: 'A valid API key is required.' });
+        }
+
+        const authorizationPayload = {
+            ...payload,
+            organization_id: organization._id,
+            host
+        };
+        delete authorizationPayload.apikey;
+        if (apikey) authorizationPayload.apikey = apikey;
+        if (user_id) authorizationPayload.user_id = user_id;
+        else delete authorizationPayload.user_id;
+
+        const request = await server.authorize.request(authorizationPayload, user_id);
+        request.uuid = payload.uuid;
+
+        if (server.responseListeners.has(request.uuid)) {
+            return sendJson(res, 409, { error: 'A request with this UUID is already being handled.' });
+        }
+
+        server.responseListeners.set(request.uuid, response => {
+            const failed = response?.success === false || hasErrors(response?.error);
+            sendJson(res, failed ? 400 : 200, response);
+        });
+        responseUuid = request.uuid;
+        res.once('close', () => server.responseListeners.delete(request.uuid));
+
+        try {
+            const dispatch = await dispatchPayload(server, request);
+            if (!dispatch.emitted && server.responseListeners.has(request.uuid)) {
+                const response = dispatch.result && typeof dispatch.result === 'object'
+                    ? { ...dispatch.result, uuid: request.uuid }
+                    : request;
+                await server.send(response);
+            }
+        } catch (error) {
+            if (server.responseListeners.has(request.uuid)) {
+                await server.send({ ...request, success: false, error: error.message });
+            }
+        }
+    } catch (error) {
+        if (responseUuid) server.responseListeners.delete(responseUuid);
+        if (res.writableEnded) return;
+        if (error.code === 'AUTHORIZATION_DENIED') {
+            return sendJson(res, 403, { error: error.message });
+        }
+        if (error.code === 'HTTP_HANDLER_NOT_FOUND') {
+            return sendJson(res, 404, { error: error.message });
+        }
+        console.error('[@cocreate/cluster] HTTP transport request failed:', error);
+        return sendJson(res, 500, { error: 'Unable to process the transport request.' });
+    }
+}
+
+function getCookieToken(cookieHeader = '') {
+    const cookie = cookieHeader.split(';').map(value => value.trim()).find(value => value.startsWith('token='));
+    if (!cookie) return null;
+    try { return decodeURIComponent(cookie.slice(6)); }
+    catch { return null; }
+}
+
+async function dispatchPayload(server, payload) {
+    const moduleName = payload.method.split('.')[0];
+
+    if (payload.api) return { result: await server.api.send(payload), emitted: false };
+    if (['storage', 'database', 'array', 'index', 'object'].includes(moduleName)) {
+        return { result: await server.crud.send(payload), emitted: false };
+    }
+    if (moduleName === 'workflow') {
+        return { result: await server.workflow.run(payload), emitted: false };
+    }
+
+    if (!server.emit(payload.method, payload)) {
+        throw Object.assign(new Error(`No handler is registered for '${payload.method}'.`), { code: 'HTTP_HANDLER_NOT_FOUND' });
+    }
+    return { emitted: true };
+}
+
+function hasErrors(error) {
+    return Array.isArray(error) ? error.length > 0 : Boolean(error);
+}
+
+function sendJson(res, status, body, headers = {}) {
+    if (res.writableEnded) return;
+    res.writeHead(status, {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'no-store',
+        ...headers
+    });
+    res.end(JSON.stringify(body));
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({ init });
+
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
 /* harmony export */   "A", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
@@ -14085,33 +14394,32 @@ async function getInfrastructure(masterVmId) {
 
 /* unused harmony export CoCreateServer */
 /* harmony import */ var node_events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2849);
-/* harmony import */ var node_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9316);
-/* harmony import */ var node_https__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(965);
-/* harmony import */ var _cocreate_tls__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9526);
-/* harmony import */ var _mesh_index_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2035);
-/* harmony import */ var _cocreate_autoscaler__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(6160);
-/* harmony import */ var _cocreate_telemetry__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(4944);
-/* harmony import */ var _cocreate_config__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(9298);
-/* harmony import */ var _cocreate_authenticate__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(1642);
-/* harmony import */ var _cocreate_authorize__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(3084);
-/* harmony import */ var _cocreate_socket__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(9734);
-/* harmony import */ var _cocreate_crud__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(4323);
-/* harmony import */ var _cocreate_file_server__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(6929);
-/* harmony import */ var _cocreate_api__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(5440);
-/* harmony import */ var _cocreate_workflows__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(7606);
-/* harmony import */ var _cocreate_usage__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(5444);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(5159);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(5264);
-/* harmony import */ var _getInfrastructure_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(8726);
-/* harmony import */ var _manager_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(6590);
+/* harmony import */ var _cocreate_tls__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9526);
+/* harmony import */ var _mesh_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2035);
+/* harmony import */ var _cocreate_autoscaler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6160);
+/* harmony import */ var _cocreate_telemetry__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4944);
+/* harmony import */ var _cocreate_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(9298);
+/* harmony import */ var _cocreate_authenticate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(1642);
+/* harmony import */ var _cocreate_authorize__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(3084);
+/* harmony import */ var _cocreate_socket__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(9734);
+/* harmony import */ var _cocreate_crud__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(4323);
+/* harmony import */ var _cocreate_file_server__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(6929);
+/* harmony import */ var _cocreate_api__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(5440);
+/* harmony import */ var _cocreate_workflows__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(7606);
+/* harmony import */ var _cocreate_usage__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(5444);
+/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(5159);
+/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(5264);
+/* harmony import */ var _getDeployment_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(1154);
+/* harmony import */ var _manager_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(6590);
+/* harmony import */ var _fetch_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(6653);
+/* harmony import */ var _http_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(6265);
 /* harmony import */ var _ipc_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(4875);
 /* harmony import */ var _storage_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(2464);
 /* harmony import */ var _state_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(5648);
 /* harmony import */ var _log_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(6579);
-/* harmony import */ var _routing_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(5815);
-/* harmony import */ var _apikey_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(6810);
-/* harmony import */ var _repository_index_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(3882);
-/* harmony import */ var _workers_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(5002);
+/* harmony import */ var _apikey_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(6810);
+/* harmony import */ var _repository_index_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(3882);
+/* harmony import */ var _workers_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(5002);
 /********************************************************************************
  * Copyright (C) 2023 CoCreate and Contributors.
  *
@@ -14163,7 +14471,6 @@ async function getInfrastructure(masterVmId) {
 
 
 
-
 /**
  * CoCreateServer orchestrates socket handling, API endpoint dispatching,
  * SSL certificates with SNI support, and mesh cluster synchronization.
@@ -14176,21 +14483,23 @@ class CoCreateServer {
     constructor() {
         this.id = process.env.SERVER_ID || null;
         this.isInitialized = false;
+        this.fetch = _fetch_js__WEBPACK_IMPORTED_MODULE_18__/* ["default"] */ .A;
+        this.responseListeners = new Map();
 
         // Dynamic route registry (Map key: route path, value: request handler callback)
         this.routes = new Map();
 
         // The local worker collection also owns its process lifecycle.
-        this.workers = new _workers_js__WEBPACK_IMPORTED_MODULE_27__/* ["default"] */ .A(this);
-        this.cluster = _mesh_index_js__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .Ay;
+        this.workers = new _workers_js__WEBPACK_IMPORTED_MODULE_26__/* ["default"] */ .A(this);
+        this.cluster = _mesh_index_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Ay;
 
         // Directly bind cluster instance properties to parent server instance
         this.isPrimary = this.workers.isPrimary;
 
         // Initialize reactive cluster storage bound to cluster IPC promises
         this.storage = _storage_js__WEBPACK_IMPORTED_MODULE_21__/* ["default"].init */ .A.init(this, this.workers.pendingPromises);
-        this.authenticate = _cocreate_authenticate__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .A.init(this);
-        this.authorize = _cocreate_authorize__WEBPACK_IMPORTED_MODULE_9__/* ["default"] */ .Ay;
+        this.authenticate = _cocreate_authenticate__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.init(this);
+        this.authorize = _cocreate_authorize__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Ay;
     }
 
     /** Public Event API delegates (keeps prototype clean from standard EventEmitter bloat)  * @private
@@ -14243,10 +14552,9 @@ class CoCreateServer {
         this.state = await _state_js__WEBPACK_IMPORTED_MODULE_22__/* ["default"].init */ .Ay.init(this);
         this.send = _ipc_js__WEBPACK_IMPORTED_MODULE_20__/* ["default"].init */ .A.init(this, this.workers.pendingPromises);
 
-        const config = await _cocreate_config__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .A.prompt({
+        const config = await _cocreate_config__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .A.prompt({
             'organization_id': '',
             'host': '',
-            'workers': '',
             'server_id': ''
         });
 
@@ -14257,8 +14565,8 @@ class CoCreateServer {
             if (config.server_id) {
                 this.id = config.server_id;
             } else {
-                this.id = process.env.SERVER_ID || (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_17__/* .ObjectId */ .V)().toString();
-                await _cocreate_config__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .A.prompt({ server_id: { value: this.id } });
+                this.id = process.env.SERVER_ID || (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_15__/* .ObjectId */ .V)().toString();
+                await _cocreate_config__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .A.prompt({ server_id: { value: this.id } });
                 console.log(`[@cocreate/cluster] [MASTER] Generated & persisted new Server ID: ${this.id}`);
             }
             process.env.SERVER_ID = this.id || "";
@@ -14267,63 +14575,54 @@ class CoCreateServer {
         }
 
         // Configure the local worker collection
-        this.workers.configureWorkers(config.workers);
+        this.workers.configureWorkers(_cocreate_config__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .A.get('workers'));
 
-        this.crud = await _cocreate_crud__WEBPACK_IMPORTED_MODULE_11__/* .crudServer */ .wA.init(this);
+        this.crud = await _cocreate_crud__WEBPACK_IMPORTED_MODULE_9__/* .crudServer */ .wA.init(this);
         try {
-            await _apikey_js__WEBPACK_IMPORTED_MODULE_25__/* ["default"].init */ .A.init(this);
+            await _apikey_js__WEBPACK_IMPORTED_MODULE_24__/* ["default"].init */ .A.init(this);
         } catch {
             console.error('[@cocreate/cluster] Unable to initialize the node organization API key.');
         }
-        this.authenticate = _cocreate_authenticate__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .A.init(this);
-        this.api = await _cocreate_api__WEBPACK_IMPORTED_MODULE_13__/* ["default"].init */ .Ay.init(this);
-        this.workflow = await _cocreate_workflows__WEBPACK_IMPORTED_MODULE_14__/* ["default"].init */ .Ay.init(this);
-        this.manager = await _manager_js__WEBPACK_IMPORTED_MODULE_19__/* ["default"].init */ .A.init(this);
+        this.authenticate = _cocreate_authenticate__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.init(this);
+        this.api = await _cocreate_api__WEBPACK_IMPORTED_MODULE_11__/* ["default"].init */ .Ay.init(this);
+        this.workflow = await _cocreate_workflows__WEBPACK_IMPORTED_MODULE_12__/* ["default"].init */ .Ay.init(this);
+        await _manager_js__WEBPACK_IMPORTED_MODULE_17__/* ["default"].init */ .A.init(this);
         if (!this.isPrimary) await this.cluster.init(this);
 
         if (this.isPrimary) {
             console.log(`[@cocreate/cluster] [MASTER] Orchestrator running with PID: ${process.pid} (Server ID: ${this.id})`);
-            this.location = await (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_16__/* .getClientInfo */ .m4)();
-            this.ip = this.location.ip;
-            this.infrastructure = await (0,_getInfrastructure_js__WEBPACK_IMPORTED_MODULE_18__/* ["default"] */ .A)(this.id);
+            const response = await this.crud.send({
+                method: 'object.read', array: 'servers',
+                filter: { query: { _id: this.id }, limit: 1 },
+                organization_id: this.organization_id, host: this.host
+            });
+            if (!response || response.success === false ||
+                (Array.isArray(response.error) ? response.error.length : response.error) ||
+                !Array.isArray(response.object)) {
+                throw new Error('Unable to read the saved server deployment.');
+            }
+            const persistedServer = response.object[0];
+            const location = await (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_14__/* .getClientInfo */ .m4)();
+            this.ip = location.ip;
+            this.deployment = await (0,_getDeployment_js__WEBPACK_IMPORTED_MODULE_16__/* ["default"] */ .A)(this.id, {
+                ...persistedServer?.deployment,
+                ...this.deployment,
+                location: { ...persistedServer?.deployment?.location, ...location }
+            });
+            this.autoscaler = await _cocreate_autoscaler__WEBPACK_IMPORTED_MODULE_3__/* ["default"].init */ .Ay.init(this);
             await this.cluster.init(this);
-            this.autoscaler = await _cocreate_autoscaler__WEBPACK_IMPORTED_MODULE_5__/* ["default"].init */ .Ay.init(this);
 
             // Reset logs array for a fresh logging session on master startup
             await this.crud.send(this.state.getServerObject({ logs: [] }));
 
             // Replace the persisted worker profile before the new workers start.
-            let persistedServer;
-
-            try {
-                const response = await this.crud.send({
-                    method: 'object.read',
-                    array: 'servers',
-                    filter: { query: { _id: this.id }, limit: 1 },
-                    organization_id: this.organization_id,
-                    host: this.host
-                });
-                if (response?.error?.length || (response?.error && !Array.isArray(response.error)) ||
-                    !Array.isArray(response?.object))
-                    throw new Error('Unable to read the previous worker profile.');
-
-                persistedServer = response.object[0];
-                if (persistedServer?.manager) {
-                    const { organization_id, host, apiKey } = persistedServer.manager;
-                    Object.assign(this.manager, { organization_id, host, apiKey });
-                }
-            } catch (error) {
-                console.warn('[@cocreate/cluster] Could not clear unused worker fields:', error);
-            }
-
             const initialWorkerStates = this.workers.initialState(persistedServer);
             const workerResponse = await this.crud.send(this.state.getServerObject(initialWorkerStates));
             if (workerResponse?.error?.length || (workerResponse?.error && !Array.isArray(workerResponse.error)))
                 console.warn('[@cocreate/cluster] Could not update the worker profile:', workerResponse.error);
             await this.state.save('running');
 
-            this.routing = await _routing_js__WEBPACK_IMPORTED_MODULE_24__/* ["default"].init */ .A.init(this);
-            this.repository = await _repository_index_js__WEBPACK_IMPORTED_MODULE_26__/* ["default"].init */ .A.init(this);
+            this.repository = await _repository_index_js__WEBPACK_IMPORTED_MODULE_25__/* ["default"].init */ .A.init(this);
 
             if (await this.workers.setupMasterCluster()) {
                 return this;
@@ -14339,96 +14638,35 @@ class CoCreateServer {
                 console.log(`[@cocreate/cluster] [WORKER ${this.workerId}] running with PID: ${process.pid} (Server ID: ${this.id})`);
             }
 
-            this.telemetry = await _cocreate_telemetry__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.init(this);
-            this.usage = await _cocreate_usage__WEBPACK_IMPORTED_MODULE_15__/* ["default"] */ .Ay.init(this);
+            this.telemetry = await _cocreate_telemetry__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .A.init(this);
+            this.usage = await _cocreate_usage__WEBPACK_IMPORTED_MODULE_13__/* ["default"] */ .Ay.init(this);
 
             if (!this.ip) {
-                this.ip = process.env.SERVER_IP || (await (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_16__/* .getClientInfo */ .m4)()).ip;
+                this.ip = process.env.SERVER_IP || (await (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_14__/* .getClientInfo */ .m4)()).ip;
             }
 
-            if (!this.infrastructure) {
+            if (!this.deployment) {
                 try {
-                    this.infrastructure = process.env.SERVER_INFRASTRUCTURE
-                        ? JSON.parse(process.env.SERVER_INFRASTRUCTURE)
-                        : await (0,_getInfrastructure_js__WEBPACK_IMPORTED_MODULE_18__/* ["default"] */ .A)(this.id);
+                    this.deployment = process.env.SERVER_DEPLOYMENT
+                        ? JSON.parse(process.env.SERVER_DEPLOYMENT)
+                        : await (0,_getDeployment_js__WEBPACK_IMPORTED_MODULE_16__/* ["default"] */ .A)(this.id);
                 } catch (error) {
-                    this.infrastructure = await (0,_getInfrastructure_js__WEBPACK_IMPORTED_MODULE_18__/* ["default"] */ .A)(this.id);
+                    this.deployment = await (0,_getDeployment_js__WEBPACK_IMPORTED_MODULE_16__/* ["default"] */ .A)(this.id);
                 }
             }
-
-            if (!this.location) {
-                try {
-                    this.location = process.env.SERVER_LOCATION
-                        ? JSON.parse(process.env.SERVER_LOCATION)
-                        : await (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_16__/* .getClientInfo */ .m4)(this.id);
-                } catch (error) {
-                    this.location = await (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_16__/* .getClientInfo */ .m4)(this.id);
-                }
+            if (!this.deployment.location) {
+                this.deployment.location = await (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_14__/* .getClientInfo */ .m4)(this.id);
             }
 
             // Initialize certificates module on worker
-            this.tls = await _cocreate_tls__WEBPACK_IMPORTED_MODULE_3__/* ["default"].init */ .Ay.init(this);
+            this.tls = await _cocreate_tls__WEBPACK_IMPORTED_MODULE_1__/* ["default"].init */ .Ay.init(this);
 
-            // Create HTTPS options with dynamic SNICallback for multi-tenant domains
-            const httpsOptions = this.tls.createHttpsOptions(this);
-            this.https = node_https__WEBPACK_IMPORTED_MODULE_2__["default"].createServer(httpsOptions, (req, res) => this.#handleEdgeRequest(req, res));
-
-            const HTTP_PORT = process.env.HTTP_PORT || 80;
-            const HTTPS_PORT = process.env.HTTPS_PORT || 443;
-            const BIND_IP = process.env.BIND_IP || '0.0.0.0';
-
-            this.http = node_http__WEBPACK_IMPORTED_MODULE_1__["default"].createServer((req, res) => {
-                const requestUrl = req.url || '/';
-
-                // 1. Allow ACME challenges to pass through over unencrypted HTTP
-                if (requestUrl.startsWith('/.well-known/acme-challenge/')) {
-                    return this.#handleEdgeRequest(req, res);
-                }
-
-                // 2. Force a 301 redirect to HTTPS for all traffic (preserving non-standard ports)
-                const rawHost = req.headers.host || 'localhost';
-                const host = rawHost.split(':')[0];
-                const portSuffix = (HTTPS_PORT && String(HTTPS_PORT) !== '443') ? `:${HTTPS_PORT}` : '';
-
-                res.writeHead(301, { "Location": `https://${host}${portSuffix}${requestUrl}` });
-                res.end();
-            });
-
-            this.wsManager = new _cocreate_socket__WEBPACK_IMPORTED_MODULE_10__/* .SocketServer */ .$e(this);
-            this.socket = this.wsManager.collection;
-            this.wsManager.on('api', this.api.send);
-            this.wsManager.on('workflow', this.workflow.run);
-            this.files = await _cocreate_file_server__WEBPACK_IMPORTED_MODULE_12__/* ["default"].init */ .A.init(this);
-
-            const reportListening = (state) => {
-                if (process.connected) {
-                    process.send({ type: 'listening_state', state });
-                }
-            };
-
-            this.http.on('listening', () => reportListening(true));
-            this.http.on('close', () => reportListening(false));
-            this.http.listen(HTTP_PORT, BIND_IP, () => {
-                console.log(`[@cocreate/cluster] [WORKER ${this.workerId}] HTTP listening on ${BIND_IP}:${HTTP_PORT}`);
-            });
-
-            this.https.listen(HTTPS_PORT, BIND_IP, () => {
-                console.log(`[@cocreate/cluster] [WORKER ${this.workerId}] HTTPS listening on ${BIND_IP}:${HTTPS_PORT}`);
-            });
+            this.socket = new _cocreate_socket__WEBPACK_IMPORTED_MODULE_8__/* .SocketServer */ .$e(this);
+            this.files = await _cocreate_file_server__WEBPACK_IMPORTED_MODULE_10__/* ["default"].init */ .A.init(this);
+            await _http_js__WEBPACK_IMPORTED_MODULE_19__/* ["default"] */ .A.init(this);
 
             // Publish worker active running state object to DB upon creation/startup
             await this.state.save('running');
-        }
-
-        if (this.isPrimary && this.routing) {
-            await Promise.all([this.http, this.https].map(listener => listener.listening
-                ? Promise.resolve()
-                : new Promise(resolve => listener.once('listening', resolve))));
-            try {
-                await this.routing.add();
-            } catch (error) {
-                console.error('[@cocreate/cluster] Failed to register node routing:', error.message);
-            }
         }
 
         if (this.isPrimary) {
@@ -14439,84 +14677,6 @@ class CoCreateServer {
         return this;
     }
 
-    /**
-     * Internal private request handler that evaluates registered user routes,
-     * matching exact paths or wildcard directory patterns from this.routes Map.
-     * @param {Http.IncomingMessage} req 
-     * @param {Http.ServerResponse} res 
-     */
-    async #handleEdgeRequest(req, res) {
-        try {
-            const rawUrl = req.url || '/';
-            const [reqPath] = rawUrl.split('?');
-
-            if (
-                !reqPath.startsWith('/.well-known/acme-challenge/') &&
-                this.tls?.checkOrganizationAccess
-            ) {
-                const access = await this.tls.checkOrganizationAccess(req.headers.host);
-                if (access.allowed === false) {
-                    res.writeHead(402, {
-                        'Content-Type': 'application/json; charset=utf-8',
-                        'Cache-Control': 'no-store',
-                        'Account-Balance': 'false'
-                    });
-                    res.end(JSON.stringify({
-                        error: 'Organization balance depleted',
-                        organizationBalance: false,
-                        balance: access.balance,
-                        currency: access.currency
-                    }));
-                    return;
-                }
-            }
-
-            // 1. Direct O(1) exact match lookup or directory/wildcard pattern matching in this.routes Map
-            let handler = this.routes.get(reqPath);
-
-            if (!handler) {
-                for (const [routePath, routeHandler] of this.routes.entries()) {
-                    if (routePath === '*' || (routePath.endsWith('*') && reqPath.startsWith(routePath.slice(0, -1)))) {
-                        handler = routeHandler;
-                        break;
-                    }
-                }
-            }
-
-            if (handler && typeof handler === 'function') {
-                await handler(req, res);
-
-                // If handler responded or started sending headers, conclude routing cycle
-                if (res.writableEnded || res.headersSent) {
-                    return;
-                }
-            }
-
-            if (reqPath === '/manager' || reqPath.startsWith('/manager/')) {
-                return this.manager.http(req, res);
-            }
-            if (reqPath === '/api' || reqPath.startsWith('/api/')) {
-                return this.api.http(req, res);
-            }
-            if (reqPath.startsWith('/workflows/')) {
-                return this.workflow.http(req, res);
-            }
-
-            // 2. Default route handling: API webhooks
-            if (reqPath.startsWith("/webhooks/")) {
-                return this.api.webhook(req, res);
-            }
-
-            // 3. Default route handling: Static file server
-            return this.files.send(req, res);
-        } catch (error) {
-            console.error('[@cocreate/cluster] Edge request routing error:', error);
-            if (!res.headersSent) {
-                res.writeHead(500, { "Content-Type": "text/plain" });
-            }
-            res.end("Internal Error: Request routing failed");
-        }
-    }
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new CoCreateServer());
@@ -14584,7 +14744,7 @@ const organizationDelivery = payload => Boolean(payload.organization_id &&
 function init(server, pendingPromises) {
     const organizationWorkers = server.organizationWorkers ||= new Map();
 
-    function transportEnvelope({ wsManager, ...payload }) { return payload; }
+    function transportEnvelope(payload) { return payload; }
 
     function request(send, payload, key, workerId) {
         return new Promise((resolve, reject) => {
@@ -14726,6 +14886,16 @@ function init(server, pendingPromises) {
             }
         }
         payload.status ||= 'sent';
+
+        const responseListener = server.responseListeners?.get(payload.uuid);
+        if (responseListener) {
+            server.responseListeners.delete(payload.uuid);
+            try { responseListener(payload); }
+            catch (error) {
+                console.error('[@cocreate/cluster] HTTP response listener failed:', error);
+            }
+        }
+
         if (payload.response === true) {
             if (server.isPrimary) {
                 if (payload.workerId == null) resolveResponse(payload, payload.uuid);
@@ -15069,446 +15239,65 @@ async function init(serverInstance) {
 
 /* unused harmony export init */
 /* harmony import */ var _cocreate_config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9298);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5264);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2623);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(99);
-/* harmony import */ var _cocreate_autoscaler__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(6160);
 
 
-
-
-const errors = result => !result || result.success === false ||
-    (Array.isArray(result.error) ? result.error.length : result.error);
-const copyRecord = record => Object.fromEntries(Object.entries(structuredClone(record))
-    .filter(([key]) => key !== 'organization_id' && !key.startsWith('$')));
-
-/** Parent connection and platform-owned server provisioning and termination. */
+/** Frozen platform connection; sends standard envelopes over HTTP and awaits their responses. */
 async function init(server) {
-    let connection = {};
-    if (!server.isPrimary && process.env.SERVER_MANAGER) {
-        try { connection = JSON.parse(process.env.SERVER_MANAGER); }
-        catch { throw new Error('Invalid server manager configuration.'); }
-    }
-    const manager = {
-        organization_id: connection.organization_id || null,
-        host: connection.host || null,
-        apiKey: connection.apiKey || null
+    const managerConfig = Object.freeze({ ..._cocreate_config__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A.get('manager') });
+    const managerOrganizationId = managerConfig.organization_id || null;
+    const isManagerServer = Boolean(managerOrganizationId && managerOrganizationId === server.organization_id);
+    const connection = isManagerServer ? null : {
+        organization_id: managerOrganizationId,
+        host: managerConfig.host || null,
+        apiKey: managerConfig.apiKey || null
     };
-    // Only connection data is serialized into server inventory or worker configuration.
-    Object.defineProperty(manager, 'send', { value: async (payload, { timeoutMs = 15000 } = {}) => {
-        let phase = 'configuration';
-        let httpStatus;
-        try {
-            if (!manager.organization_id) throw new Error('This server has no manager.');
-            if (!/^[a-zA-Z0-9.-]+(?::\d+)?$/.test(manager.host || '') || typeof manager.apiKey !== 'string' || !manager.apiKey.trim()) {
-                throw new Error('Server manager requires a host and API key.');
-            }
-            const { organization_id, host, socket, apikey, ...request } = payload;
-            phase = 'transport';
-            const response = await fetch(`https://${manager.host}/manager`, {
-                method: 'POST',
-                headers: { Authorization: `Bearer ${manager.apiKey}`, 'Content-Type': 'application/json', Accept: 'application/json' },
-                body: JSON.stringify(request), signal: AbortSignal.timeout(timeoutMs)
-            });
-            // TODO: Keep transport failures distinct from received task failures so callers
-            // can retry only network errors and notify the platform for failed responses.
-            phase = 'http-response';
-            httpStatus = response.status;
-            if (!response.ok) throw new Error(`Server manager request failed (HTTP ${response.status}).`);
-            const result = await response.json();
-            phase = 'task-response';
-            const errors = Array.isArray(result?.error) ? result.error.length : result?.error;
-            if (!result || typeof result !== 'object' || Array.isArray(result) || result.success === false || errors) {
-                throw new Error('Server manager request failed.');
-            }
-            return result;
-        } catch (error) {
-            console.error('[@cocreate/cluster] Manager request failed; platform notification pending:', {
-                phase, httpStatus, method: payload?.method, endpoint: payload?.endpoint,
-                server_id: payload?.data?.server_id || payload?.object?._id || server.id,
-                cluster_id: payload?.data?.cluster_id || server.cluster_id,
-                error_code: error?.cause?.code || error?.code || error?.name
-            });
-            throw error;
-        }
-    } });
-    const startupMonitor = createStartupMonitor(server);
-    const cleanupMonitor = createCleanupMonitor(server);
-    Object.defineProperty(manager, 'http', { value: (req, res) => handleManagerHttp(server, startupMonitor, cleanupMonitor, dispatchApi, req, res) });
-    const settings = { enabled: false, workflow: 'create-organization-server' };
-    if (server.isPrimary) {
-        Object.assign(settings, (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_2__/* .dotNotationToObject */ .O)(await _cocreate_config__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A.get('organizationConnection') || {}));
-        Object.assign(settings, (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_2__/* .dotNotationToObject */ .O)(await _cocreate_config__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A.query({
-            type: 'organization-connection', organization_id: server.organization_id,
-            server: server.host, cluster: server.cluster_id
-        }, server.crud) || {}));
-    }
-    Object.defineProperty(manager, 'config', { value: settings });
-
-    async function crud(request, organization_id = server.organization_id, host = server.host) {
-        const result = await server.crud.send({ ...request, organization_id, host });
-        if (errors(result)) throw new Error(`Organization server ${request.method} failed for ${request.array}.`);
-        return result;
-    }
-    async function read(array, query, key) {
-        const result = await crud({ method: 'object.read', array, filter: { query, ...(key && { key }), limit: 0 } });
-        if (!Array.isArray(result.object)) throw new Error(`Organization server inventory read failed for ${array}.`);
-        return result.object;
-    }
-    async function mirror(record, organizationId, host) {
-        const result = await crud({
-            method: 'object.update', array: 'servers', upsert: true, object: copyRecord(record)
-        }, organizationId, host);
-        if (!result.object?.length) throw new Error('Tenant server projection was not persisted.');
-    }
-    async function saveServer(cluster, patch) {
-        const result = await crud({ method: 'object.update', array: 'servers', upsert: true, object: copyRecord(patch) });
-        await mirror(patch, cluster.manager.for, cluster.host);
-        return result;
-    }
-    async function dispatchApi(request) {
-        const data = request.data;
-        if (!data?.cluster_id || !data.server_id || !['create-instance', 'delete-instance'].includes(request.endpoint)) {
-            if (request.endpoint === 'create-instance' && typeof data?.server_id === 'string') {
-                return startupMonitor.track(data.server_id, () => server.api.send(request), result => result?.data?.instanceId);
-            }
-            return server.api.send(request);
-        }
-        const [cluster] = await read('clusters', {
-            _id: data.cluster_id, type: 'organization', 'manager.organization_id': request.organization_id
-        });
-        if (!cluster) throw new Error('The managed cluster is unavailable in the platform scope.');
-        const deployment = { ...data, api: request.api, method: request.method,
-            endpoint: request.endpoint, region: request.region || data.region };
-        if (request.endpoint === 'create-instance') {
-            const result = await createServer(cluster, deployment);
-            return { data: result.data };
-        }
-        return terminateServer(cluster, deployment);
-    }
-    async function terminateServer(cluster, deployment) {
-        const patch = { _id: deployment.server_id, cluster_id: cluster._id,
-            tenant_organization_id: cluster.manager.for, 'master.status': 'terminating' };
-        await saveServer(cluster, patch);
-        try {
-            const result = await server.api.send({
-                api: deployment.api, endpoint: deployment.endpoint || 'delete-instance', method: deployment.method,
-                organization_id: server.organization_id, host: server.host, region: deployment.region,
-                data: { server_id: deployment.server_id, cluster_id: cluster._id, vmId: deployment.vmId,
-                    provider: deployment.provider, region: deployment.region }
-            });
-            if (errors(result)) throw new Error('The cloud API rejected the termination request.');
-            cleanupMonitor.schedule(patch, { organization_id: server.organization_id, host: server.host });
-            return result;
-        } catch (error) {
-            cleanupMonitor.cancel(deployment.server_id);
-            await saveServer(cluster, { ...patch, 'master.status': 'failed' });
-            throw error;
-        }
-    }
-    function startCluster(organizationId) {
-        if (!server.isPrimary || !settings.enabled || !organizationId || organizationId === server.organization_id) return;
-        read('clusters', {
-            type: 'organization', 'manager.for': organizationId,
-            'manager.organization_id': server.organization_id
-        }).then(([cluster]) => {
-            if (cluster) return createServer(cluster);
-        }).catch(error => {
-            console.error('[@cocreate/cluster] Organization cluster startup failed:', {
-                organization_id: organizationId,
-                error_code: error?.cause?.code || error?.code || error?.name
-            });
-        });
-    }
-
-    async function createServer(cluster, deployment = cluster.initialDeployment) {
-        const organizationId = cluster.manager.for;
-        const organization = (await read('organizations', { _id: organizationId }, { _id: 1, bootstrapStorage: 1 }))[0];
-        const workflows = await read('workflows', { name: settings.workflow, enabled: true });
-        if (workflows.length !== 1) throw new Error('The organization server workflow is unavailable or ambiguous.');
-        if (![deployment?.cloud, deployment?.region, deployment?.vmType].every(value => typeof value === 'string' && value.trim())) {
-            throw new Error('Server deployment requires cloud, region and VM type.');
-        }
-        if (typeof cluster.storage !== 'string' || !cluster.storage.trim()) {
-            throw new Error('Organization cluster requires a storage API reference.');
-        }
-        const bootstrap = organization.bootstrapStorage;
-        if (!bootstrap?.name || !bootstrap?.provider) throw new Error('Tenant database bootstrap is unavailable.');
-        const resolved = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_2__/* .dotNotationToObject */ .O)(await _cocreate_config__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A.query({
-            type: ['startupscript', 'autoscaler', 'servers_config'], organization_id: server.organization_id,
-            server: cluster.host, cluster: cluster._id
-        }, server.crud) || {});
-        const cloud = (await read('apis', { _id: deployment.cloud, type: 'cloud', enabled: true }, { _id: 1, name: 1, provider: 1 }))[0];
-        if (!cloud?.name || !cloud.provider) throw new Error('The deployment cloud API is unavailable.');
-        if (deployment.api && deployment.api !== cloud.name) throw new Error('The deployment cloud does not match the authorized API.');
-        const profile = resolved.clouds?.[cloud.provider];
-        const region = profile?.regions?.find(item => item.region === deployment.region);
-        const instance = profile?.instances?.find(item => item.name === deployment.vmType);
-        if (!region || ![instance?.vCPU, instance?.memoryGb].every(value => Number.isFinite(Number(value)) && Number(value) > 0)) {
-            throw new Error('The deployment region or VM type is unavailable.');
-        }
-        const binaryUrl = cluster.binaryUrl || resolved.binaryUrl;
-        if (typeof binaryUrl !== 'string' || !/^https:\/\/[^\s\\"'`$]+$/.test(binaryUrl) ||
-            typeof cluster.host !== 'string' || !/^[a-zA-Z0-9.-]+$/.test(cluster.host)) {
-            throw new Error('Organization deployment requires a safe binary URL and hostname.');
-        }
-        const startup = cluster.startupScript || resolved.clouds?.[cloud.provider]?.startupScript || resolved.startupScript;
-        if (!startup) throw new Error('Organization deployment requires a configured startup script.');
-        const managementKeys = await read('keys', {
-            type: 'key', cluster_id: cluster._id, tenant_organization_id: organizationId
-        }, { key: 1 });
-        if (managementKeys.length !== 1 || typeof managementKeys[0].key !== 'string' || !managementKeys[0].key) {
-            throw new Error('The managed cluster requires exactly one management API key.');
-        }
-        const serverId = deployment.server_id || (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .ObjectId */ .V)().toString();
-        const record = {
-            _id: serverId, name: deployment.name || `org-${organizationId}-initial-${serverId.slice(-6)}`,
-            cluster_id: cluster._id, tenant_organization_id: organizationId,
-            manager: { organization_id: cluster.manager.organization_id, host: cluster.manager.host, apiKey: managementKeys[0].key },
-            cloud: cloud._id, storage: cluster.storage, host: cluster.host,
-            status: 'provisioning', master: { status: 'provisioning' }, totalWorkers: 0,
-            infrastructure: {
-                provider: cloud.provider, region: region.region,
-                vmType: instance.name, vCPU: Number(instance.vCPU), memoryGb: Number(instance.memoryGb)
-            }
-        };
-        const environment = `server_id=${serverId}\ncluster_id=${cluster._id}`;
-        const nodeConfig = { organization_id: organizationId, server_id: serverId, cluster_id: cluster._id, host: cluster.host, storage: bootstrap };
-        const sandbox = {
-            $payload: { organization_id: organizationId, data: { binaryUrl, host: cluster.host, environment } },
-            $storageBase64: Buffer.from(JSON.stringify(bootstrap)).toString('base64'),
-            $bootstrapConfigBase64: Buffer.from(JSON.stringify(nodeConfig)).toString('base64')
-        };
-        // Render the existing script with the tenant's bootstrap before cloud endpoint processing.
-        const startupScript = await (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_3__/* .astAsync */ .pK)({ executeAST: startup, sandbox });
-        if (typeof startupScript !== 'string' || !startupScript.trim()) throw new Error('Tenant startup script preparation failed.');
-        const created = await crud({ method: 'object.create', array: 'servers', object: copyRecord(record) });
-        if (!created.object?.length) throw new Error('Platform server inventory was not persisted.');
-        try {
-            // Populate tenant inventory before boot so its runtime can resolve the cluster ID immediately.
-            await mirror(record, organizationId, cluster.host);
-            const name = settings.workflow;
-            const result = await startupMonitor.track(record._id, () => server.workflow.run({
-                method: `workflow.${name}`, organization_id: server.organization_id, host: server.host,
-                [name]: [{ server: { _id: record._id, cluster_id: record.cluster_id },
-                    startupScript: JSON.stringify({ $concat: [[startupScript]] }), binaryUrl, environment }]
-            }), result => {
-                const patch = result?.[name]?.[0]?.patch;
-                return patch?._id === record._id ? patch['infrastructure.instanceId'] : undefined;
-            });
-            if (errors(result)) {
-                console.error('[@cocreate/cluster] Initial VM creation failed; platform notification pending:', {
-                    organization_id: organizationId, cluster_id: cluster._id, server_id: record._id
-                });
-                throw new Error('Organization VM creation did not complete; inspect its server inventory.');
-            }
-            const output = result?.[name]?.[0];
-            if (!output?.patch || output.patch._id !== record._id || !output.patch['infrastructure.instanceId']) {
-                console.error('[@cocreate/cluster] Initial VM response has no matching instance ID; platform notification pending:', {
-                    organization_id: organizationId, cluster_id: cluster._id, server_id: record._id
-                });
-                throw new Error('Organization VM result did not include a provider instance ID.');
-            }
-            // Apply the same provider patch in tenant scope without overwriting node-owned readiness fields.
-            await mirror(output.patch, organizationId, cluster.host);
-            return { status: 'created', server: output.server, data: output.data || {
-                instanceId: output.patch['infrastructure.instanceId'],
-                privateIpAddress: output.patch['infrastructure.privateIpAddress']
-            } };
-        } catch (error) {
-            await saveServer(cluster, { _id: record._id, cluster_id: cluster._id, 'master.status': 'failed' });
-            throw error;
-        }
-    }
-    // Methods stay out of persisted manager connection data and worker configuration.
-    Object.defineProperty(manager, 'startCluster', { value: startCluster });
-    Object.defineProperty(manager, 'createServer', { value: createServer });
-    Object.defineProperty(manager, 'terminateServer', { value: terminateServer });
-    return manager;
-}
-
-const STARTUP_UPDATE_TIMEOUT_MS = 120000;
-
-/** A provider instance ID starts the wait for the node's first managed state update. */
-function createStartupMonitor(server) {
-    const pending = new Map();
-    const hasReportedState = record => record && (
-        (typeof record.master?.status === 'string' && record.master.status !== 'provisioning') ||
-        Object.entries(record).some(([key, value]) => /^worker\d+$/.test(key) && typeof value?.status === 'string')
-    );
-    return {
-        observe(serverId) {
-            const entry = pending.get(serverId);
-            if (!entry) return;
-            entry.reported = true;
-            if (entry.timer) {
-                clearTimeout(entry.timer);
-                pending.delete(serverId);
-            }
-        },
-        async track(serverId, create, instanceIdOf) {
-            // Register before dispatch so a fast node can report before the provider responds.
-            const entry = { reported: false };
-            pending.set(serverId, entry);
-            let watching = false;
+    const manager = {};
+    if (connection?.organization_id) {
+        Object.assign(manager, connection);
+        Object.defineProperty(manager, 'send', { value: async (payload, { timeoutMs = 15000 } = {}) => {
+            let phase = 'configuration';
+            let httpStatus;
             try {
-                const result = await create();
-                const instanceId = instanceIdOf(result);
-                if (errors(result) || typeof instanceId !== 'string' || !instanceId.trim() || entry.reported || pending.get(serverId) !== entry) return result;
-                entry.timer = setTimeout(async () => {
-                    if (pending.get(serverId) !== entry) return;
-                    pending.delete(serverId);
-                    if (server.state?.isShuttingDown) return;
-                    try {
-                        // HTTP updates may reach another managing worker/node. Read their
-                        // persisted state before deciding that this node never reported.
-                        const response = await server.crud.send({
-                            method: 'object.read', array: 'servers',
-                            organization_id: server.organization_id, host: server.host,
-                            filter: { query: { _id: serverId }, limit: 1 }
-                        });
-                        if (errors(response) || !Array.isArray(response.object)) throw new Error('Unable to read startup state.');
-                        if (hasReportedState(response.object.find(record => String(record._id) === serverId))) return;
-                        // TODO: Notify the platform about the missing startup update.
-                        // Potentially remove this instance and try one replacement only;
-                        // a second startup failure must notify, with no third launch.
-                        console.error('[@cocreate/cluster] No managed startup update received within two minutes:', serverId);
-                    } catch {
-                        // TODO: Notify the platform that startup confirmation could not be checked.
-                        console.error('[@cocreate/cluster] Unable to verify managed startup update:', serverId);
-                    }
-                }, STARTUP_UPDATE_TIMEOUT_MS);
-                entry.timer.unref?.();
-                watching = true;
-                return result;
-            } finally {
-                if (!watching && pending.get(serverId) === entry) pending.delete(serverId);
-            }
-        }
-    };
-}
-
-/** Handle managed API requests or authorized inventory patches in platform scope. */
-function createCleanupMonitor(server) {
-    const pending = new Map();
-    return {
-        cancel(serverId) {
-            clearTimeout(pending.get(serverId));
-            pending.delete(serverId);
-        },
-        schedule(record, scope) {
-            if (pending.has(record._id)) return;
-            const timer = setTimeout(async () => {
-                try {
-                    if (!record.cluster_id) throw new Error('Managed server cleanup requires a cluster ID.');
-                    const response = await server.crud.send({
-                        method: 'object.read', array: 'clusters',
-                        filter: { query: { _id: record.cluster_id, type: 'organization' }, limit: 1 },
-                        ...scope
-                    });
-                    const cluster = response?.object?.[0];
-                    if (errors(response) || !cluster?.manager?.for || !cluster.host) {
-                        throw new Error('Managed cluster cleanup scope is unavailable.');
-                    }
-                    await (0,_cocreate_autoscaler__WEBPACK_IMPORTED_MODULE_4__/* .deleteServer */ .tg)(server, record._id, {
-                        scopes: [{ organization_id: cluster.manager.for, host: cluster.host }, scope],
-                        notifyManager: false
-                    });
-                } catch (error) {
-                    console.error('[@cocreate/cluster] Managed server inventory cleanup failed:', {
-                        server_id: record._id, cluster_id: record.cluster_id, error: error.message
-                    });
-                } finally {
-                    pending.delete(record._id);
+                if (!manager.organization_id) throw new Error('This server has no manager.');
+                if (!/^[a-zA-Z0-9.-]+(?::\d+)?$/.test(manager.host || '') || typeof manager.apiKey !== 'string' || !manager.apiKey.trim()) {
+                    throw new Error('Server manager requires a host and API key.');
                 }
-            }, 60 * 1000);
-            timer.unref?.();
-            pending.set(record._id, timer);
-        }
-    };
-}
-
-async function handleManagerHttp(server, startupMonitor, cleanupMonitor, dispatchApi, req, res) {
-    const reply = (status, body) => {
-        res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
-        res.end(JSON.stringify(body));
-    };
-    if (req.method !== 'POST') {
-        res.setHeader('Allow', 'POST');
-        return reply(405, { error: 'Use POST for this operation.' });
-    }
-    if (req.headers['content-type']?.split(';')[0].trim().toLowerCase() !== 'application/json') {
-        return reply(415, { error: 'An application/json body is required.' });
-    }
-    let input;
-    try {
-        const chunks = [];
-        let size = 0;
-        for await (const chunk of req) {
-            const buffer = Buffer.from(chunk);
-            size += buffer.length;
-            if (size > 1024 * 1024) return reply(413, { error: 'Request body exceeds 1 MiB.' });
-            chunks.push(buffer);
-        }
-        input = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-        if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error();
-    } catch {
-        return reply(400, { error: 'A JSON object is required.' });
-    }
-
-    if (input.api) return server.api.http(req, res, input, dispatchApi);
-    const bearer = req.headers.authorization?.match(/^Bearer\s+(\S+)$/i)?.[1];
-    const apikey = bearer || input.apikey;
-    if ((apikey !== undefined && (typeof apikey !== 'string' || !apikey.trim())) ||
-        (bearer && input.apikey !== undefined && input.apikey !== bearer)) {
-        return reply(401, { error: 'A valid API key is required.' });
-    }
-
-    try {
-        const host = new URL(`https://${req.headers.host}`).hostname;
-        const organization = await server.crud.getOrganization({ host });
-        if (!organization?._id || organization.error) return reply(404, { error: 'Organization not found.' });
-        const deleting = input.method === 'object.delete' && input.array === 'servers';
-        if ((!deleting && (input.method !== 'object.update' || !['servers', 'clusters'].includes(input.array))) || !input.object ||
-            typeof input.object !== 'object' || Array.isArray(input.object) || typeof input.object._id !== 'string') {
-            return reply(400, { error: 'A server inventory deletion or server/cluster update is required.' });
-        }
-        const envelope = pickHttpFields(input, ['method', 'array', 'object', 'upsert']);
-        // Scope and identity are server-resolved, never supplied by the caller.
-        Object.assign(envelope, { organization_id: organization._id, host, apikey });
-        const request = await server.authorize?.request(envelope);
-        if (!request) return reply(403, { error: 'Operation is not authorized.' });
-        if (deleting) {
-            const result = await (0,_cocreate_autoscaler__WEBPACK_IMPORTED_MODULE_4__/* .deleteServer */ .tg)(server, request.object._id, {
-                scopes: [{ organization_id: organization._id, host }], notifyManager: false
-            });
-            return reply(200, result);
-        }
-        const result = await server.crud.send(request);
-        const failed = result?.success === false || hasHttpErrors(result?.error);
-        if (!failed && request.array === 'servers' && result?.object?.some(record => String(record._id) === request.object._id)) {
-            startupMonitor.observe(request.object._id);
-            const record = result.object.find(record => String(record._id) === request.object._id);
-            const status = request.object['master.status'] || request.object.master?.status || record.master?.status;
-            if (status === 'terminating') {
-                cleanupMonitor.schedule(record, { organization_id: organization._id, host });
-            } else if (status === 'failed') {
-                cleanupMonitor.cancel(record._id);
+                payload.organization_id = manager.organization_id;
+                payload.managedOrganization = server.organization_id;
+                delete payload.apikey;
+                phase = 'transport';
+                const response = await server.fetch(`https://${manager.host}`, {
+                    method: 'POST',
+                    headers: { Authorization: `Bearer ${manager.apiKey}`, 'Content-Type': 'application/json', Accept: 'application/json' },
+                    body: JSON.stringify(payload), timeout: timeoutMs, throwHttpErrors: true
+                });
+                // TODO: Keep transport failures distinct from received task failures so callers
+                // can retry only network errors and notify the platform for failed responses.
+                phase = 'http-response';
+                httpStatus = response.status;
+                const result = await response.json();
+                phase = 'task-response';
+                if (!result || typeof result !== 'object' || Array.isArray(result)) {
+                    throw new Error('Server manager request failed.');
+                }
+                return result;
+            } catch (error) {
+                httpStatus = error.response?.status || httpStatus;
+                if (error.response) phase = 'http-response';
+                console.error('[@cocreate/cluster] Manager request failed; platform notification pending:', {
+                    phase, httpStatus, method: payload?.method, endpoint: payload?.endpoint,
+                    server_id: payload?.data?.server_id || payload?.object?._id || server.id,
+                    cluster_id: payload?.data?.cluster_id || server.cluster_id,
+                    error_code: error?.cause?.code || error?.code || error?.name
+                });
+                throw error;
             }
-        }
-        return reply(failed ? 400 : 200, result);
-    } catch (error) {
-        if (error.code === 'AUTHORIZATION_DENIED') return reply(403, { error: error.message });
-        return reply(500, { error: 'Unable to process the operation.' });
+        } });
+        server.manager = Object.freeze(manager);
+    } else {
+        delete server.manager;
     }
-}
-
-function hasHttpErrors(error) {
-    return Array.isArray(error) ? error.length > 0 : Boolean(error);
-}
-
-function pickHttpFields(input, fields) {
-    return Object.fromEntries(fields.filter(field => Object.hasOwn(input, field)).map(field => [field, input[field]]));
+    return server.manager;
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({ init });
@@ -16422,7 +16211,7 @@ class ServerMeshOutbound {
 
     /**
      * Discovers an organization's older running peers and connects them.
-     * An empty non-local organization notifies Manager to start its cluster.
+     * The peer results are emitted for interested server components.
      */
     async getServers(organization_id = this.server?.organization_id) {
         if (!this.server?.crud || !organization_id) return;
@@ -16452,7 +16241,7 @@ class ServerMeshOutbound {
             }
             const peers = this.normalizePeersList(readResult);
             if (ownOrganization) this.peers = peers;
-            if (!ownOrganization && !peers.length) this.server.manager.startCluster(organization_id);
+            this.server.emit?.('organizationPeers', { organization_id, peers });
             for (const targetPeer of peers) {
                 this.connectPeer(targetPeer, peers.length, ownOrganization ? undefined : organization_id);
             }
@@ -17072,127 +16861,6 @@ async function ensureRepositoryPaths(settings, projectRoot) {
 
 /***/ },
 
-/***/ 5815
-(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-/* unused harmony export init */
-/* harmony import */ var _cocreate_config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9298);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2623);
-/********************************************************************************
- * Copyright (C) 2026 CoCreate and Contributors.
- *
- * Licensed under GNU AGPLv3.
- ********************************************************************************/
-
-
-
-
-/**
- * Creates node-owned routing workflow hooks after CRUD, workflows, and node
- * identity have been initialized. Only the primary registers the node.
- * @param {Object} server - Initialized server context.
- * @returns {Promise<Object|undefined>} Routing configuration and add/remove hooks.
- * @public
- * @environment server
- */
-async function init(server) {
-    if (!server.isPrimary) return;
-
-    const settings = {
-        enabled: true,
-        workflow: 'configure-cluster-routing'
-    };
-    const systemConfig = await _cocreate_config__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A.get('routing');
-    const databaseConfig = await _cocreate_config__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A.query({
-        type: 'routing',
-        organization_id: server.organization_id,
-        server: server.host,
-        cluster: server.cluster_id
-    }, server.crud);
-
-    for (const source of [systemConfig, databaseConfig]) {
-        const normalized = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .dotNotationToObject */ .O)(source || {});
-        Object.assign(settings, normalized);
-    }
-
-    let adding;
-    let removing;
-    let stopping = false;
-    let removalRequest;
-
-    function checkResult(result) {
-        const errors = Array.isArray(result?.error) ? result.error : result?.error ? [result.error] : [];
-        if (errors.length) {
-            throw new Error(errors.map(error => error?.message || String(error)).join('; '));
-        }
-        if (result?.success === false) throw new Error('The routing API rejected the request.');
-        return result;
-    }
-
-    async function initialize() {
-        const name = settings.workflow;
-        const result = await server.workflow.run({
-            method: `workflow.${name}`,
-            organization_id: server.organization_id,
-            host: server.host,
-            [name]: [{
-                server_id: server.id,
-                cluster_id: server.cluster_id,
-                ip: server.ip,
-                host: server.host,
-                infrastructure: server.infrastructure,
-                location: server.location,
-            }]
-        });
-        removalRequest = result?.[name]?.[0]?.remove || removalRequest;
-        return checkResult(result);
-    }
-
-    return {
-        config: settings,
-        /** Register this node once after its listeners are ready. */
-        add() {
-            if (!settings.enabled || stopping || server.state?.isShuttingDown) return Promise.resolve();
-            if (!adding) {
-                adding = initialize().catch(error => {
-                    adding = undefined;
-                    throw error;
-                });
-            }
-            return adding;
-        },
-        /** Withdraw this node before coordinated shutdown tears down its services. */
-        remove(reason) {
-            if (!settings.enabled) return Promise.resolve();
-            stopping = true;
-            if (!removing) {
-                removing = (async () => {
-                    // An in-flight registration must finish before withdrawal.
-                    try { await adding; } catch {}
-                    if (!removalRequest) return;
-                    const result = await server.api.send({
-                        ...removalRequest,
-                        organization_id: server.organization_id,
-                        host: server.host,
-                        data: { ...removalRequest.data, ...(reason && { reason }) }
-                    });
-                    return checkResult(result);
-                })();
-            }
-            return removing;
-        }
-    };
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({ init });
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "A", 0, __WEBPACK_DEFAULT_EXPORT__
-/* harmony export */ ]);
-
-
-/***/ },
-
 /***/ 5648
 (__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
@@ -17429,8 +17097,7 @@ async function save(overrideStatus) {
             host: server.host,
             status: (server.state?.status || 'RUNNING').toLowerCase(), // OS level status: 'running', 'rebooting', 'stopped'
             totalWorkers: server.workers.size,
-            infrastructure: server.infrastructure,
-            location: server.location,
+            deployment: server.deployment,
             master: isPrimaryStopped ? {
                 pid: null,
                 status: 'stopped'
@@ -17560,9 +17227,9 @@ async function shed(arg, internalCall = false) {
 
     if (isShedding) {
         await cordon(true, true);
-        if (!server.isPrimary && organizations.length > 0 && server.wsManager) {
+        if (!server.isPrimary && organizations.length > 0 && server.socket) {
             console.log(`[@cocreate/cluster] Selective eviction of org IDs:`, organizations);
-            server.wsManager.destroyOrganizations(organizations);
+            server.socket.destroyOrganizations(organizations);
         }
     } else {
         await cordon(false, true);
@@ -17603,9 +17270,9 @@ async function drain(value = true, internalCall = false) {
 
     if (isDraining) {
         await cordon(true, true);
-        if (!server.isPrimary && server.wsManager) {
+        if (!server.isPrimary && server.socket) {
             console.log(`[@cocreate/cluster] Worker drain triggered. Purging websocket connections.`);
-            server.wsManager.destroyAll();
+            server.socket.destroyAll();
         }
     } else {
         await cordon(false, true);
@@ -17740,13 +17407,6 @@ async function triggerGlobalShutdown(reason, completionCallback) {
         } else if (reason === 'OS_REBOOT') {
             server.state.status = 'REBOOTING';
         }
-    }
-
-    // Run node-owned routing cleanup while CRUD/API services are still available.
-    try {
-        await server.routing?.remove(reason);
-    } catch (error) {
-        console.error('[@cocreate/cluster] Failed to withdraw node routing:', error.message);
     }
 
     // Publish stopped state unless the server already has a failed/terminating outcome.
@@ -18158,7 +17818,7 @@ class Workers extends Map {
         this.workerId = this.isPrimary ? null : (parseInt(process.env.WORKER_ID, 10) || 1);
     }
 
-    get isWorker() { return !this.isPrimary || this.#config.workers <= 1; }
+    get isWorker() { return !this.isPrimary || this.#config.workers === 0; }
 
     /** Compatibility collection view for the former ClusterManager interface. */
     get workers() { return this; }
@@ -18173,21 +17833,27 @@ class Workers extends Map {
 
     /**
      * Resolves worker count configuration and assigns worker identity.
-     * @param {string|number|boolean} configuredWorkers - Worker configuration value.
+     * @param {string|number|boolean} [configuredWorkers] - Fork count; unset uses CPU count, zero runs work in the primary, and negative values reserve CPUs.
  * @private
  * @environment server
  */
     configureWorkers(configuredWorkers) {
-        if (configuredWorkers !== false && configuredWorkers !== 'false') {
-            const parsedWorkers = parseInt(configuredWorkers, 10);
-            if (parsedWorkers < 0) {
-                this.#config.workers = Math.max(1, node_os__WEBPACK_IMPORTED_MODULE_2__["default"].cpus().length + parsedWorkers);
-            } else {
-                this.#config.workers = parsedWorkers || node_os__WEBPACK_IMPORTED_MODULE_2__["default"].cpus().length;
+        const cpuCount = node_os__WEBPACK_IMPORTED_MODULE_2__["default"].cpus().length;
+        if (configuredWorkers === undefined || configuredWorkers === null || configuredWorkers === '') {
+            this.#config.workers = cpuCount;
+        } else if (configuredWorkers === false || configuredWorkers === 'false') {
+            this.#config.workers = 0;
+        } else {
+            const parsedWorkers = Number(configuredWorkers);
+            if (!Number.isInteger(parsedWorkers)) {
+                throw new TypeError('Worker count must be an integer, false, or unset.');
             }
+            this.#config.workers = parsedWorkers < 0
+                ? Math.max(0, cpuCount + parsedWorkers)
+                : parsedWorkers;
         }
 
-        if (this.isPrimary && this.#config.workers <= 1) {
+        if (this.isPrimary && this.#config.workers === 0) {
             this.workerId = 1;
         }
 
@@ -18208,8 +17874,6 @@ class Workers extends Map {
                     [...this.values()].every((item) => item.isListening);
                 if (workersReady && this.server.state?.save) {
                     this.server.state.save('running').then(async () => {
-                        try { await this.server.routing?.add(); }
-                        catch { console.error('[@cocreate/cluster] Failed to register node routing.'); }
                         await this.server.repository?.publish();
                     }).catch((error) => {
                         console.error(
@@ -18355,9 +18019,7 @@ class Workers extends Map {
             WORKER_ID: String(workerId),
             SERVER_ID: String(this.server.id || ''),
             SERVER_IP: String(this.server.ip || '127.0.0.1'),
-            SERVER_INFRASTRUCTURE: JSON.stringify(this.server.infrastructure || {}),
-            SERVER_LOCATION: JSON.stringify(this.server.location || {}),
-            SERVER_MANAGER: JSON.stringify(this.server.manager || {})
+            SERVER_DEPLOYMENT: JSON.stringify(this.server.deployment || {}),
         });
         worker.on('error', error => {
             console.error(`[@cocreate/cluster] [MASTER] Error on Worker ${workerId}:`, error.message);
@@ -19036,7 +18698,14 @@ async function saveConfig(filePath, content) {
     },
 
     getEnv: (key) => {
-        return process.env[key] !== undefined ? process.env[key] : null;
+        const value = process.env[key];
+        if (value === undefined) return null;
+        try {
+            const parsed = JSON.parse(value);
+            return parsed !== null && typeof parsed === 'object' ? parsed : value;
+        } catch {
+            return value;
+        }
     },
 
     setEnv: (key, value) => {
@@ -19110,7 +18779,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let crud = null;
-let wsManager = null;
+let socket = null;
 const scheduledJobs = {};
 
 /**
@@ -19468,8 +19137,8 @@ async function triggerJobAction(job) {
     try {
         if (_cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay?.lazyloader?.webhook) {
             await _cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay.lazyloader.webhook(job);
-        } else if (wsManager && job.action) {
-            await wsManager.broadcast({
+        } else if (socket && job.action) {
+            await socket.send({
                 target: job.action,
                 data: job
             });
@@ -19740,9 +19409,9 @@ async function findNextCronJob(organization_id) {
  * @environment server
  */
 async function init() {
-    if (_cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay && _cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay.isInitialized && _cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay.crud && _cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay.wsManager) {
+    if (_cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay && _cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay.isInitialized && _cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay.crud && _cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay.socket) {
         crud = _cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay.crud;
-        wsManager = _cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay.wsManager;
+        socket = _cocreate_cluster__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay.socket;
 
         process.on('crud-event', (event) => {
             handleCrudEvent(event);
@@ -20776,7 +20445,6 @@ let server = null;
  */
 let config = null;
 let initialized = false;
-let wsManager = null;
 let getOrganization = null;
 let crudServer = null;
 
@@ -20842,10 +20510,6 @@ async function init(Server) {
 
     server = Server || null;
 
-    if (server && server.wsManager) {
-        wsManager = server.wsManager;
-    }
-
     config = await _cocreate_config__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A.prompt({
         'organization_id': { prompt: 'Enter your organization_id: ' },
         'host': { prompt: 'Enter your host: ' }
@@ -20889,27 +20553,15 @@ async function init(Server) {
 
     await loadCrudConfig();
 
-    const bindSocketListeners = () => {
-        if (!wsManager && server && server.wsManager) {
-            wsManager = server.wsManager;
+    const types = ['storage', 'database', 'array', 'index', 'object'];
+    const methods = ['create', 'read', 'update', 'delete'];
+
+    for (const type of types) {
+        for (const method of methods) {
+            const action = `${type}.${method}`;
+            server.on(action, data => send(data));
         }
-
-        if (wsManager) {
-            const types = ['storage', 'database', 'array', 'index', 'object'];
-            const methods = ['create', 'read', 'update', 'delete'];
-
-            for (let i = 0; i < types.length; i++) {
-                for (let j = 0; j < methods.length; j++) {
-                    const action = types[i] + '.' + methods[j];
-                    wsManager.on(action, (data) => send(data));
-                }
-            }
-        } else {
-            setTimeout(bindSocketListeners, 500);
-        }
-    };
-
-    bindSocketListeners();
+    }
 
     return crudServer;
 }
@@ -22295,141 +21947,12 @@ async function init(serverInstance) {
 
 /***/ },
 
-/***/ 9441
-(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   r: () => (/* binding */ requireBootstrapStorage)
-/* harmony export */ });
-/** Validate the shared bootstrap envelope without interpreting provider fields. */
-function requireBootstrapStorage(value) {
-    if (!value || typeof value !== 'object' || Array.isArray(value) ||
-        typeof value.name !== 'string' || !value.name.trim() ||
-        typeof value.provider !== 'string' || !value.provider.trim()) {
-        throw new Error('Database provisioning requires a bootstrapStorage object with non-empty name and provider fields.');
-    }
-    return value;
-}
-
-
-/***/ },
-
-/***/ 5401
-(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   G: () => (/* binding */ createClusterManagementAccess)
-/* harmony export */ });
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5264);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3105);
-
-
-const permissionReferenceId = '6b0700000000000000000021';
-
-/** Issue management access after the tenant database and managed cluster exist. */
-async function createClusterManagementAccess(server, { organizationId, clusterId, parentHost }) {
-    const send = async (request, organization_id = server.organization_id, host = parentHost) => {
-        let result;
-        try {
-            result = await server.crud.send({ ...request, organization_id, host });
-        } catch {
-            throw new Error(`Cluster management ${request.array} ${request.method} failed.`);
-        }
-        const errors = Array.isArray(result?.error) ? result.error.length : result?.error;
-        if (!result || result.success === false || errors || !result.object?.length) {
-            throw new Error(`Cluster management ${request.array} ${request.method} failed.`);
-        }
-        return result.object[0];
-    };
-    const permission = await send({
-        method: 'object.read', array: 'keys', filter: { query: { _id: permissionReferenceId }, limit: 1 }
-    });
-    if (permission._id !== permissionReferenceId || !permission.methods) {
-        throw new Error('Cluster management permission reference is unavailable.');
-    }
-    const keyId = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_0__/* .ObjectId */ .V)().toString();
-    await send({
-        method: 'object.create', array: 'keys', object: {
-            _id: keyId, name: `Managed cluster ${clusterId}`, type: 'key', status: 'active',
-            key: (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .uuid */ .u)(), admin: false, default: false,
-            methods: structuredClone(permission.methods),
-            cluster_id: clusterId, tenant_organization_id: organizationId
-        }
-    });
-    return { key_id: keyId };
-}
-
-
-/***/ },
-
-/***/ 7537
-(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   V5: () => (/* binding */ resolveOrganizationsConfig)
-/* harmony export */ });
-/* unused harmony export defaults */
-/* harmony import */ var _cocreate_config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9298);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2623);
-
-
-
-const defaults = {
-    enabled: true,
-    databaseWorkflow: 'create-organization-database',
-    organizationWorkflow: 'create-organization',
-    clusterWorkflow: 'create-organization-cluster',
-    repositoryWorkflow: 'create-organization-repository',
-    databaseProvisioning: {},
-    clusterProvisioning: {
-        initialDeployment: { cloud: '65f8ca227b39a3c1a8904e02', region: 'us-east-1', vmType: 't3a.small' },
-        repositories: [],
-        scaleIn: { minClusterSize: 0 }
-    },
-    repositoryProvisioning: {
-        api: 'github-organizations',
-        templateOwner: 'CoCreateJS',
-        templateRepository: 'CoCreate-app-template'
-    }
-};
-
-async function resolveOrganizationsConfig(server, options = {}) {
-    const organizationsConfig = {
-        ...defaults,
-        databaseProvisioning: { ...defaults.databaseProvisioning },
-        clusterProvisioning: structuredClone(defaults.clusterProvisioning),
-        repositoryProvisioning: { ...defaults.repositoryProvisioning }
-    };
-    const localConfig = _cocreate_config__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A.get('organizations');
-    if (localConfig) (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .dotNotationToObject */ .O)(localConfig, organizationsConfig);
-
-    const databaseConfig = await _cocreate_config__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A.query({
-        type: 'organizations',
-        organization_id: server.organization_id
-    }, server.crud);
-    (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .dotNotationToObject */ .O)(databaseConfig, organizationsConfig);
-    (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .dotNotationToObject */ .O)(options, organizationsConfig);
-    return organizationsConfig;
-}
-
-/* unused harmony default export */ var __WEBPACK_DEFAULT_EXPORT__ = ((/* unused pure expression or super */ null && (resolveOrganizationsConfig)));
-
-
-/***/ },
-
 /***/ 3291
 (__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   init: () => (/* binding */ init)
 /* harmony export */ });
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5264);
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3105);
-/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7537);
-/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9441);
-/* harmony import */ var _repository_credential_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(813);
-/* harmony import */ var node_util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4472);
-/* harmony import */ var _cluster_management_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(5401);
 /********************************************************************************
  * Copyright (C) 2023 CoCreate and Contributors.
  *
@@ -22453,594 +21976,51 @@ async function resolveOrganizationsConfig(server, options = {}) {
 // you must obtain a commercial license from CoCreate LLC.
 // For details, visit <https://CoCreateJS.com/licenses/> or contact us at sales@CoCreateJS.com.
 
-
-
-
-
-
-
-
 let server;
 
-/**
- * Standard error state structure normalization helper.
- * @private
- * @environment server
- */
-function errorHandler(data, error) {
-    data.success = false;
-    data.message = typeof error === "string"
-        ? error
-        : error?.message || "Organization request failed";
-    data.error = data.message;
-}
-
-function createOrganizationHosts(details, hostname) {
-    const submitted = Array.isArray(details?.host) && details.host[0]
-        ? { ...details.host[0] }
-        : {};
-    for (const field of ["database", "storage"]) {
-        const value = details?.[`host[0].${field}`] ?? details?.[`host.0.${field}`];
-        if (value !== undefined) submitted[field] = value;
-    }
-    submitted.name = hostname;
-    return [
-        submitted,
-        { database: "dev", name: `dev.${hostname}`, storage: "" },
-        { database: "test", name: `test.${hostname}`, storage: "" }
-    ];
-}
-
-async function runWorkflow(name, organization_id, host, input) {
-    if (typeof server?.workflow?.run !== 'function') {
-        throw new Error('Organization workflows are unavailable');
-    }
-
-    const result = await server.workflow.run({
-        method: `workflow.${name}`,
-        organization_id,
-        host,
-        [name]: [input]
-    });
-    const errors = Array.isArray(result?.error)
-        ? result.error
-        : result?.error ? [result.error] : [];
-    if (errors.length) {
-        throw new Error(errors.map(error => error?.message || String(error)).join('; '));
-    }
-
-    return result?.[name]?.[0] || {};
-}
-
-async function requireEnabledPlatformWorkflow(name, host) {
-    const response = await checkedSend({
-        method: 'object.read',
-        organization_id: server.organization_id,
-        host,
-        array: 'workflows',
-        filter: { query: { name, enabled: true }, key: { _id: 1, name: 1, description: 1, enabled: 1, actions: 1 }, limit: 1 }
-    });
-    if (!response.object?.length) {
-        throw new Error(`The ${name} workflow is unavailable or disabled`);
-    }
-    return response.object[0];
-}
-
-/** Create an organization and its authenticated user and keys.  * @private
- * @environment server
- */
 async function createOrganization(data) {
-    const response = {
-        method: "createOrganization",
-        uuid: data.uuid,
+    const organization = {
+        method: "object.create",
         host: data.host,
-        organization_id: data.organization_id,
-        clientId: data.clientId,
-        socketId: data.socketId,
-        broadcastClient: false,
-        success: false
+        array: "organizations",
+        object: {
+            ...data.organization,
+            owner: data.user_id
+        }
     };
-    let organizationId;
-    let organizationRegistered = false;
-    let databaseAttached = false;
-    let tenantInitialized = false;
-    let clusterInitialized = false;
-    let managementInitialized = false;
-    let clusterId;
-    let repositoryInitialized = false;
+
     try {
-        if (!data.user_id || !data.organization_id) {
-            throw new Error("Sign in before creating an organization");
-        }
-        const details = data.organization;
-        const name = (typeof details?.name === "string" ? details.name.trim() : "") || "Untitled";
-        const hostName = details?.host?.[0]?.name ?? details?.["host[0].name"] ?? details?.["host.0.name"];
-        const hostname = typeof hostName === "string" ? hostName.trim().toLowerCase() : "";
-        if (hostname.length > 253 || !hostname.includes(".") ||
-            !hostname.split(".").every(label => /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label))) {
-            throw new Error("A valid host is required");
-        }
-        const hosts = createOrganizationHosts(details, hostname);
+        await server.crud.send(organization);
 
-        // SocketServer stamps the authenticated identity and source scope onto the message.
-        const source = { organization_id: data.organization_id, host: data.host };
-        const credentials = await checkedSend({
-            ...source, method: "object.read", array: "keys", object: [],
-            filter: { limit: 2, query: { type: "user", key: data.user_id } }
-        });
-        if (credentials.object?.length !== 1) {
-            throw new Error("Unable to resolve the signed-in user's credential");
-        }
-        const credential = credentials.object[0];
-        if (typeof credential.array !== "string" || !credential.array ||
-            String(credential.key) !== String(data.user_id)) {
-            throw new Error("The user credential is missing its profile reference");
-        }
-        const profiles = await checkedSend({
-            ...source, method: "object.read", array: credential.array,
-            object: [{ _id: credential.key }], filter: { limit: 1 }
-        });
-        const profile = profiles.object?.[0];
-        if (!profile || String(profile._id) !== String(data.user_id)) {
-            throw new Error("Unable to find the signed-in user's profile");
+        if (organization.error) {
+            data.error = organization.error;
         }
 
-        const existing = await checkedSend({
-            method: "object.read", database: server.organization_id,
-            organization_id: server.organization_id, array: "organizations", object: [],
-            filter: {
-                limit: 1,
-                query: { "host.name": { $in: hosts.map(host => host.name) } }
-            }
-        });
-        if (existing.object?.length) throw new Error("That host is already in use");
-
-        const organizationsConfig = server.organizations.config || {};
-        const databaseSettings = organizationsConfig.databaseProvisioning || {};
-        const databaseWorkflow = organizationsConfig.databaseWorkflow || 'create-organization-database';
-        const organizationWorkflow = organizationsConfig.organizationWorkflow || 'create-organization';
-        const clusterWorkflow = organizationsConfig.clusterWorkflow || 'create-organization-cluster';
-        const clusterSettings = structuredClone(organizationsConfig.clusterProvisioning || {});
-        if (!Number.isInteger(clusterSettings.scaleIn?.minClusterSize) || clusterSettings.scaleIn.minClusterSize < 0) {
-            throw new Error('Organization cluster requires a nonnegative integer minimum cluster size');
+        if (!(data.organization = organization.object?.[0])) {
+            data.error = "Failed to create organization";
         }
-        if (!['cloud', 'region', 'vmType'].every(key => typeof clusterSettings.initialDeployment?.[key] === 'string' && clusterSettings.initialDeployment[key].trim())) {
-            throw new Error('Organization cluster requires initialDeployment cloud, region and VM type');
-        }
-        const repositoryWorkflow = organizationsConfig.repositoryWorkflow || 'create-organization-repository';
-        const repositorySettings = organizationsConfig.repositoryProvisioning || {};
-        await requireEnabledPlatformWorkflow(databaseWorkflow, data.host);
-        const organizationDefinition = await requireEnabledPlatformWorkflow(organizationWorkflow, data.host);
-        const clusterDefinition = await requireEnabledPlatformWorkflow(clusterWorkflow, data.host);
-        await requireEnabledPlatformWorkflow(repositoryWorkflow, data.host);
 
-        organizationId = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_0__/* .ObjectId */ .V)().toString();
-        const provisioning = {
-            status: "provisioning",
-            requested_at: new Date().toISOString()
-        };
-        const organization = {
-            ...details,
-            name,
-            _id: organizationId,
-            organization_id: organizationId,
-            host: hosts,
-            provisioning
-        };
-        delete organization.bootstrapStorage;
-        delete organization.storage;
-        delete organization.git;
-        delete organization.cluster_id;
-        for (const key of Object.keys(organization)) {
-            if (/^host(?:\[0\]|\.0)\./.test(key)) delete organization[key];
-        }
-        for (const key of Object.keys(organization)) if (key.startsWith("$")) delete organization[key];
-        const user = { ...profile, organization_id: organizationId };
-        delete user.password;
-        for (const key of Object.keys(user)) if (key.startsWith("$")) delete user[key];
-
-        const roleId = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_0__/* .ObjectId */ .V)().toString();
-        const userKey = {
-            _id: (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_0__/* .ObjectId */ .V)().toString(), type: "user", key: user._id,
-            name: user.name, array: credential.array, roles: [roleId]
-        };
-        for (const field of ["email", "username", "password"]) {
-            if (credential[field] !== undefined) userKey[field] = credential[field];
-        }
-        const uploadApiKey = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .uuid */ .u)();
-        const keys = [
-            {
-                _id: (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_0__/* .ObjectId */ .V)().toString(), type: "key", key: (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .uuid */ .u)(), default: true,
-                name: "Default", hosts: ["*"],
-                actions: {
-                    signIn: true, signUp: true, checkSession: true,
-                    forgotPassword: true, resetPassword: true, acceptInvite: true,
-                    updateUserStatus: true, isUnique: true
-                }
-            },
-            {
-                _id: (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_0__/* .ObjectId */ .V)().toString(), type: "key", key: uploadApiKey,
-                name: "Deployment", admin: true
-            },
-            { _id: roleId, type: "role", name: "admin", admin: true },
-            userKey
-        ].map(key => ({ ...key, organization_id: organizationId }));
-        // Register the platform organization first. Tenant storage is attached
-        // only after the workflow has provisioned and persisted its bootstrap object.
-        await checkedSend({
-            method: "object.create", database: server.organization_id,
-            organization_id: server.organization_id, array: "organizations", object: organization
-        });
-        organizationRegistered = true;
-
-        const database = await runWorkflow(databaseWorkflow, server.organization_id, data.host, {
-            ...databaseSettings,
-            organizationId
-        });
-        const bootstrapStorage = (0,_bootstrap_js__WEBPACK_IMPORTED_MODULE_3__/* .requireBootstrapStorage */ .r)(database.bootstrapStorage);
-        const storedOrganization = await checkedSend({
-            method: 'object.read', database: server.organization_id,
-            organization_id: server.organization_id, array: 'organizations',
-            object: [{ _id: organizationId }],
-            filter: { key: { _id: 1, bootstrapStorage: 1 }, limit: 1 }
-        });
-        if (!(0,node_util__WEBPACK_IMPORTED_MODULE_5__.isDeepStrictEqual)(storedOrganization.object?.[0]?.bootstrapStorage, bootstrapStorage)) {
-            throw new Error('Database provisioning did not persist the returned bootstrapStorage on the platform organization.');
-        }
-        databaseAttached = true;
-
-        const tenantHosts = hosts.map((host, index) => ({
-            ...host,
-            database: host.database || (index === 0 ? organizationId : host.database),
-            storage: bootstrapStorage.name
-        }));
-        const tenantOrganization = {
-            ...organization,
-            bootstrapStorage,
-            host: tenantHosts,
-            provisioning: {
-                ...provisioning,
-                status: 'initializing-cluster',
-                database: { status: 'ready' },
-                tenant: { status: 'ready' },
-                cluster: { status: 'pending' }, repository: { status: 'pending' }
-            }
-        };
-        await checkedSend({
-            method: 'object.update',
-            organization_id: server.organization_id,
-            host: data.host,
-            array: 'organizations',
-            object: {
-                _id: organizationId,
-                host: tenantHosts,
-                provisioning: {
-                    ...provisioning,
-                    status: 'initializing-tenant',
-                    database: { status: 'ready' }
-                }
-            }
-        });
-        await checkedSend({
-            method: 'object.update',
-            organization_id: organizationId,
-            host: hostname,
-            array: 'workflows',
-            upsert: true,
-            object: {
-                ...organizationDefinition,
-                organization_id: organizationId
-            }
-        });
-
-        const tenantInitialization = await runWorkflow(organizationWorkflow, organizationId, hostname, {
-            organization: tenantOrganization,
-            user,
-            userArray: credential.array,
-            keys
-        });
-        if (tenantInitialization.initialized !== true) {
-            throw new Error('Tenant organization initialization did not complete');
-        }
-        tenantInitialized = true;
-
-        // Create one identity and one definition; each invocation persists that same cluster.
-        clusterId = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_0__/* .ObjectId */ .V)().toString();
-        const cluster = {
-            ...clusterSettings, _id: clusterId, name: organizationId,
-            type: 'organization', host: hostname,
-            repositories: structuredClone(clusterSettings.repositories || []),
-            manager: {
-                organization_id: server.organization_id,
-                host: server.host || data.host,
-                for: organizationId
-            }
-        };
-        delete cluster.organization_id;
-        for (const key of Object.keys(cluster)) if (key.startsWith('$')) delete cluster[key];
-        const clusterInput = { organizationId, cluster };
-        const platformCluster = await runWorkflow(clusterWorkflow, server.organization_id, data.host, structuredClone(clusterInput));
-        if (platformCluster.initialized !== true || platformCluster.cluster?._id !== clusterId || !(0,node_util__WEBPACK_IMPORTED_MODULE_5__.isDeepStrictEqual)(platformCluster.cluster?.manager, cluster.manager)) {
-            throw new Error('Platform organization cluster initialization did not complete');
-        }
-        await checkedSend({
-            method: 'object.update', organization_id: organizationId, host: hostname,
-            array: 'workflows', upsert: true,
-            object: { ...clusterDefinition, organization_id: organizationId }
-        });
-        const tenantDefinition = structuredClone(platformCluster.cluster);
-        delete tenantDefinition.organization_id;
-        for (const key of Object.keys(tenantDefinition)) if (key.startsWith('$')) delete tenantDefinition[key];
-        const tenantCluster = await runWorkflow(clusterWorkflow, organizationId, hostname, { organizationId, cluster: tenantDefinition });
-        if (tenantCluster.initialized !== true || tenantCluster.cluster?._id !== clusterId || !(0,node_util__WEBPACK_IMPORTED_MODULE_5__.isDeepStrictEqual)(tenantCluster.cluster?.manager, cluster.manager)) {
-            throw new Error('Tenant organization cluster initialization did not complete');
-        }
-        clusterInitialized = true;
-
-        await (0,_cluster_management_js__WEBPACK_IMPORTED_MODULE_6__/* .createClusterManagementAccess */ .G)(server, {
-            organizationId, clusterId, parentHost: server.host || data.host
-        });
-        managementInitialized = true;
-
-        // Keep a pending credential in the tenant DB before registering its public key.
-        const repositoryCredential = await (0,_repository_credential_js__WEBPACK_IMPORTED_MODULE_4__/* .createRepositoryCredential */ .A)((0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_0__/* .ObjectId */ .V)().toString());
-        await checkedSend({
-            method: 'object.update', upsert: true, organization_id: organizationId, host: hostname,
-            array: 'apis', object: repositoryCredential
-        });
-        const repository = await runWorkflow(repositoryWorkflow, server.organization_id, data.host, {
-            ...repositorySettings,
-            organizationId,
-            credentialId: repositoryCredential._id,
-            publicKey: repositoryCredential.publicKey
-        });
-        if (repository.initialized !== true || !repository.git?.clone_url) {
-            throw new Error('Organization repository initialization did not complete');
-        }
-        if (repository.git.api !== repositoryCredential._id || !Number.isSafeInteger(repository.git.deploy_key_id) || repository.git.deploy_key_id <= 0) {
-            throw new Error('Repository deploy key initialization did not complete');
-        }
-        const knownHosts = (0,_repository_credential_js__WEBPACK_IMPORTED_MODULE_4__/* .githubKnownHosts */ .e)(repository.hostKeys);
-        const activatedCredential = await checkedSend({
-            method: 'object.update', organization_id: organizationId, host: hostname, array: 'apis',
-            object: {
-                _id: repositoryCredential._id, enabled: true, status: 'ready',
-                repository_url: repository.git.clone_url, owner: repository.git.owner,
-                repository: repository.git.repository, deploy_key_id: repository.git.deploy_key_id,
-                knownHosts
-            }
-        });
-        if (!activatedCredential.object?.length) throw new Error('Repository credential was not activated');
-        const repositories = [
-            ...(Array.isArray(clusterSettings.repositories) ? clusterSettings.repositories : []),
-            {
-                url: repository.git.clone_url, api: repositoryCredential._id,
-                branch: repository.git.checkout_branch || 'main', remote: 'origin',
-                localFsRoot: '../', directory: repository.git.repository,
-                onStartup: 'clone', onShutdown: 'commit-and-push',
-                startupTimeoutMs: 60000, shutdownTimeoutMs: 10000,
-                initialUpload: { enabled: true, completed: false }
-            }
-        ];
-        cluster.repositories = structuredClone(repositories);
-        for (const [scope, host] of [[server.organization_id, data.host], [organizationId, hostname]]) {
-            const stored = await checkedSend({
-                method: 'object.update', array: 'clusters', organization_id: scope, host,
-                object: { _id: clusterId, repositories: structuredClone(repositories) }
-            });
-            if (!stored.object?.length) throw new Error('Cluster repository registration did not complete');
-        }
-        repositoryInitialized = true;
-        await checkedSend({
-            method: 'object.update',
-            organization_id: organizationId,
-            host: hostname,
-            array: 'organizations',
-            object: {
-                _id: organizationId,
-                git: repository.git,
-                provisioning: {
-                    ...provisioning, status: 'ready',
-                    database: { status: 'ready' }, tenant: { status: 'ready' },
-                    cluster: { status: 'ready' }, management: { status: 'ready' }, repository: { status: 'ready' }
-                }
-            }
-        });
-
-        await server.manager.createServer(cluster);
-
-        const completedAt = new Date().toISOString();
-        await checkedSend({
-            method: 'object.update',
-            organization_id: server.organization_id,
-            host: data.host,
-            array: 'organizations',
-            object: {
-                _id: organizationId,
-                provisioning: {
-                    ...provisioning,
-                    status: 'ready',
-                    database: { status: 'ready' },
-                    tenant: { status: 'ready' },
-                    cluster: { status: 'ready' }, management: { status: 'ready' }, repository: { status: 'ready' },
-                    completed_at: completedAt
-                }
-            }
-        });
-
-        response.success = true;
-        response.message = "Organization, database, cluster, repository, and server created";
-        response.redirect = `https://${hostname}/auth/`;
-        response.organization = {
-            _id: organizationId,
-            name,
-            cluster_id: clusterId,
-            host: tenantHosts,
-            provisioning: { ...provisioning, status: 'ready', completed_at: completedAt }
-        };
-        response.user_id = user._id;
-        response.user_array = credential.array;
-        response.provisioning = response.organization.provisioning;
     } catch (error) {
-        if (organizationRegistered && organizationId) {
-            try {
-                await checkedSend({
-                    method: 'object.update',
-                    organization_id: server.organization_id,
-                    host: data.host,
-                    array: 'organizations',
-                    object: {
-                        _id: organizationId,
-                        provisioning: {
-                            status: 'failed',
-                            failed_at: new Date().toISOString(),
-                            error: String(error.message || error).slice(0, 500),
-                            database: { status: databaseAttached ? 'ready' : 'failed' },
-                            tenant: { status: tenantInitialized ? 'ready' : 'failed' },
-                            cluster: { status: clusterInitialized ? 'ready' : 'failed' },
-                            management: { status: managementInitialized ? 'ready' : 'failed' },
-                            repository: { status: repositoryInitialized ? 'ready' : 'failed' }
-                        }
-                    }
-                });
-            } catch (statusError) {
-                console.error('Unable to record organization provisioning failure:', statusError.message);
-            }
-        }
-        response.message = error.message || "Unable to create the organization";
-        response.error = response.message;
+        data.error = error.message;
     }
-    return server.send(response);
-}
 
-async function checkedSend(request) {
-    const result = await server.crud.send(request);
-    const errors = Array.isArray(result?.error) ? result.error.length : result?.error;
-    if (!result || errors || result.success === false) {
-        throw new Error(`Unable to ${request.method === "object.read" ? "read" : "create"} ${request.array}`);
-    }
-    return result;
-}
-
-/**
- * Orchestrates multi-tenant database clone mappings and environment setup across specific domain hosts.
- * @private
- * @environment server
- */
-async function createEnvironments(data) {
-    try {
-        let { organization, hostname } = data;
-
-        if (!organization) {
-            errorHandler(
-                data,
-                "Missing required field: 'organization'. Please provide the organization object to create an organization."
-            );
-        }
-        if (!hostname) {
-            errorHandler(
-                data,
-                "Missing required field: 'hostname'. Please provide the hostname to create an organization."
-            );
-        }
-
-        // If there are validation errors, include them in the response and send immediately
-        if (data.success === false) {
-            return server.send({ ...data });
-        }
-
-        const Data = {};
-        Data.method = "object.read";
-        Data.host = hostname;
-        Data.organization_id = organization;
-        Data.filter = { limit: 0 };
-
-        if (server && server.crud) {
-            let organizations = await server.crud.send({
-                ...Data,
-                array: "organizations",
-                object: []
-            });
-
-            if (organizations.error) {
-                errorHandler(data, organizations.error);
-            }
-
-            let users = await server.crud.send({
-                ...Data,
-                array: "users",
-                object: []
-            });
-
-            if (users.error) {
-                errorHandler(data, users.error);
-            }
-
-            let keys = await server.crud.send({
-                ...Data,
-                array: "keys",
-                object: []
-            });
-
-            if (keys.error) {
-                errorHandler(data, keys.error);
-            }
-
-            for (let host of hostname) {
-                await server.crud.send({
-                    ...Data,
-                    method: "object.create",
-                    host,
-                    array: "organizations",
-                    object: organizations.object
-                });
-                await server.crud.send({
-                    ...Data,
-                    method: "object.create",
-                    host,
-                    array: "users",
-                    object: users.object
-                });
-                await server.crud.send({
-                    ...Data,
-                    method: "object.create",
-                    host,
-                    array: "keys",
-                    object: keys.object
-                });
-            }
-        }
-
-        if (data.success !== false) {
-            data.success = true;
-        }
-
-        server.send({ ...data });
-    } catch (error) {
-        errorHandler(data, error);
-        server.send({ ...data });
-    }
+    return server.send(data);
 }
 
 const Organizations = {
-    create: createOrganization,
-    createEnvironments,
-    config: null
+    create: createOrganization
 };
 
 /** Attach organization services and socket handlers to an initialized server.  * @public
  * @environment server
  */
-async function init(Server, options = {}) {
-    if (!Server?.crud || !Server?.wsManager) {
+function init(Server) {
+    if (!Server?.crud || !Server?.on) {
         throw new Error("An initialized CoCreate server is required");
     }
     server = Server;
-    const organizationsConfig = await (0,_config_js__WEBPACK_IMPORTED_MODULE_2__/* .resolveOrganizationsConfig */ .V5)(server, options);
-    Organizations.config = organizationsConfig;
     server.organizations = Organizations;
-    server.wsManager.on("createOrganization", (data) => server.organizations.create(data));
-    server.wsManager.on("createEnvironments", (data) => server.organizations.createEnvironments(data));
+    server.on("createOrganization", (data) => server.organizations.create(data));
     return Organizations;
 }
 
@@ -23050,51 +22030,6 @@ async function init(Server, options = {}) {
  * @module organizations
  * @environment server
  */
-
-
-/***/ },
-
-/***/ 813
-(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   A: () => (/* binding */ createRepositoryCredential),
-/* harmony export */   e: () => (/* binding */ githubKnownHosts)
-/* harmony export */ });
-/* harmony import */ var node_crypto__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2561);
-/* harmony import */ var node_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4472);
-
-
-
-const generate = (0,node_util__WEBPACK_IMPORTED_MODULE_1__.promisify)(node_crypto__WEBPACK_IMPORTED_MODULE_0__.generateKeyPair);
-const sshString = value => {
-    const length = Buffer.alloc(4);
-    length.writeUInt32BE(value.length);
-    return Buffer.concat([length, value]);
-};
-
-/** Generate only locally; the private key never enters the GitHub request/workflow. */
-async function createRepositoryCredential(id) {
-    const { publicKey, privateKey } = await generate('rsa', { modulusLength: 3072 });
-    const jwk = publicKey.export({ format: 'jwk' });
-    const mpint = value => {
-        const buffer = Buffer.from(value, 'base64url');
-        return sshString(buffer[0] & 0x80 ? Buffer.concat([Buffer.from([0]), buffer]) : buffer);
-    };
-    const publicSsh = `ssh-rsa ${Buffer.concat([sshString(Buffer.from('ssh-rsa')), mpint(jwk.e), mpint(jwk.n)]).toString('base64')}`;
-    return {
-        _id: id, name: 'github-repository', provider: 'github', authentication: 'ssh-deploy-key',
-        enabled: false, status: 'pending', publicKey: publicSsh,
-        privateKey: privateKey.export({ type: 'pkcs1', format: 'pem' })
-    };
-}
-
-function githubKnownHosts(keys) {
-    if (!Array.isArray(keys) || !keys.length || keys.some(key => typeof key !== 'string' || !/^(ssh-ed25519|ssh-rsa|ecdsa-sha2-nistp256) [A-Za-z0-9+/]+={0,2}$/.test(key))) {
-        throw new Error('GitHub SSH host keys were not returned.');
-    }
-    return keys.map(key => `github.com ${key}`).join('\n') + '\n';
-}
 
 
 /***/ },
@@ -23985,21 +22920,21 @@ function getBrowserLocation() {
     return window.location;
 }
 
-let WS_Impl;
 
 function getIndexeddb() {
     return isBrowser ? window.CoCreate?.indexeddb : null;
 }
 
-async function getWebSocketImpl() {
-    if (WS_Impl) return WS_Impl;
+let webSocketClass = null;
+async function getWebSocketClass() {
+    if (webSocketClass) return webSocketClass;
     if (isBrowser) {
-        WS_Impl = window.WebSocket;
+        webSocketClass = window.WebSocket;
     } else {
         const wsModule = await Promise.resolve(/* import() */).then(() => (__webpack_require__(2237)));
-        WS_Impl = wsModule.default || wsModule;
+        webSocketClass = wsModule.default || wsModule;
     }
-    return WS_Impl;
+    return webSocketClass;
 }
 
 const socketsByUrl = new Map();
@@ -24010,17 +22945,32 @@ let organizationPromise = null;
 
 async function getOrganization() {
     let organization_id = _cocreate_config__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .A.get("organization_id");
-    if (!organization_id || organization_id === "canceled") {
-        if (isBrowser) {
-            const Organization = await Promise.resolve(/* import() */).then(() => (__webpack_require__(3291)));
-            organization_id = await Organization.default.get();
-        } else {
-            organization_id = process.env.ORGANIZATION_ID || "";
-        }
+    if (organization_id === "canceled") {
+        _cocreate_config__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .A.delete("organization_id");
+        organization_id = null;
     }
-    if (organization_id) _cocreate_config__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .A.set("organization_id", organization_id);
+    if (organization_id) return organization_id;
 
-    return organization_id;
+    if (!isBrowser) {
+        organization_id = process.env.ORGANIZATION_ID || "";
+        if (organization_id) _cocreate_config__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .A.set("organization_id", organization_id);
+        return organization_id;
+    }
+
+    const response = await fetch("/offline.html").catch(() => null);
+    organization_id = response?.headers.get("organization");
+    if (organization_id) {
+        _cocreate_config__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .A.set("organization_id", organization_id);
+        return organization_id;
+    }
+
+    const prompted = await _cocreate_config__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .A.prompt({
+        organization_id: {
+            prompt: "Enter your organization ID, or leave blank to create one:",
+            parse: value => value || (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_1__/* .ObjectId */ .V)().toString()
+        }
+    });
+    return prompted.organization_id;
 }
 
 const CoCreateSocketClient = {
@@ -24198,7 +23148,7 @@ const CoCreateSocketClient = {
                 let opt = JSON.stringify(options);
                 opt = encodeURIComponent(opt);
 
-                const WebSocketClass = await getWebSocketImpl();
+                const WebSocketClass = await getWebSocketClass();
                 socket = new WebSocketClass(url, opt);
                 socket.id = options.socketId;
                 socket.connected = false;
@@ -24538,7 +23488,7 @@ const CoCreateSocketClient = {
                 if (
                     !self.maxReconnectDelay ||
                     config.currentReconnectDelay <
-                        self.maxReconnectDelay
+                    self.maxReconnectDelay
                 ) {
                     self.delete(url);
                     config.currentReconnectDelay *= 2;
@@ -24579,6 +23529,7 @@ const CoCreateSocketClient = {
         let balancer = data.balancer || _cocreate_config__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .A.get("balancer"); // Strictly resolved via isomorphic configuration
 
         if (typeof host === "string" && host) {
+            const organizationId = data.organization_id || (await this.organization_id()) || "";
             host = host.split(",");
             for (let i = 0; i < host.length; i++) {
                 host[i] = host[i].trim();
@@ -24588,11 +23539,7 @@ const CoCreateSocketClient = {
                 if (host[i].includes("://")) url = `${host[i]}`;
                 else url = `${protocol}://${host[i]}`;
 
-                url += `/${
-                    data.organization_id ||
-                    (await this.organization_id()) ||
-                    ""
-                }`;
+                url += `/${organizationId}`;
                 if (balancer == "mesh") urls.push(url);
                 else {
                     let socket = this.get(url);
@@ -24609,13 +23556,9 @@ const CoCreateSocketClient = {
                 }
             }
         } else if (isBrowser) {
-            let newhost = getBrowserLocation().host;
-            url = [`${protocol}://${newhost}`];
-            url += `/${
-                data.organization_id ||
-                (await this.organization_id()) ||
-                ""
-            }`;
+            const newhost = getBrowserLocation().host;
+            const organizationId = data.organization_id || (await this.organization_id()) || "";
+            url = `${protocol}://${newhost}/${organizationId}`;
             urls.push(url);
         } else {
             console.log("missing host");
@@ -24755,11 +23698,10 @@ if (isBrowser) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   $: () => (/* binding */ SocketServer)
 /* harmony export */ });
-/* harmony import */ var _sockets_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8458);
-/* harmony import */ var node_events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2849);
-/* harmony import */ var ws__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2237);
-/* harmony import */ var node_url__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9061);
-/* harmony import */ var _cocreate_config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9298);
+/* harmony import */ var node_events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2849);
+/* harmony import */ var ws__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2237);
+/* harmony import */ var node_url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9061);
+/* harmony import */ var _cocreate_config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9298);
 /********************************************************************************
  * Copyright (C) 2023 CoCreate and Contributors.
  *
@@ -24787,13 +23729,12 @@ if (isBrowser) {
 
 
 
-
 /**
  *
  * @public
  * @environment server
  */
-class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter {
+class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     constructor(server) {
         super();
 
@@ -24809,16 +23750,15 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
         this.organizationBalances = new Map();
         this.clients = new Map();
         this.sockets = new Map();
-        this.collection = new _sockets_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A(this);
         this.users = new Map();
 
         // Extract isolated helper properties directly from the server instance
         this.authenticate = server.authenticate;
         this.authorize = server.authorize;
 
-        _cocreate_config__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .A.prompt({ organization_id: { prompt: "Enter your organization_id: " } });
+        _cocreate_config__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .A.prompt({ organization_id: { prompt: "Enter your organization_id: " } });
 
-        this.wss = new ws__WEBPACK_IMPORTED_MODULE_2__.WebSocketServer({ noServer: true });
+        this.wss = new ws__WEBPACK_IMPORTED_MODULE_1__.WebSocketServer({ noServer: true });
 
         // We use bound prototype methods instead of inline closures to prevent scope leakage
         this.wss.on("headers", this._handleHeaders.bind(this));
@@ -24852,7 +23792,7 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
                 }
                 socket.isAlive = false;
                 try {
-                    if (socket.readyState === ws__WEBPACK_IMPORTED_MODULE_2__.WebSocket.OPEN) {
+                    if (socket.readyState === ws__WEBPACK_IMPORTED_MODULE_1__.WebSocket.OPEN) {
                         socket.ping();
                     } else {
                         socket.terminate();
@@ -24894,7 +23834,7 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
         const self = this;
 
         const host = request.headers.host || "localhost";
-        const parsedUrl = new node_url__WEBPACK_IMPORTED_MODULE_3__.URL(request.url, `http://${host}`);
+        const parsedUrl = new node_url__WEBPACK_IMPORTED_MODULE_2__.URL(request.url, `http://${host}`);
 
         // .filter(Boolean) removes empty strings, protecting against trailing slashes!
         const paths = parsedUrl.pathname.split("/").filter(Boolean);
@@ -24957,7 +23897,7 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
 
                 if (!socket.host && socket.origin && socket.origin !== "null") {
                     if (socket.origin.includes("://"))
-                        socket.host = new node_url__WEBPACK_IMPORTED_MODULE_3__.URL(socket.origin).host;
+                        socket.host = new node_url__WEBPACK_IMPORTED_MODULE_2__.URL(socket.origin).host;
                     else socket.host = socket.origin;
                 }
 
@@ -24991,10 +23931,10 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
                             socket.user_id = user_id;
                             socket.expires = expires;
                             userStatus.userStatus = "on";
-                            self.emit("notification.user", socket);
+                            self.server.emit("notification.user", socket);
                         }
 
-                        self.emit("userStatus", userStatus);
+                        self.server.emit("userStatus", userStatus);
 
                         self.onWebSocket(socket);
                     } else self.onWebSocket(socket);
@@ -25059,7 +23999,7 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
 
             this.organizations.set(organization_id, organization);
 
-            this.emit("object.update", {
+        this.server.emit("object.update", {
                 method: "object.update",
                 host: socket.host,
                 array: "organizations",
@@ -25094,7 +24034,7 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
         }
 
         if (socket.user_id) {
-            this.emit("userStatus", {
+            this.server.emit("userStatus", {
                 socket,
                 host: socket.host,
                 user_id: socket.user_id,
@@ -25213,7 +24153,7 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
         return clients;
     }
 
-    get(data) {
+    getClients(data) {
         try {
             if (data.broadcast === "false") data.broadcast = false;
 
@@ -25282,6 +24222,10 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
         }
     }
 
+    get(socketId) {
+        return this.sockets.get(socketId);
+    }
+
     delete(socket) {
         const organization_id = socket.organization_id;
         const clientId = socket.clientId;
@@ -25300,7 +24244,7 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
                 }
 
                 if (organization.clients.size === 0) {
-                    this.emit("object.update", {
+                    this.server.emit("object.update", {
                         method: "object.update",
                         host: socket.host,
                         array: "organizations",
@@ -25351,7 +24295,7 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
                     clearTimeout(userSession.debounce);
                     userSession.debounce = setTimeout(() => {
                         this.users.delete(socket.user_id);
-                        this.emit("userStatus", {
+                        this.server.emit("userStatus", {
                             socket,
                             user_id: socket.user_id,
                             host: socket.host,
@@ -25553,7 +24497,7 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
             }
 
             if (data.method || data.endpoint) {
-                this.Message(socket, data);
+                await this.Message(socket, data);
             } else {
                 data.error = "method or endpoint is required";
                 return this._safeSend(socket, data);
@@ -25672,20 +24616,20 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
                 this.subscribe(socket, data.subscription);
             }
 
-            // --- ROUTE TO API / CRUD OPERATIONS ---
+            // Dispatch built-in services directly; registered application methods use server.on().
             if (data.api) {
-                this.emit("api", data);
+                await this.server.api.send(data);
             } else if (data.method === "unsubscribe") {
                 this.unsubscribe(socket, data.subscription);
                 this._safeSend(socket, data);
             } else if (data.method === "crdt" || data.method === "cursor") {
                 this.server.send(data);
+            } else if (["storage", "database", "array", "index", "object"].includes(moduleName)) {
+                await this.server.crud.send(data);
+            } else if (moduleName === "workflow") {
+                await this.server.workflow.run(data);
             } else {
-                if (["storage", "database", "array", "index", "object"].includes(moduleName)) {
-                    this.emit(data.method, data);
-                } else {
-                    this.emit(moduleName, data);
-                }
+                this.server.emit(data.method, data);
             }
 
         } catch (e) {
@@ -25699,7 +24643,6 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
         const subscriptionDelivery =
             Array.isArray(data.subscriptionKeys) &&
             data.subscriptionKeys.length > 0;
-        delete data.wsManager;
 
         if (data.method === 'organization.balance') {
             this.setOrganizationBalance(data, { propagate: false });
@@ -25766,7 +24709,7 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
                 }
             }
 
-            this.emit("object.create", {
+            this.server.emit("object.create", {
                 method: "object.create",
                 host: data.host,
                 array: "activities",
@@ -25776,7 +24719,7 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
             });
         }
 
-        const clients = this.get(data);
+        const clients = this.getClients(data);
         let cleanData = { ...data };
         if (cleanData.filter?.query) {
             cleanData.filter = { ...cleanData.filter, query: { ...cleanData.filter.query } };
@@ -25840,13 +24783,13 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
             }
         }
 
-        this.emit("notification", { sent });
+        this.server.emit("notification", { sent });
     }
 
     // Helper to send payloads safely on valid connections without throwing frame failures
     async _safeSend(socket, payload) {
         try {
-            if (socket && socket.readyState === ws__WEBPACK_IMPORTED_MODULE_2__.WebSocket.OPEN) {
+            if (socket && socket.readyState === ws__WEBPACK_IMPORTED_MODULE_1__.WebSocket.OPEN) {
                 const message = typeof payload === "string" ? payload : JSON.stringify(payload);
                 return await new Promise((resolve) => {
                     socket.send(message, (error) => resolve(!error));
@@ -25875,165 +24818,6 @@ class SocketServer extends node_events__WEBPACK_IMPORTED_MODULE_1__.EventEmitter
  * @module socket
  * @environment server
  */
-
-
-/***/ },
-
-/***/ 8458
-(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   A: () => (/* binding */ Sockets)
-/* harmony export */ });
-/** Map-like views over the Socket Server's existing lifecycle and indexes. */
-class Collection {
-    #source;
-    #value;
-
-    constructor(source, value = value => value) {
-        this.#source = source;
-        this.#value = value;
-    }
-
-    get size() { return this.#source()?.size || 0; }
-    has(id) { return this.#source()?.has(id) || false; }
-    get(id) {
-        const value = this.#source()?.get(id);
-        return value === undefined ? undefined : this.#value(value, id);
-    }
-    *keys() { yield* this.#source()?.keys() || []; }
-    *values() { for (const id of this.keys()) yield this.get(id); }
-    *entries() { for (const id of this.keys()) yield [id, this.get(id)]; }
-    [Symbol.iterator]() { return this.entries(); }
-    forEach(callback, thisArg) {
-        for (const [id, value] of this) callback.call(thisArg, value, id, this);
-    }
-    clear() { for (const id of [...this.keys()]) this.delete(id); }
-}
-
-// Metadata updates preserve references and cannot replace transport or index fields.
-const metadataFields = new WeakMap();
-function update(record, updates, mutable = [], protectedFields = []) {
-    if (!record || !updates || typeof updates !== 'object') return;
-    if (!metadataFields.has(record)) metadataFields.set(record, new Set(mutable));
-    const allowed = metadataFields.get(record);
-    for (const [key, value] of Object.entries(updates)) {
-        if (key.startsWith('_') || key in Object.prototype || protectedFields.includes(key)) continue;
-        if (key in record && !allowed.has(key)) continue;
-        allowed.add(key);
-        Object.defineProperty(record, key, { value, writable: true, enumerable: true, configurable: true });
-    }
-}
-
-class ClientSockets extends Collection {
-    constructor(root, clientId, organizationId) {
-        super(() => organizationId === undefined
-            ? root.manager.clients.get(clientId)
-            : root.manager.organizations.get(organizationId)?.clients.get(clientId));
-        Object.defineProperties(this, {
-            root: { value: root },
-            clientId: { value: clientId },
-            organizationId: { value: organizationId }
-        });
-    }
-    add(socket) {
-        if (socket.clientId !== this.clientId ||
-            (this.organizationId !== undefined && socket.organization_id !== this.organizationId)) {
-            throw new Error('Socket does not belong to this client');
-        }
-        return this.root.add(socket);
-    }
-    set(id, updates) { if (this.has(id)) this.root.set(id, updates); }
-    delete(id) { if (this.has(id)) this.root.delete(id); }
-}
-
-class Clients extends Collection {
-    constructor(root, organizationId) {
-        const views = new WeakMap();
-        super(() => organizationId === undefined ? root.manager.clients
-            : root.manager.organizations.get(organizationId)?.clients,
-        (sockets, id) => {
-            if (!views.has(sockets)) views.set(sockets, new ClientSockets(root, id, organizationId));
-            return views.get(sockets);
-        });
-        Object.defineProperties(this, {
-            root: { value: root },
-            organizationId: { value: organizationId }
-        });
-    }
-    add(socket) {
-        if (this.organizationId !== undefined && socket.organization_id !== this.organizationId) {
-            throw new Error('Socket does not belong to this organization');
-        }
-        this.root.add(socket);
-        return this.get(socket.clientId);
-    }
-    delete(id) { this.get(id)?.clear(); }
-}
-
-class Organizations extends Collection {
-    constructor(root) {
-        const views = new WeakMap();
-        super(() => root.manager.organizations, (organization, id) => {
-            if (!views.has(organization)) {
-                const clients = new Clients(root, id);
-                views.set(organization, new Proxy(organization, {
-                    get(target, key, receiver) {
-                        return key === 'clients' ? clients : Reflect.get(target, key, receiver);
-                    }
-                }));
-            }
-            return views.get(organization);
-        });
-        Object.defineProperty(this, 'root', { value: root });
-    }
-    add(socket) {
-        this.root.add(socket);
-        return this.get(socket.organization_id);
-    }
-    set(id, updates) { update(this.root.manager.organizations.get(id), updates, ['status', 'organizationBalance']); }
-    delete(id) { this.root.manager.destroyOrganizations(id); }
-}
-
-/**
- * Public socket collection. Add accepts an authenticated socket with id,
- * clientId and organization_id; delete closes its transport and cleans indexes.
- * Client and organization add methods accept the same socket and return their record.
- */
-class Sockets extends Collection {
-    constructor(manager) {
-        super(() => manager.sockets);
-        Object.defineProperty(this, 'manager', { value: manager });
-        this.clients = new Clients(this);
-        this.organizations = new Organizations(this);
-    }
-    add(socket) {
-        if (!socket?.id || !socket.clientId || !socket.organization_id) {
-            throw new TypeError('Socket requires id, clientId and organization_id');
-        }
-        const existing = this.get(socket.id);
-        if (existing === socket) return socket;
-        if (existing) throw new Error(`Socket ${socket.id} already exists`);
-        this.manager.onWebSocket(socket);
-        return socket;
-    }
-    set(id, updates) {
-        update(this.get(id), updates, ['clientInfo'], [
-            'id', 'clientId', 'organization_id', 'user_id', 'subscriptionKeys',
-            'bypassDeleteCascade', 'expires', 'isAlive', 'readyState',
-            'host', 'origin', 'pathname', 'socketUrl'
-        ]);
-    }
-    delete(id) {
-        const socket = this.get(id);
-        if (!socket) return;
-        try { socket.close(1000); }
-        finally {
-            if (this.get(id) === socket) this.manager.delete(socket);
-        }
-    }
-    send(data) { return this.manager.send(data); }
-}
 
 
 /***/ },
@@ -29813,8 +28597,8 @@ async function inviteUser(data) {
             organization_id: updatedData.organization_id
         };
 
-        if (server.wsManager) {
-            server.wsManager.emit("postmark", email);
+        if (server) {
+            server.emit("postmark", email);
         }
 
         let response = {
@@ -29982,8 +28766,8 @@ async function forgotPassword(data) {
                     organization_id: result.organization_id
                 };
 
-                if (server.wsManager) {
-                    server.wsManager.emit("postmark", email);
+                if (server) {
+                    server.emit("postmark", email);
                 }
                 break;
             }
@@ -30047,19 +28831,19 @@ async function resetPassword(data) {
  * @environment server
  */
 function init(serverInstance) {
-    if (!serverInstance?.crud || !serverInstance?.wsManager) {
-        throw new Error("[@cocreate/users] init requires a server with crud and wsManager.");
+    if (!serverInstance?.crud || !serverInstance?.on) {
+        throw new Error("[@cocreate/users] init requires a server with crud and on().");
     }
 
     server = serverInstance;
-    server.wsManager.on("signUp", (data) => signUp(data));
-    server.wsManager.on("signIn", (data) => signIn(data));
-    server.wsManager.on("userStatus", (data) => userStatus(data));
-    server.wsManager.on("checkSession", (data) => checkSession(data));
-    server.wsManager.on("inviteUser", (data) => inviteUser(data));
-    server.wsManager.on("acceptInvite", (data) => acceptInvite(data));
-    server.wsManager.on("forgotPassword", (data) => forgotPassword(data));
-    server.wsManager.on("resetPassword", (data) => resetPassword(data));
+    server.on("signUp", (data) => signUp(data));
+    server.on("signIn", (data) => signIn(data));
+    server.on("userStatus", (data) => userStatus(data));
+    server.on("checkSession", (data) => checkSession(data));
+    server.on("inviteUser", (data) => inviteUser(data));
+    server.on("acceptInvite", (data) => acceptInvite(data));
+    server.on("forgotPassword", (data) => forgotPassword(data));
+    server.on("resetPassword", (data) => resetPassword(data));
     return server;
 }
 
@@ -30898,12 +29682,11 @@ const browserGlobalOperators = new Map(
 (__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   KY: () => (/* binding */ registerASTGlobals),
 /* harmony export */   pK: () => (/* binding */ astAsync)
 /* harmony export */ });
 /* unused harmony exports isomorphicSandbox, astSync, evaluateAST */
 /* unused harmony import specifier */ var sharedGlobalsScope;
-/* unused harmony import specifier */ var processOperatorsAsync;
-/* unused harmony import specifier */ var unpackTokens;
 /* harmony import */ var _dotNotationToObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2623);
 /* harmony import */ var _dataQuery_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(900);
 /* harmony import */ var _browserGlobals_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2419);
@@ -30919,7 +29702,52 @@ const browserGlobalOperators = new Map(
 
 const isBrowser = typeof window !== 'undefined';
 const isomorphicSandbox = (/* unused pure expression or super */ null && (sharedGlobalsScope));
-let baseSandboxScope = isBrowser ? Object.setPrototypeOf(_browserGlobals_js__WEBPACK_IMPORTED_MODULE_2__/* .browserGlobalsScope */ .B, _sharedGlobals_js__WEBPACK_IMPORTED_MODULE_3__/* .sharedGlobalsScope */ .p) : _sharedGlobals_js__WEBPACK_IMPORTED_MODULE_3__/* .sharedGlobalsScope */ .p;
+let baseSandboxScope = isBrowser ? Object.setPrototypeOf(_browserGlobals_js__WEBPACK_IMPORTED_MODULE_2__/* .browserGlobalsScope */ .B, _sharedGlobals_js__WEBPACK_IMPORTED_MODULE_3__/* .sharedGlobalsScope */ .p) : Object.create(_sharedGlobals_js__WEBPACK_IMPORTED_MODULE_3__/* .sharedGlobalsScope */ .p);
+
+// Register environment roots without adding server imports to the browser graph.
+function registerASTGlobals(globals) {
+    const descriptors = Object.getOwnPropertyDescriptors(globals);
+    Object.defineProperties(baseSandboxScope, descriptors);
+    for (const [name, descriptor] of Object.entries(descriptors)) {
+        _operators_js__WEBPACK_IMPORTED_MODULE_4__/* .globalOperatorNames */ .kg.add(name);
+        _operators_js__WEBPACK_IMPORTED_MODULE_4__/* .customOperators */ .Jd.set(name, descriptor.get
+            ? function (...args) {
+                const value = descriptor.get.call(this);
+                return typeof value === "function" ? value.apply(this, args) : value;
+            }
+            : descriptor.value);
+    }
+}
+
+// Private signals unwind nested expressions until their owning loop or entry point.
+class ASTControl {
+    constructor(type, value) {
+        this.type = type;
+        this.value = value;
+    }
+}
+
+function finishControl(control) {
+    if (!(control instanceof ASTControl)) throw control;
+    if (control.type === "$return") return control.value;
+    throw new SyntaxError(`AST '${control.type}' requires an enclosing loop in the same function.`);
+}
+
+function astSync(options = {}) {
+    try {
+        return executeSync(options);
+    } catch (control) {
+        return finishControl(control);
+    }
+}
+
+async function astAsync(options = {}) {
+    try {
+        return await executeAsync(options);
+    } catch (control) {
+        return finishControl(control);
+    }
+}
 
 const conditionalOperators = new Set([
     "$eq",
@@ -31056,6 +29884,17 @@ function getForDefinition(definition) {
     return { source, variable, body, shouldAwait };
 }
 
+function getWhileDefinition(definition, keys) {
+    if (keys.length !== 2 || !keys.includes("$do") || !keys.includes("$while")) {
+        throw new Error("AST loops require exactly one '$do' body and one '$while' condition.");
+    }
+    return {
+        body: definition.$do,
+        condition: definition.$while,
+        doFirst: keys[0] === "$do"
+    };
+}
+
 function createIterationScope({ sandbox, registry, variable, value }) {
     const iterationSandbox = sandbox instanceof Map
         ? undefined
@@ -31149,7 +29988,8 @@ function createASTFunction(expression, { sandbox, node, registry }) {
             executeAST: body,
             sandbox: functionSandbox,
             node,
-            registry: functionRegistry
+            registry: functionRegistry,
+            sequential: true
         });
     };
     const callback = isAsync
@@ -31222,7 +30062,7 @@ function resolveConditionalValueSync(value, context) {
         }
     }
 
-    return astSync({ executeAST: value, ...context });
+    return executeSync({ executeAST: value, ...context });
 }
 
 async function resolveConditionalValueAsync(value, context) {
@@ -31233,7 +30073,7 @@ async function resolveConditionalValueAsync(value, context) {
         }
     }
 
-    return await astAsync({ executeAST: value, ...context });
+    return await executeAsync({ executeAST: value, ...context });
 }
 
 function selectConditionalBranch({ definition, evaluate, exists }) {
@@ -31314,7 +30154,7 @@ async function resolveNullishAsync(values, context) {
     }
 }
 
-function astSync({ executeAST, sandbox, node, registry } = {}) {
+function executeSync({ executeAST, sandbox, node, registry, sequential = false } = {}) {
     const targetNode = executeAST !== undefined ? executeAST : node;
     if (targetNode === null || targetNode === undefined) return targetNode;
 
@@ -31330,6 +30170,9 @@ function astSync({ executeAST, sandbox, node, registry } = {}) {
 
     // Leaf String Evaluator: route to OperatorJS engine
     if (typeof targetNode === "string") {
+        if (targetNode === "$break" || targetNode === "$continue" || targetNode === "$return") {
+            throw new ASTControl(targetNode);
+        }
         const scoped = resolveScopedPath(targetNode, registry, sandbox);
         if (scoped.found) return scoped.value;
 
@@ -31342,7 +30185,7 @@ function astSync({ executeAST, sandbox, node, registry } = {}) {
 
     // List Evaluator: maps items sequentially in a synchronous pipeline
     if (Array.isArray(targetNode)) {
-        return targetNode.map(item => astSync({ executeAST: item, sandbox, node, registry }));
+        return targetNode.map(item => executeSync({ executeAST: item, sandbox, node, registry, sequential }));
     }
 
     if (typeof targetNode === "object") {
@@ -31351,6 +30194,25 @@ function astSync({ executeAST, sandbox, node, registry } = {}) {
         }
 
         const keys = Object.keys(targetNode);
+        if (keys.includes("$do") || keys.includes("$while")) {
+            const { body, condition, doFirst } = getWhileDefinition(targetNode, keys);
+            const context = { sandbox, node, registry, sequential: true };
+            let firstIteration = true;
+            let result;
+            while ((firstIteration && doFirst) || resolveConditionalValueSync(condition, context)) {
+                firstIteration = false;
+                try {
+                    result = executeSync({ executeAST: body, ...context });
+                } catch (control) {
+                    if (!(control instanceof ASTControl)) throw control;
+                    if (control.type === "$break") break;
+                    if (control.type === "$continue") continue;
+                    throw control;
+                }
+            }
+            return result;
+        }
+
         const structuralKey = keys.length === 1 ? keys[0] : undefined;
 
         const isConditionalExpression = structuralKey === "$if" || structuralKey?.startsWith("$if.");
@@ -31359,8 +30221,18 @@ function astSync({ executeAST, sandbox, node, registry } = {}) {
             throw new Error(`AST operators must be composed as nested objects, not '${structuralKey}'.`);
         }
 
+        if (structuralKey === "$break" || structuralKey === "$continue") {
+            throw new ASTControl(structuralKey);
+        }
+
+        if (structuralKey === "$return") {
+            throw new ASTControl("$return", executeSync({
+                executeAST: targetNode.$return, sandbox, node, registry, sequential
+            }));
+        }
+
         if (structuralKey === "$null") {
-            return resolveNullishSync(targetNode.$null, { sandbox, node, registry });
+            return resolveNullishSync(targetNode.$null, { sandbox, node, registry, sequential });
         }
 
         if (structuralKey === "$await") {
@@ -31370,19 +30242,19 @@ function astSync({ executeAST, sandbox, node, registry } = {}) {
         if (structuralKey === "$function" || structuralKey === "$async") {
             const { callback, bind } = createASTFunction(targetNode, { sandbox, node, registry });
             if (bind === undefined) return callback;
-            const thisArg = astSync({ executeAST: bind, sandbox, node, registry });
+            const thisArg = executeSync({ executeAST: bind, sandbox, node, registry, sequential });
             return callback.bind(thisArg);
         }
 
         if (isConditionalExpression) {
-            const context = { sandbox, node, registry };
+            const context = { sandbox, node, registry, sequential };
             const selected = selectConditionalBranch({
                 definition: getIfDefinition(targetNode[structuralKey], structuralKey),
                 evaluate: (value) => resolveConditionalValueSync(value, context),
                 exists: (value) => resolveScopedPath(value, registry, sandbox).found
             });
             return selected.found
-                ? astSync({ executeAST: selected.branch, ...context })
+                ? executeSync({ executeAST: selected.branch, ...context })
                 : undefined;
         }
 
@@ -31396,7 +30268,7 @@ function astSync({ executeAST, sandbox, node, registry } = {}) {
             if (shouldAwait) {
                 throw new Error("AST '$for' with '$await' requires astAsync.");
             }
-            const source = resolveConditionalValueSync(sourceExpression, { sandbox, node, registry });
+            const source = resolveConditionalValueSync(sourceExpression, { sandbox, node, registry, sequential });
             if (!source || typeof source[Symbol.iterator] !== "function") {
                 throw new TypeError("AST '$for' source is not synchronously iterable.");
             }
@@ -31409,12 +30281,20 @@ function astSync({ executeAST, sandbox, node, registry } = {}) {
                     variable,
                     value
                 });
-                result = astSync({
-                    executeAST: body,
-                    sandbox: iterationSandbox,
-                    node,
-                    registry: iterationRegistry
-                });
+                try {
+                    result = executeSync({
+                        executeAST: body,
+                        sandbox: iterationSandbox,
+                        node,
+                        registry: iterationRegistry,
+                        sequential: true
+                    });
+                } catch (control) {
+                    if (!(control instanceof ASTControl)) throw control;
+                    if (control.type === "$break") break;
+                    if (control.type === "$continue") continue;
+                    throw control;
+                }
             }
             return result;
         }
@@ -31429,11 +30309,12 @@ function astSync({ executeAST, sandbox, node, registry } = {}) {
 
             if (opFunc !== undefined || assignmentScope) {
                 const { nestedSandbox, nestedRegistry } = createNestedScope(sandbox, registry);
-                const evaluatedParam = astSync({
+                const evaluatedParam = executeSync({
                     executeAST: targetNode[key],
                     sandbox: nestedSandbox,
                     node,
-                    registry: nestedRegistry
+                    registry: nestedRegistry,
+                    sequential
                 });
                 if (assignmentScope && typeof opFunc !== "function") {
                     (0,_dotNotationToObject_js__WEBPACK_IMPORTED_MODULE_0__/* .dotNotationToObject */ .O)({ [key]: evaluatedParam }, assignmentScope);
@@ -31463,13 +30344,17 @@ function astSync({ executeAST, sandbox, node, registry } = {}) {
 
         const resolvedObject = {};
         for (const key of keys) {
+            if (key === "$break" || key === "$continue") {
+                throw new ASTControl(key);
+            }
             if (key === "$return") {
-                return astSync({
+                throw new ASTControl("$return", executeSync({
                     executeAST: targetNode[key],
                     sandbox,
                     node,
-                    registry
-                });
+                    registry,
+                    sequential
+                }));
             }
 
             if (key !== "$return" && key.startsWith("$")) {
@@ -31478,11 +30363,12 @@ function astSync({ executeAST, sandbox, node, registry } = {}) {
                     typeof operator.value === "function" ||
                     operator.assignmentScope
                 ) {
-                    resolvedObject[key] = astSync({
+                    resolvedObject[key] = executeSync({
                         executeAST: { [key]: targetNode[key] },
                         sandbox,
                         node,
-                        registry
+                        registry,
+                        sequential
                     });
                     continue;
                 }
@@ -31491,27 +30377,27 @@ function astSync({ executeAST, sandbox, node, registry } = {}) {
             let finalKey = key;
 
             if (key.startsWith("$") && !["$array", "filter", "$storage", "$database"].includes(key)) {
-                const resolvedKey = astSync({ executeAST: key, sandbox, node, registry });
+                const resolvedKey = executeSync({ executeAST: key, sandbox, node, registry, sequential });
                 if (typeof resolvedKey === "string" || typeof resolvedKey === "number") {
                     finalKey = String(resolvedKey);
                 }
             } else if (key.includes('{{') && key.includes('}}')) {
-                finalKey = resolveInlinePlaceholdersSync(key, { sandbox, node, registry });
+                finalKey = resolveInlinePlaceholdersSync(key, { sandbox, node, registry, sequential });
             }
 
             let finalValue = targetNode[key];
             if (typeof finalValue === "string") {
                 if (finalValue.startsWith("$") && !["$array", "filter", "$storage", "$database"].includes(finalValue)) {
-                    finalValue = astSync({ executeAST: finalValue, sandbox, node, registry });
+                    finalValue = executeSync({ executeAST: finalValue, sandbox, node, registry, sequential });
                 } else if (finalValue.includes('{{') && finalValue.includes('}}')) {
-                    finalValue = resolveInlinePlaceholdersSync(finalValue, { sandbox, node, registry });
+                    finalValue = resolveInlinePlaceholdersSync(finalValue, { sandbox, node, registry, sequential });
                 }
             } else if (Array.isArray(finalValue) || (typeof finalValue === "object" && finalValue !== null)) {
-                finalValue = astSync({ executeAST: finalValue, sandbox, node, registry });
+                finalValue = executeSync({ executeAST: finalValue, sandbox, node, registry, sequential });
             }
 
             if (finalKey === '$return') {
-                return finalValue;
+                throw new ASTControl("$return", finalValue);
             }
 
             resolvedObject[finalKey] = finalValue;
@@ -31526,7 +30412,7 @@ function astSync({ executeAST, sandbox, node, registry } = {}) {
     return targetNode;
 }
 
-async function astAsync({ executeAST, sandbox, node, registry } = {}) {
+async function executeAsync({ executeAST, sandbox, node, registry, sequential = false } = {}) {
     const targetNode = executeAST !== undefined ? executeAST : node;
     if (targetNode === null || targetNode === undefined) return targetNode;
 
@@ -31542,6 +30428,9 @@ async function astAsync({ executeAST, sandbox, node, registry } = {}) {
 
     // Leaf String Evaluator: route to OperatorJS engine
     if (typeof targetNode === "string") {
+        if (targetNode === "$break" || targetNode === "$continue" || targetNode === "$return") {
+            throw new ASTControl(targetNode);
+        }
         const scoped = resolveScopedPath(targetNode, registry, sandbox);
         if (scoped.found) return scoped.value;
 
@@ -31552,10 +30441,17 @@ async function astAsync({ executeAST, sandbox, node, registry } = {}) {
         return targetNode;
     }
 
-    // List Evaluator: maps items concurrently
+    // Statement arrays execute sequentially inside loops and functions.
     if (Array.isArray(targetNode)) {
+        if (sequential) {
+            const results = [];
+            for (const item of targetNode) {
+                results.push(await executeAsync({ executeAST: item, sandbox, node, registry, sequential }));
+            }
+            return results;
+        }
         return await Promise.all(
-            targetNode.map(item => astAsync({ executeAST: item, sandbox, node, registry }))
+            targetNode.map(item => executeAsync({ executeAST: item, sandbox, node, registry, sequential }))
         );
     }
 
@@ -31565,6 +30461,25 @@ async function astAsync({ executeAST, sandbox, node, registry } = {}) {
         }
 
         const keys = Object.keys(targetNode);
+        if (keys.includes("$do") || keys.includes("$while")) {
+            const { body, condition, doFirst } = getWhileDefinition(targetNode, keys);
+            const context = { sandbox, node, registry, sequential: true };
+            let firstIteration = true;
+            let result;
+            while ((firstIteration && doFirst) || await resolveConditionalValueAsync(condition, context)) {
+                firstIteration = false;
+                try {
+                    result = await executeAsync({ executeAST: body, ...context });
+                } catch (control) {
+                    if (!(control instanceof ASTControl)) throw control;
+                    if (control.type === "$break") break;
+                    if (control.type === "$continue") continue;
+                    throw control;
+                }
+            }
+            return result;
+        }
+
         const structuralKey = keys.length === 1 ? keys[0] : undefined;
 
         const isConditionalExpression = structuralKey === "$if" || structuralKey?.startsWith("$if.");
@@ -31573,35 +30488,46 @@ async function astAsync({ executeAST, sandbox, node, registry } = {}) {
             throw new Error(`AST operators must be composed as nested objects, not '${structuralKey}'.`);
         }
 
+        if (structuralKey === "$break" || structuralKey === "$continue") {
+            throw new ASTControl(structuralKey);
+        }
+
+        if (structuralKey === "$return") {
+            throw new ASTControl("$return", await executeAsync({
+                executeAST: targetNode.$return, sandbox, node, registry, sequential
+            }));
+        }
+
         if (structuralKey === "$null") {
-            return await resolveNullishAsync(targetNode.$null, { sandbox, node, registry });
+            return await resolveNullishAsync(targetNode.$null, { sandbox, node, registry, sequential });
         }
 
         if (structuralKey === "$await") {
-            return await astAsync({
+            return await executeAsync({
                 executeAST: targetNode.$await,
                 sandbox,
                 node,
-                registry
+                registry,
+                sequential
             });
         }
 
         if (structuralKey === "$function" || structuralKey === "$async") {
             const { callback, bind } = createASTFunction(targetNode, { sandbox, node, registry });
             if (bind === undefined) return callback;
-            const thisArg = await astAsync({ executeAST: bind, sandbox, node, registry });
+            const thisArg = await executeAsync({ executeAST: bind, sandbox, node, registry, sequential });
             return callback.bind(thisArg);
         }
 
         if (isConditionalExpression) {
-            const context = { sandbox, node, registry };
+            const context = { sandbox, node, registry, sequential };
             const selected = await selectConditionalBranchAsync({
                 definition: getIfDefinition(targetNode[structuralKey], structuralKey),
                 evaluate: (value) => resolveConditionalValueAsync(value, context),
                 exists: (value) => resolveScopedPath(value, registry, sandbox).found
             });
             return selected.found
-                ? await astAsync({ executeAST: selected.branch, ...context })
+                ? await executeAsync({ executeAST: selected.branch, ...context })
                 : undefined;
         }
 
@@ -31612,7 +30538,7 @@ async function astAsync({ executeAST, sandbox, node, registry } = {}) {
                 body,
                 shouldAwait
             } = getForDefinition(targetNode.$for);
-            const source = await resolveConditionalValueAsync(sourceExpression, { sandbox, node, registry });
+            const source = await resolveConditionalValueAsync(sourceExpression, { sandbox, node, registry, sequential });
             let result;
             if (shouldAwait) {
                 const isIterable = source && (
@@ -31630,12 +30556,20 @@ async function astAsync({ executeAST, sandbox, node, registry } = {}) {
                         variable,
                         value
                     });
-                    result = await astAsync({
-                        executeAST: body,
-                        sandbox: iterationSandbox,
-                        node,
-                        registry: iterationRegistry
-                    });
+                    try {
+                        result = await executeAsync({
+                            executeAST: body,
+                            sandbox: iterationSandbox,
+                            node,
+                            registry: iterationRegistry,
+                            sequential: true
+                        });
+                    } catch (control) {
+                        if (!(control instanceof ASTControl)) throw control;
+                        if (control.type === "$break") break;
+                        if (control.type === "$continue") continue;
+                        throw control;
+                    }
                 }
             } else {
                 if (!source || typeof source[Symbol.iterator] !== "function") {
@@ -31649,12 +30583,20 @@ async function astAsync({ executeAST, sandbox, node, registry } = {}) {
                         variable,
                         value
                     });
-                    result = await astAsync({
-                        executeAST: body,
-                        sandbox: iterationSandbox,
-                        node,
-                        registry: iterationRegistry
-                    });
+                    try {
+                        result = await executeAsync({
+                            executeAST: body,
+                            sandbox: iterationSandbox,
+                            node,
+                            registry: iterationRegistry,
+                            sequential: true
+                        });
+                    } catch (control) {
+                        if (!(control instanceof ASTControl)) throw control;
+                        if (control.type === "$break") break;
+                        if (control.type === "$continue") continue;
+                        throw control;
+                    }
                 }
             }
             return result;
@@ -31670,11 +30612,12 @@ async function astAsync({ executeAST, sandbox, node, registry } = {}) {
 
             if (opFunc !== undefined || assignmentScope) {
                 const { nestedSandbox, nestedRegistry } = createNestedScope(sandbox, registry);
-                const evaluatedParam = await astAsync({
+                const evaluatedParam = await executeAsync({
                     executeAST: targetNode[key],
                     sandbox: nestedSandbox,
                     node,
-                    registry: nestedRegistry
+                    registry: nestedRegistry,
+                    sequential
                 });
                 if (assignmentScope && typeof opFunc !== "function") {
                     (0,_dotNotationToObject_js__WEBPACK_IMPORTED_MODULE_0__/* .dotNotationToObject */ .O)({ [key]: evaluatedParam }, assignmentScope);
@@ -31704,13 +30647,17 @@ async function astAsync({ executeAST, sandbox, node, registry } = {}) {
 
         const resolvedObject = {};
         for (const key of keys) {
+            if (key === "$break" || key === "$continue") {
+                throw new ASTControl(key);
+            }
             if (key === "$return") {
-                return await astAsync({
+                throw new ASTControl("$return", await executeAsync({
                     executeAST: targetNode[key],
                     sandbox,
                     node,
-                    registry
-                });
+                    registry,
+                    sequential
+                }));
             }
 
             if (key !== "$return" && key.startsWith("$")) {
@@ -31719,11 +30666,12 @@ async function astAsync({ executeAST, sandbox, node, registry } = {}) {
                     typeof operator.value === "function" ||
                     operator.assignmentScope
                 ) {
-                    resolvedObject[key] = await astAsync({
+                    resolvedObject[key] = await executeAsync({
                         executeAST: { [key]: targetNode[key] },
                         sandbox,
                         node,
-                        registry
+                        registry,
+                        sequential
                     });
                     continue;
                 }
@@ -31732,27 +30680,27 @@ async function astAsync({ executeAST, sandbox, node, registry } = {}) {
             let finalKey = key;
 
             if (key.startsWith("$") && !["$array", "filter", "$storage", "$database"].includes(key)) {
-                const resolvedKey = await astAsync({ executeAST: key, sandbox, node, registry });
+                const resolvedKey = await executeAsync({ executeAST: key, sandbox, node, registry, sequential });
                 if (typeof resolvedKey === "string" || typeof resolvedKey === "number") {
                     finalKey = String(resolvedKey);
                 }
             } else if (key.includes('{{') && key.includes('}}')) {
-                finalKey = await resolveInlinePlaceholdersAsync(key, { sandbox, node, registry });
+                finalKey = await resolveInlinePlaceholdersAsync(key, { sandbox, node, registry, sequential });
             }
 
             let finalValue = targetNode[key];
             if (typeof finalValue === "string") {
                 if (finalValue.startsWith("$") && !["$array", "filter", "$storage", "$database"].includes(finalValue)) {
-                    finalValue = await astAsync({ executeAST: finalValue, sandbox, node, registry });
+                    finalValue = await executeAsync({ executeAST: finalValue, sandbox, node, registry, sequential });
                 } else if (finalValue.includes('{{') && finalValue.includes('}}')) {
-                    finalValue = await resolveInlinePlaceholdersAsync(finalValue, { sandbox, node, registry });
+                    finalValue = await resolveInlinePlaceholdersAsync(finalValue, { sandbox, node, registry, sequential });
                 }
             } else if (Array.isArray(finalValue) || (typeof finalValue === "object" && finalValue !== null)) {
-                finalValue = await astAsync({ executeAST: finalValue, sandbox, node, registry });
+                finalValue = await executeAsync({ executeAST: finalValue, sandbox, node, registry, sequential });
             }
 
             if (finalKey === '$return') {
-                return finalValue;
+                throw new ASTControl("$return", finalValue);
             }
 
             resolvedObject[finalKey] = finalValue;
@@ -31767,7 +30715,7 @@ async function astAsync({ executeAST, sandbox, node, registry } = {}) {
     return targetNode;
 }
 
-function resolveInlinePlaceholdersSync(str, { sandbox, node, registry }) {
+function resolveInlinePlaceholdersSync(str, { sandbox, node, registry, sequential }) {
     let result = str;
     const regex = /\{\{\s*([\w\W]+?)\s*\}\}/g;
     let match;
@@ -31775,14 +30723,14 @@ function resolveInlinePlaceholdersSync(str, { sandbox, node, registry }) {
     while ((match = regex.exec(str)) !== null) {
         const placeholder = match[0];
         const variablePath = match[1];
-        const evaluatedValue = astSync({ executeAST: variablePath, sandbox, node, registry });
+        const evaluatedValue = executeSync({ executeAST: variablePath, sandbox, node, registry, sequential });
         const replacement = typeof evaluatedValue === 'object' ? JSON.stringify(evaluatedValue) : String(evaluatedValue);
         result = result.replace(placeholder, replacement);
     }
     return result;
 }
 
-async function resolveInlinePlaceholdersAsync(str, { sandbox, node, registry }) {
+async function resolveInlinePlaceholdersAsync(str, { sandbox, node, registry, sequential }) {
     let result = str;
     const regex = /\{\{\s*([\w\W]+?)\s*\}\}/g;
     let match;
@@ -31790,7 +30738,7 @@ async function resolveInlinePlaceholdersAsync(str, { sandbox, node, registry }) 
     while ((match = regex.exec(str)) !== null) {
         const placeholder = match[0];
         const variablePath = match[1];
-        const evaluatedValue = await astAsync({ executeAST: variablePath, sandbox, node, registry });
+        const evaluatedValue = await executeAsync({ executeAST: variablePath, sandbox, node, registry, sequential });
         const replacement = typeof evaluatedValue === 'object' ? JSON.stringify(evaluatedValue) : String(evaluatedValue);
         result = result.replace(placeholder, replacement);
     }
@@ -31798,26 +30746,7 @@ async function resolveInlinePlaceholdersAsync(str, { sandbox, node, registry }) 
 }
 
 async function evaluateAST({ node, executeAST, sandbox = {} } = {}) {
-    const targetNode = executeAST !== undefined ? executeAST : node;
-    
-    if (typeof targetNode === "string") {
-        const tempRegistry = sandbox instanceof Map ? sandbox : new Map(Object.entries(sandbox));
-        let resolved = await processOperatorsAsync(node || null, targetNode, [], null, [], registry);
-        return unpackTokens(resolved, tempRegistry);
-    }
-
-    const activeScope = Object.create(baseSandboxScope);
-    Object.assign(activeScope, sandbox);
-
-    if (node) {
-        activeScope.element = node;
-    }
-
-    return await astAsync({
-        executeAST: targetNode,
-        sandbox: activeScope,
-        node: node
-    });
+    return await astAsync({ node, executeAST, sandbox });
 }
 
 ;(0,_operators_js__WEBPACK_IMPORTED_MODULE_4__/* .setASTEvaluators */ .pz)(astSync, astAsync);
@@ -32159,6 +31088,8 @@ function safeParse(expression, registry = new Map()) {
         return null;
     }
 }
+
+const globalOperatorNames = new Set(_sharedGlobals_js__WEBPACK_IMPORTED_MODULE_4__/* .sharedGlobalOperators */ .I.keys());
 
 const customOperators = new Map([
 	..._sharedGlobals_js__WEBPACK_IMPORTED_MODULE_4__/* .sharedGlobalOperators */ .I,
@@ -32540,10 +31471,9 @@ function resolveOperator(element, operator, args, parent, params, objectRegistry
         args = processOperators(element, args, [], operator, params, objectRegistry);
     }
 
-    // The bare `$()` evaluator only needs its AST registry. Give it a neutral
-    // receiver when there is no DOM node so server and string renderers can
-    // evaluate the same expressions without changing DOM-bound operators.
-    let targetElements = element ? [element] : operator === "$" ? [{}] : [];
+    // Environment roots and `$()` do not require a DOM receiver.
+    let targetElements = element ? [element]
+        : operator === "$" || globalOperatorNames.has(operator) ? [{}] : [];
     if (args && typeof args === "string") {
         const objMatch = args.match(/^__OBJ_(\d+)__$/);
         if (objMatch && objectRegistry.has(args)) {
@@ -32664,7 +31594,124 @@ async function processOperatorsAsync(element, value, exclude = [], parent, param
 }
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "Jd", 0, /* binding */ customOperators
+/* harmony export */   "Jd", 0, /* binding */ customOperators,
+/* harmony export */   "kg", 0, /* binding */ globalOperatorNames
+/* harmony export */ ]);
+
+
+/***/ },
+
+/***/ 5304
+(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   pK: () => (/* binding */ astAsync)
+/* harmony export */ });
+/* unused harmony export astSync */
+/* unused harmony import specifier */ var evaluateSync;
+/* harmony import */ var _index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(99);
+/* harmony import */ var _serverGlobals_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8146);
+
+
+
+(0,_index_js__WEBPACK_IMPORTED_MODULE_0__/* .registerASTGlobals */ .KY)(_serverGlobals_js__WEBPACK_IMPORTED_MODULE_1__/* .serverGlobalsScope */ .Q);
+
+// Keep registration with the server entry when bundlers follow these exports.
+function astSync(options) {
+    return evaluateSync(options);
+}
+
+async function astAsync(options) {
+    return await (0,_index_js__WEBPACK_IMPORTED_MODULE_0__/* .astAsync */ .pK)(options);
+}
+
+/* unused harmony default export */ var __WEBPACK_DEFAULT_EXPORT__ = ((/* unused pure expression or super */ null && (astSync)));
+
+
+/***/ },
+
+/***/ 8146
+(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+/* unused harmony export serverModules */
+/* harmony import */ var node_process__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7721);
+/* harmony import */ var node_buffer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1786);
+/* harmony import */ var _security_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9180);
+
+
+
+
+// Non-deprecated top-level Node modules. Keep inactive entries beside the active list
+// so runtime availability is visible without loading every module at startup.
+const serverModules = [
+    "assert", // Check invariants and compare expected results.
+    "async_hooks", // Track asynchronous resources and execution context.
+    "buffer", // Binary byte buffers and encoding utilities.
+    "child_process", // Start subprocesses and exchange data with them.
+    "cluster", // Run Node processes that can share server ports.
+    "console", // Log messages and inspect values.
+    "crypto", // Native hashing, signing, encryption, and key generation.
+    // "dgram", // UDP datagram sockets; not needed currently.
+    "diagnostics_channel", // Publish and subscribe to diagnostic events.
+    "dns", // Resolve domain names and query DNS records.
+    "events", // EventEmitter and event subscription utilities.
+    // "ffi", // Call native libraries; unavailable in the current Node 24 runtime.
+    "fs", // Read, write, watch, and manage files and directories.
+    "http", // HTTP/1 clients and servers.
+    "http2", // HTTP/2 clients, servers, and multiplexed streams.
+    "https", // HTTP over encrypted TLS connections.
+    "inspector", // Connect to V8 debugging and profiling tools.
+    "module", // Inspect and customize Node module loading.
+    "net", // TCP servers, client sockets, and local IPC connections.
+    "os", // Operating-system, CPU, memory, and network information.
+    "path", // Join, normalize, and inspect filesystem paths.
+    "perf_hooks", // Measure performance and observe timing events.
+    "process", // Process arguments, environment, lifecycle, and resource usage.
+    "querystring", // Parse and format URL query strings.
+    "readline", // Read text streams one line at a time.
+    // "repl", // Interactive read-eval-print loop; not needed currently.
+    "sea", // Access assets embedded in a Node single-executable application.
+    // "sqlite", // Embedded SQLite database; not needed currently.
+    "stream", // Process data incrementally with backpressure.
+    "string_decoder", // Decode byte chunks without splitting text characters.
+    "test", // Define and run Node's built-in tests.
+    "timers", // Schedule and cancel callbacks; includes promise-based timers.
+    "tls", // Create encrypted TLS connections and servers.
+    "trace_events", // Enable tracing of Node and V8 runtime activity.
+    "tty", // Detect and work with terminal input/output streams.
+    "url", // Parse, construct, and convert URLs and file URLs.
+    "util", // Promisify callbacks, inspect values, and access utility APIs.
+    "v8", // Inspect V8 heap data and serialize JavaScript values.
+    "vm", // Compile and run JavaScript in contexts in the current thread.
+    "wasi", // Provide operating-system interfaces to WebAssembly programs.
+    "worker_threads", // Run JavaScript in parallel threads in one process.
+    "zlib" // Compress and decompress data, including gzip and Brotli.
+];
+
+const serverGlobalsScope = {
+    $global: globalThis, // Node global object; also available as shared $globalThis.
+    $Buffer: node_buffer__WEBPACK_IMPORTED_MODULE_1__.Buffer, // Native binary buffer constructor.
+    $security: _security_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Ay, // Existing CoCreate security helpers.
+    $setImmediate: globalThis.setImmediate, // Schedule a callback for the check phase.
+    $clearImmediate: globalThis.clearImmediate // Cancel a scheduled immediate callback.
+};
+
+for (const name of serverModules) {
+    const key = `$${name}`;
+    Object.defineProperty(serverGlobalsScope, key, {
+        enumerable: true,
+        configurable: true,
+        get() { return (0,node_process__WEBPACK_IMPORTED_MODULE_0__.getBuiltinModule)(`node:${name}`); },
+        set(value) {
+            Object.defineProperty(this, key, {
+                value, writable: true, configurable: true, enumerable: true
+            });
+        }
+    });
+}
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, [
+/* harmony export */   "Q", 0, /* binding */ serverGlobalsScope
 /* harmony export */ ]);
 
 
@@ -32721,6 +31768,20 @@ const sharedGlobals = {
     $decodeURIComponent: decodeURIComponent,
     $throw: (message) => {
         throw new Error(String(message));
+    },
+    $error: function (error) {
+        const registry = this?.registry;
+        const payload = registry?.get?.("payload") ?? registry?.get?.("$payload");
+        if (!payload || typeof payload !== "object") return;
+
+        if (!Array.isArray(payload.error)) {
+            payload.error = payload.error == null ? [] : [payload.error];
+        }
+
+        if (Array.isArray(error)) payload.error.push(...error);
+        else payload.error.push(error);
+
+        return payload.error;
     },
     $btoa: (str) => {
         if (typeof btoa === "function") return btoa(String(str));
@@ -32796,6 +31857,58 @@ const sharedGlobals = {
         delay: (ms) => new Promise((resolve) => setTimeout(resolve, Number(ms) || 0))
     }
 };
+
+// Standard JavaScript and Web API roots shared by browsers and Node.
+// Getters preserve native objects and leave unavailable APIs undefined.
+const nativeGlobals = [
+    "globalThis", "Function", "Promise", "RegExp", "Map", "Set", "WeakMap", "WeakSet", "WeakRef",
+    "FinalizationRegistry", "Symbol", "BigInt", "Intl", "Reflect", "Proxy",
+    "ArrayBuffer", "SharedArrayBuffer", "DataView", "Atomics",
+    "Int8Array", "Uint8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array",
+    "Int32Array", "Uint32Array", "Float16Array", "Float32Array", "Float64Array",
+    "BigInt64Array", "BigUint64Array",
+    "Error", "AggregateError", "EvalError", "RangeError", "ReferenceError",
+    "SyntaxError", "TypeError", "URIError", "DOMException",
+    "fetch", "Request", "Response", "Headers", "FormData", "Blob", "File",
+    "console", "crypto", "Crypto", "CryptoKey", "SubtleCrypto", "performance", "navigator",
+    "URL", "URLSearchParams", "URLPattern", "TextEncoder", "TextDecoder",
+    "TextEncoderStream", "TextDecoderStream",
+    "AbortController", "AbortSignal", "Event", "EventTarget", "CustomEvent",
+    "BroadcastChannel", "MessageChannel", "MessagePort", "MessageEvent", "EventSource",
+    "ReadableStream", "ReadableStreamDefaultReader", "ReadableStreamBYOBReader",
+    "ReadableStreamBYOBRequest", "ReadableByteStreamController",
+    "ReadableStreamDefaultController", "WritableStream", "WritableStreamDefaultWriter",
+    "WritableStreamDefaultController", "TransformStream", "TransformStreamDefaultController",
+    "ByteLengthQueuingStrategy", "CountQueuingStrategy", "CompressionStream",
+    "DecompressionStream", "WebAssembly", "WebSocket",
+    "setTimeout", "clearTimeout", "setInterval", "clearInterval",
+    "queueMicrotask", "structuredClone", "isNaN", "isFinite", "encodeURI", "decodeURI"
+];
+
+// Global functions keep their native global receiver when called by AST.
+const nativeGlobalFunctions = new Set([
+    "fetch", "setTimeout", "clearTimeout", "setInterval", "clearInterval",
+    "queueMicrotask", "structuredClone"
+]);
+
+for (const name of nativeGlobals) {
+    const key = `$${name}`;
+    Object.defineProperty(sharedGlobals, key, {
+        enumerable: true,
+        configurable: true,
+        get() {
+            const value = globalThis[name];
+            return typeof value === "function" && nativeGlobalFunctions.has(name)
+                ? value.bind(globalThis)
+                : value;
+        },
+        set(value) {
+            Object.defineProperty(this, key, {
+                value, writable: true, configurable: true, enumerable: true
+            });
+        }
+    });
+}
 
 const sharedGlobalsScope = sharedGlobals;
 
@@ -35752,6 +34865,37 @@ class Security {
     }
 
     /**
+     * Generates an RSA key pair with an OpenSSH-formatted public key.
+     * The public key can be registered with GitHub as a repository deploy key.
+     * @param {number} [modulusLength=3072] - RSA modulus size in bits
+     * @returns {{publicKey: string, privateKey: string}} OpenSSH public key and PEM private key
+     */
+    static generateSshKeyPair(modulusLength = 3072) {
+        const { publicKey, privateKey } = node_crypto__WEBPACK_IMPORTED_MODULE_0__["default"].generateKeyPairSync("rsa", {
+            modulusLength,
+            publicKeyEncoding: { type: "spki", format: "pem" },
+            privateKeyEncoding: { type: "pkcs1", format: "pem" }
+        });
+        const jwk = node_crypto__WEBPACK_IMPORTED_MODULE_0__["default"].createPublicKey(publicKey).export({ format: "jwk" });
+        const sshString = value => {
+            const length = node_buffer__WEBPACK_IMPORTED_MODULE_1__.Buffer.alloc(4);
+            length.writeUInt32BE(value.length);
+            return node_buffer__WEBPACK_IMPORTED_MODULE_1__.Buffer.concat([length, value]);
+        };
+        const mpint = value => {
+            const buffer = node_buffer__WEBPACK_IMPORTED_MODULE_1__.Buffer.from(value, "base64url");
+            return sshString(buffer[0] & 0x80 ? node_buffer__WEBPACK_IMPORTED_MODULE_1__.Buffer.concat([node_buffer__WEBPACK_IMPORTED_MODULE_1__.Buffer.from([0]), buffer]) : buffer);
+        };
+        const encodedKey = node_buffer__WEBPACK_IMPORTED_MODULE_1__.Buffer.concat([
+            sshString(node_buffer__WEBPACK_IMPORTED_MODULE_1__.Buffer.from("ssh-rsa")),
+            mpint(jwk.e),
+            mpint(jwk.n)
+        ]).toString("base64");
+
+        return { publicKey: `ssh-rsa ${encodedKey}`, privateKey };
+    }
+
+    /**
      * Constructs API keys with custom service prefixes and entropy lengths.
      * @param {Object} [options={}] - Options ({ prefix, byteLength, encoding })
      * @returns {{apiKey: string, secret: string, hashedKey: string}} Key details
@@ -36374,9 +35518,10 @@ const {
 } = Security;
 
 // Default export provides hybrid singleton instance with bound functions and embedded Class reference
-/* unused harmony default export */ var __WEBPACK_DEFAULT_EXPORT__ = ((/* unused pure expression or super */ null && (security)));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (security);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
+/* harmony export */   "Ay", 0, __WEBPACK_DEFAULT_EXPORT__,
 /* harmony export */   "rG", 0, /* binding */ security
 /* harmony export */ ]);
 
@@ -36781,8 +35926,8 @@ function convertValue(value, valueType = "") {
 /***/ 7606
 (__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
-/* unused harmony exports init, run, http */
-/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(99);
+/* unused harmony exports init, run */
+/* harmony import */ var _cocreate_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5304);
 /********************************************************************************
  * Copyright (C) 2026 CoCreate and Contributors.
  *
@@ -36796,7 +35941,7 @@ function convertValue(value, valueType = "") {
 
 let server;
 
-function createTenantProxy(target, organization_id, host) {
+function createTenantProxy(target, organization_id, host, allowOrganizationOverride = false) {
 	if (!target) return undefined;
 
 	return new Proxy(target, {
@@ -36808,8 +35953,10 @@ function createTenantProxy(target, organization_id, host) {
 				if (args.length === 0) {
 					args.push({ organization_id, host });
 				} else if (typeof args[0] === "object" && args[0] !== null) {
-					args[0].organization_id = organization_id;
-					args[0].host = host;
+					if (!allowOrganizationOverride || !args[0].organization_id) {
+						args[0].organization_id = organization_id;
+					}
+					args[0].host = allowOrganizationOverride ? (args[0].host || host) : host;
 				}
 
 				return original.apply(targetObject, args);
@@ -36818,15 +35965,34 @@ function createTenantProxy(target, organization_id, host) {
 	});
 }
 
-function createSandbox(envelope, workflowDefinition, organization_id, host) {
-	const crud = createTenantProxy(server.crud, organization_id, host);
-	const socket = createTenantProxy({ send: payload => server.send(payload) }, organization_id, host);
-	const context = { organization_id, host, crud, wsManager: socket };
+function createWorkflowData(payload, workflowName) {
+	const source = payload[workflowName] ?? payload.data ?? {};
+	const data = source && typeof source === "object" ? source : {};
+
+	return new Proxy(data, {
+		get(data, property, receiver) {
+			if (property in data) return Reflect.get(data, property, receiver);
+			return property === workflowName ? payload[workflowName] : undefined;
+		},
+		set(data, property, value, receiver) {
+			if (property === workflowName) payload[property] = value;
+			else Reflect.set(data, property, value, receiver);
+			return true;
+		}
+	});
+}
+
+function createSandbox(payload, workflowDefinition, workflowName, organization_id, host) {
+	const allowOrganizationOverride =
+		!server.manager?.organization_id && organization_id === server.organization_id;
+	const crud = createTenantProxy(server.crud, organization_id, host, allowOrganizationOverride);
+	const secureSocket = createTenantProxy({ send: payload => server.send(payload) }, organization_id, host);
+	const context = { organization_id, host, crud, socket: secureSocket };
 	const api = server.api?.send
 		? { send: (request) => server.api.send(request, context) }
 		: undefined;
 	const workflows = {
-		async run(request = {}) {
+		async run(request = {}, { throwOnError = true } = {}) {
 			const child = { ...request, organization_id, host };
 			// Nested work returns to its caller without inheriting client reply destinations.
 			for (const field of ["socketId", "clientId", "uuid", "frameId", "replyOrganizationId",
@@ -36834,22 +36000,27 @@ function createSandbox(envelope, workflowDefinition, organization_id, host) {
 				"server", "worker", "cluster", "master", "serverId", "workerId", "clusterId", "response"]) {
 				delete child[field];
 			}
-			const result = await run(child);
-			if (result.error?.length) {
+			const result = await execute(child);
+			if (throwOnError && result.error?.length) {
 				throw new Error(result.error.map(error => error?.message || String(error)).join('; '));
 			}
 			return result;
 		}
 	};
 
+	const origin = server.socket?.sockets?.get(payload.socketId);
+	const clientInfo = origin?.organization_id === organization_id && origin?.user_id === payload.user_id
+		? structuredClone(origin.clientInfo) : undefined;
+
 	const sandbox = {
-		payload: envelope,
-		event: envelope.event,
+		payload,
+		clientInfo,
+		data: createWorkflowData(payload, workflowName),
+		event: payload.event,
 		workflow: workflowDefinition,
 		actions: Array.isArray(workflowDefinition.actions) ? [] : {},
 		crud,
-		socket,
-		wsManager: socket,
+		socket: secureSocket,
 		api,
 		workflows,
 		fetch: (...args) => globalThis.fetch(...args),
@@ -36857,73 +36028,6 @@ function createSandbox(envelope, workflowDefinition, organization_id, host) {
 		organization_id,
 		host
 	};
-
-	Object.assign(sandbox, {
-		/**
-		 *
- * @public
- * @environment server
- */
-		$payload: sandbox.payload,
-		$event: sandbox.event,
-		/**
-		 *
- * @public
- * @environment server
- */
-		$workflow: sandbox.workflow,
-		/**
-		 *
- * @public
- * @environment server
- */
-		$data: envelope,
-		/**
-		 *
- * @public
- * @environment server
- */
-		$actions: sandbox.actions,
-		/**
-		 *
- * @public
- * @environment server
- */
-		$crud: sandbox.crud,
-		/**
-		 *
- * @public
- * @environment server
- */
-		$socket: sandbox.socket,
-		/**
-		 *
- * @public
- * @environment server
- */
-		$wsManager: sandbox.wsManager,
-		/**
-		 *
- * @public
- * @environment server
- */
-		$api: sandbox.api,
-		$workflows: sandbox.workflows,
-		/**
-		 *
- * @public
- * @environment server
- */
-		$fetch: sandbox.fetch,
-		/**
-		 *
- * @public
- * @environment server
- */
-		$URL: sandbox.URL,
-		$organization_id: organization_id,
-		$host: host
-	});
 
 	return sandbox;
 }
@@ -36935,7 +36039,6 @@ async function executeWorkflowActions(actions, sandbox) {
 
 	const results = Array.isArray(actions) ? [] : {};
 	sandbox.actions = results;
-	sandbox.$actions = results;
 
 	const steps = Array.isArray(actions)
 		? actions
@@ -36944,7 +36047,10 @@ async function executeWorkflowActions(actions, sandbox) {
 	for (const [index, step] of steps.entries()) {
 		const result = await (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_0__/* .astAsync */ .pK)({ executeAST: step, sandbox });
 		if (Array.isArray(results)) results[index] = result;
-		else if (result && typeof result === "object") Object.assign(results, result);
+		else if (result && typeof result === "object") {
+			Object.assign(results, result);
+			Object.assign(sandbox, result);
+		}
 	}
 
 	return results;
@@ -36953,21 +36059,21 @@ async function executeWorkflowActions(actions, sandbox) {
 /**
  * Loads a workflow record by the workflow name in the method or by ID,
  * evaluates its AST actions and output mapping, and writes the evaluated data
- * back to the same invocation envelope.
- * Errors are appended to the envelope's error array.
+ * back to the same invocation payload.
+ * Errors are appended to the payload's error array.
  *
- * Invocation shape: { method: "workflow.<name>", <name>: [ ...inputs ], organization_id, host }
+ * Invocation shape: { method: "workflow.<name>", <name>: [ ...inputs ] | data, organization_id, host }
  * Workflow record shape: { _id, name, enabled, actions }
- * @public
+ * @private
  * @environment server
  */
-async function run(envelope = {}) {
+async function execute(payload = {}) {
 	try {
 		if (!server?.crud?.send) {
 			throw new Error("CoCreate Workflows has not been initialized with a server.");
 		}
 
-		const methodParts = String(envelope.method || "").split(".");
+		const methodParts = String(payload.method || "").split(".");
 		const workflowName = methodParts[0] === "workflow"
 			? methodParts.slice(1).join(".")
 			: "";
@@ -36975,8 +36081,8 @@ async function run(envelope = {}) {
 			throw new Error("A workflow name is required in method workflow.<name>.");
 		}
 
-		const organization_id = envelope.organization_id;
-		const host = envelope.host;
+		const organization_id = payload.organization_id;
+		const host = payload.host;
 		if (!organization_id || !host) {
 			throw new Error("organization_id and host are required to run a workflow.");
 		}
@@ -37012,100 +36118,37 @@ async function run(envelope = {}) {
 			throw new Error(`Workflow '${workflowName}' has no actions object.`);
 		}
 
-		const sandbox = createSandbox(envelope, workflowDefinition, organization_id, host);
+		const sandbox = createSandbox(payload, workflowDefinition, workflowName, organization_id, host);
 		await executeWorkflowActions(workflowDefinition.actions, sandbox);
 	} catch (error) {
-		if (!Array.isArray(envelope.error)) {
-			envelope.error = envelope.error ? [envelope.error] : [];
+		if (!Array.isArray(payload.error)) {
+			payload.error = payload.error ? [payload.error] : [];
 		}
-		envelope.error.push(error?.message || String(error));
+		payload.error.push(error?.message || String(error));
 	}
 
+	return payload;
+}
+
+/**
+ * Execute a workflow transport invocation and send its single final response.
+ * Nested workflows execute internally; they do not send intermediate responses.
+ * @public
+ * @environment server
+ */
+async function run(payload = {}) {
+	await execute(payload);
 	try {
-		Promise.resolve(server.send(envelope)).catch(error => {
+		Promise.resolve(server.send(payload)).catch(error => {
 			console.error("[@cocreate/workflows] Response delivery failed:", error);
 		});
 	} catch (error) {
 		console.error("[@cocreate/workflows] Response delivery failed:", error);
 	}
-	return envelope;
+	return payload;
 }
 
-/**
- * Handles inbound workflow HTTP requests and authorizes the named invocation before execution.
- * @param {object} req - Native HTTP request.
- * @param {object} res - Native HTTP response.
- * @returns {Promise<void>}
- * @public
- * @environment server
- */
-async function http(req, res) {
-    const reply = (status, body) => {
-        res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
-        res.end(JSON.stringify(body));
-    };
-    if (req.method !== 'POST') {
-        res.setHeader('Allow', 'POST');
-        return reply(405, { error: 'Use POST for this operation.' });
-    }
-    if (req.headers['content-type']?.split(';')[0].trim().toLowerCase() !== 'application/json') {
-        return reply(415, { error: 'An application/json body is required.' });
-    }
-    let input;
-    try {
-        const chunks = [];
-        let size = 0;
-        for await (const chunk of req) {
-            const buffer = Buffer.from(chunk);
-            size += buffer.length;
-            if (size > 1024 * 1024) return reply(413, { error: 'Request body exceeds 1 MiB.' });
-            chunks.push(buffer);
-        }
-        input = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-        if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error();
-    } catch {
-        return reply(400, { error: 'A JSON object is required.' });
-    }
-
-    const bearer = req.headers.authorization?.match(/^Bearer\s+(\S+)$/i)?.[1];
-    const apikey = bearer || input.apikey;
-    if ((apikey !== undefined && (typeof apikey !== 'string' || !apikey.trim())) ||
-        (bearer && input.apikey !== undefined && input.apikey !== bearer)) {
-        return reply(401, { error: 'A valid API key is required.' });
-    }
-
-    try {
-        const host = new URL(`https://${req.headers.host}`).hostname;
-        const organization = await server.crud.getOrganization({ host });
-        if (!organization?._id || organization.error) return reply(404, { error: 'Organization not found.' });
-        const path = (req.url || '').split('?')[0];
-        const name = decodeURIComponent(path.slice('/workflows/'.length));
-        if (!name || name.includes('/') || (input.method !== undefined && input.method !== `workflow.${name}`)) {
-            return reply(400, { error: 'A matching workflow name is required.' });
-        }
-        const envelope = { method: `workflow.${name}`, ...pickHttpFields(input, [name]) };
-        // Scope and identity are server-resolved, never supplied by the caller.
-        Object.assign(envelope, { organization_id: organization._id, host, apikey });
-        const request = await server.authorize?.request(envelope);
-        if (!request) return reply(403, { error: 'Operation is not authorized.' });
-        const result = await server.workflow.run(request);
-        const failed = result?.success === false || hasHttpErrors(result?.error);
-        return reply(failed ? 400 : 200, result);
-    } catch (error) {
-        if (error.code === 'AUTHORIZATION_DENIED') return reply(403, { error: error.message });
-        return reply(500, { error: 'Unable to process the operation.' });
-    }
-}
-
-function hasHttpErrors(error) {
-    return Array.isArray(error) ? error.length > 0 : Boolean(error);
-}
-
-function pickHttpFields(input, fields) {
-    return Object.fromEntries(fields.filter(field => Object.hasOwn(input, field)).map(field => [field, input[field]]));
-}
-
-const API = { run, http };
+const API = { run };
 
 /**
  * Binds server services and returns the workflow handler for registration on the workflow socket event.
@@ -37121,7 +36164,7 @@ async function init(Server) {
 	return API;
 }
 
-const Workflows = { init, run, http };
+const Workflows = { init, run };
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Workflows);

@@ -403,7 +403,14 @@ async function saveConfig(filePath, content) {
     await saveConfig(globalConfigPath, config);
   },
   getEnv: (key) => {
-    return process.env[key] !== void 0 ? process.env[key] : null;
+    const value = process.env[key];
+    if (value === void 0) return null;
+    try {
+      const parsed = JSON.parse(value);
+      return parsed !== null && typeof parsed === "object" ? parsed : value;
+    } catch {
+      return value;
+    }
   },
   setEnv: (key, value) => {
     process.env[key] = value !== null && typeof value === "object" ? JSON.stringify(value) : value;

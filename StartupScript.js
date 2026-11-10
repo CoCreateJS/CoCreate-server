@@ -26,7 +26,7 @@ printf '%s' "$STORAGE_BASE64" | base64 --decode > /etc/cocreatews/storage.json
 printf '%s' "$BOOTSTRAP_CONFIG_BASE64" | base64 --decode > /root/CoCreate.config.js
 chmod 600 /etc/cocreatews.environment /etc/cocreatews/storage.json /root/CoCreate.config.js
 
-exec "$INSTALL_DIR/node" "$INSTALL_DIR/index.js" --cocreate-host-setup
+exec "$INSTALL_DIR/node" "$INSTALL_DIR/startup.js"
 `;
 
 export default startupScript;

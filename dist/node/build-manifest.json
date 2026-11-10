@@ -1,21 +1,21 @@
 {
-  "builtAt": "2026-11-07T03:04:35.939Z",
+  "builtAt": "2026-11-09T20:09:07.965Z",
   "package": "@cocreate/server",
   "packageVersion": "2.0.0",
   "node": "v24.18.0",
   "platform": "linux",
   "arch": "x64",
-  "commit": "f88c676459664d7e63e18f4d2d887228693800e8",
+  "commit": "7e40d983317beccdcd0f79f258de2ce099049966",
   "repositories": {
     "modules.cluster": {
       "package": "@cocreate/cluster",
       "version": "3.0.1",
-      "commit": "f7c0279dacecbf758abe890958c3db96c9b7bbf5"
+      "commit": "ac5fd5fd48db9b1bf164eff3b8708aab9e3d19d0"
     },
     "modules.autoscaler": {
       "package": "@cocreate/autoscaler",
       "version": "2.1.2",
-      "commit": "7a951f843fed3dcc06b75bdbbd0307fdff6d0006"
+      "commit": "1d6a01dc4e140679691bce268a5f33b2f6dd1c62"
     },
     "modules.telemetry": {
       "package": "@cocreate/telemetry",
@@ -25,7 +25,7 @@
     "modules.crud": {
       "package": "@cocreate/crud",
       "version": "2.0.4",
-      "commit": "17e2db810e6082044dfd1325db5a94c242e639d2"
+      "commit": "b15c94304c13985dc0b6a01a62339ffe5205327c"
     },
     "modules.tls": {
       "package": "@cocreate/tls",
@@ -45,7 +45,7 @@
     "modules.socket": {
       "package": "@cocreate/socket",
       "version": "3.0.1",
-      "commit": "e0e5c0926d52d5f8fe27e4e80208d88a6be78973"
+      "commit": "c0c4dd515569a5b3cf6d3029b02e01853a60e12e"
     },
     "modules.file": {
       "package": "@cocreate/file",
@@ -60,7 +60,7 @@
     "modules.cron": {
       "package": "@cocreate/cron",
       "version": "2.0.2",
-      "commit": "58316306e6fe6bd82e83794b33cff27931510ed0"
+      "commit": "b618fa5cb030dd2be8fab5a1244fb6a74fc30a02"
     },
     "modules.usage": {
       "package": "@cocreate/usage",
@@ -75,7 +75,7 @@
     "modules.api": {
       "package": "@cocreate/api",
       "version": "2.1.2",
-      "commit": "e439d94f0c95c2e39a717099d540efd3c259467c"
+      "commit": "c07b05490e009f0fa395fd06b4166a230ff4c2dc"
     },
     "modules.lazy-loader": {
       "package": "@cocreate/lazy-loader",
@@ -85,38 +85,38 @@
     "modules.notification": {
       "package": "@cocreate/notification",
       "version": "2.0.3",
-      "commit": "3d9f531e21949615679ce25808f2631830d00acf"
+      "commit": "380de4071e04599aa9cae97c33a2e95c176e4d73"
     },
     "modules.organizations": {
       "package": "@cocreate/organizations",
       "version": "3.0.2",
-      "commit": "4386e1f256ed700b8e9237b82c6b316a524f3fbf"
+      "commit": "2365c798e9453f5e6995570305d3a9d649ffac4c"
     },
     "modules.users": {
       "package": "@cocreate/users",
       "version": "2.0.3",
-      "commit": "e5ad64bc2000bfb27aaf1a083c326c25085affe4"
+      "commit": "de00a931fa85105cd72a0d6b6c02f244fe11d419"
     },
     "modules.workflows": {
       "package": "@cocreate/workflows",
       "version": "1.1.2",
-      "commit": "0fd59d55feb56580bcd864a071d489ea45200bf5"
+      "commit": "c81f58c542038ed7afbf1c25ceff998d91c019f5"
     },
     "modules.utils": {
       "package": "@cocreate/utils",
       "version": "2.0.3",
-      "commit": "2afe1f2d4fad8dd50c08de830855675dfa7f50bc"
+      "commit": "80e6c3ef7271bc682c249827f3138bafe9e66ebb"
     },
     "modules.cli": {
       "package": "@cocreate/cli",
       "version": "2.1.2",
-      "commit": "df193867c8aa5b5dc520e51e011384b85867fb6b"
+      "commit": "e32fb714a5f00e4a223628605c08fe49951f3655"
     }
   },
   "files": {
     "index.js": {
-      "bytes": 1439916,
-      "sha256": "678b0c8f5da1a8f7b5802fb0a87d456607b14af17e30aa164ace520d6e67a977"
+      "bytes": 1393553,
+      "sha256": "758fbdc3fc18e44b35343880652b8f7cb2ac4e8ce93a0967be29e59cb94fd930"
     },
     "package.json": {
       "bytes": 42,
@@ -135,16 +135,20 @@
       "sha256": "5ffc36e7c41adebc28791d8edf4934f90656a0f25e62006bd0d71039ae42f9a2"
     },
     "plugins/ai/index.js": {
-      "bytes": 29404,
-      "sha256": "9bd07f4a582a798d274abf8cb90b820369e3244860edb87376e08e1f7c5f93db"
+      "bytes": 29580,
+      "sha256": "b3fd17b4b5688f5eb83474cd233d43ee74a7421da4381fdbecb3fc679a22034d"
     },
     "plugins/ai/package.json": {
       "bytes": 42,
       "sha256": "609158e6c5fbc237939fa3ddf7faab80ab690bdc0c8d584414a885130103c4e8"
     },
     "plugins/ai/runtime.js": {
-      "bytes": 663101,
-      "sha256": "260e4fb26c2235803b318ae48c4e4fdcb52fb13484b6fd9b59b3f0e4bf312eeb"
+      "bytes": 663228,
+      "sha256": "4ee9420cf73b7078b30df2a2f237f3c80469a95d77e68c568c861d649e47baec"
+    },
+    "startup.js": {
+      "bytes": 3471,
+      "sha256": "6da728061d7878dce3f0a6d560ee1bf00e1ca53f2e0ff96ab18d0536b9e291cc"
     },
     "storages/amazon-redshift.js": {
       "bytes": 239571,

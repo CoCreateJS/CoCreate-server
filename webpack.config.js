@@ -21,6 +21,8 @@ function runtimeAliases() {
 class RuntimeAssetsPlugin {
     apply(compiler) {
         compiler.hooks.afterEmit.tap("RuntimeAssetsPlugin", () => {
+            // Ship optional host setup as a standalone helper, outside the runtime bundle.
+            fs.copyFileSync(path.join(__dirname, "startup.js"), path.join(compiler.options.output.path, "startup.js"));
             const pluginSource = path.join(__dirname, "plugins");
             const pluginOutput = path.join(compiler.options.output.path, "plugins");
 

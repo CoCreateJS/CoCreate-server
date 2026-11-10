@@ -16,21 +16,8 @@
  *
  ********************************************************************************/
 
-import server, { setupHost } from '@cocreate/cluster';
-import startupScriptTemplate from '../StartupScript.js';
+import server from '@cocreate/cluster';
 // import AI from '@cocreate/ai';
-
-server.startupScriptTemplate = startupScriptTemplate;
-
-if (process.argv.includes('--cocreate-host-setup')) {
-    try {
-        setupHost();
-        process.exit(0);
-    } catch (error) {
-        console.error('[@cocreate/server] Host setup failed:', error);
-        process.exit(1);
-    }
-}
 
 async function boot() {
     try {

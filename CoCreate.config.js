@@ -5,9 +5,8 @@ export default {
     workers: 2, // Number of worker processes
     manager: {
         organization_id: "5ff747727005da1c272740ab", // Static CoCreate manager organization ID
-        host: "CoCreateJS.com", // Manager API host; manager.js sends requests to https://<host>/manager
+        host: "CoCreateJS.com", // Manager API host; manager.js sends requests to https://<host>/
         enabled: true,
-        workflow: "create-organization-server",
         // apiKey is supplied through the startup/runtime config, never baked into the bundle.
     },
 

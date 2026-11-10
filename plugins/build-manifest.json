@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "builtAt": "2026-11-07T03:04:28.376Z",
+  "builtAt": "2026-11-09T17:21:36.523Z",
   "node": "v24.18.0",
   "platform": "linux",
   "arch": "x64",
@@ -9,7 +9,7 @@
       "package": "@cocreate/ai",
       "version": "1.1.0",
       "commit": "91f79c807b57b9872333461bbc791dba79417fa3",
-      "sourceDirty": false,
+      "sourceDirty": true,
       "files": {
         "bootstrap.js": {
           "bytes": 2188,
@@ -24,16 +24,16 @@
           "sha256": "5ffc36e7c41adebc28791d8edf4934f90656a0f25e62006bd0d71039ae42f9a2"
         },
         "index.js": {
-          "bytes": 29404,
-          "sha256": "9bd07f4a582a798d274abf8cb90b820369e3244860edb87376e08e1f7c5f93db"
+          "bytes": 29580,
+          "sha256": "b3fd17b4b5688f5eb83474cd233d43ee74a7421da4381fdbecb3fc679a22034d"
         },
         "package.json": {
           "bytes": 42,
           "sha256": "609158e6c5fbc237939fa3ddf7faab80ab690bdc0c8d584414a885130103c4e8"
         },
         "runtime.js": {
-          "bytes": 663101,
-          "sha256": "260e4fb26c2235803b318ae48c4e4fdcb52fb13484b6fd9b59b3f0e4bf312eeb"
+          "bytes": 663228,
+          "sha256": "4ee9420cf73b7078b30df2a2f237f3c80469a95d77e68c568c861d649e47baec"
         }
       }
     }

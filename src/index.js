@@ -17,14 +17,10 @@
  ********************************************************************************/
 
 import server from '@cocreate/cluster';
-import { fileURLToPath } from 'node:url';
 // import AI from '@cocreate/ai';
 
 async function boot() {
     try {
-        // Temporary DB integration test: use the existing sibling test dataset.
-        process.env.COCREATE_DB_DIRECTORY ||= fileURLToPath(new URL('../../CoCreateDB/', import.meta.url));
-
         // Apply core cluster capabilities (database, IPC, sockets, TLS, state)
         await server.init();
 

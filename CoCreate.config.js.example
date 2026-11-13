@@ -5,7 +5,7 @@ module.exports = {
     "organization_id": "<CoCreate Organization ID>",
     "key": "<CoCreate API Key>",
     "host": "<CoCreate subdomain or custom domain pointing to CoCreate Server>",
-    "storage": {
+    "persistence": {
         "name": "mongodb",
         "provider": "mongodb",
         "connectionString": "<MongoDB connection string>"

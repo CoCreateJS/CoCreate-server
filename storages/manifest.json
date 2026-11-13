@@ -90,8 +90,8 @@
       "version": "2.0.2",
       "commit": "86b80dd55be7360e2c0b4ed1321e2a967a89979e",
       "file": "mongodb.js",
-      "bytes": 1736406,
-      "sha256": "f0eed0353d74af3bc8b50dd892f082d069e8d4200d3c7ade06b9bbd4c18733fc"
+      "bytes": 1737202,
+      "sha256": "eb449be8f418864f7a5ea93813eedfa9ac0b7748598b64fe3af73449903bab78"
     },
     "mysql": {
       "package": "@cocreate/mysql",
